@@ -1,0 +1,252 @@
+:root {
+    --darkBlue: #2F3E46;
+    --darkGreen: #354F52;
+    --mediumGreen: #52796f;
+    --green: #84a98c;
+    --lightGreen: #cad2c5;
+}
+
+/* general styling */
+
+body {
+    margin: 0;
+    margin-bottom: 3em;
+    background-color: var(--lightGreen);
+}
+
+body * {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* main styling */
+
+main {
+    display: grid;
+    grid-template-rows: auto;
+    padding: 40px 10px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+    main {
+        grid-template-columns: 1fr 3fr;
+        column-gap: 40px;
+    }
+}
+
+/* header styling */
+
+#loginNotice {
+    font-size: 2em;
+}
+
+h1 {
+    text-align: center;
+    background-color: var(--darkGreen);
+    color: white;
+    margin: 0;
+    padding: 1em;
+}
+
+/* miscellaneous info styling */
+
+.aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.aside * {
+    font-size: 1em;
+}
+
+.aside button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: block;
+    margin: 10px auto;
+}
+
+.aside .errorMessage {
+    width: fit-content;
+    margin: auto;
+}
+
+button:hover, input[type="submit"] {
+    cursor: pointer;
+}
+
+#channelInput, #usernameInputContainer {
+    font-size: 2em;
+    background-color: var(--green);
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    border: 2px solid var(--darkBlue);
+    border-bottom: none;
+}
+
+#channelInput, #usernameInput {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.errorMessage {
+    color: red;
+    font-size: initial;
+} 
+
+/* loader styling */
+
+#search-username-loader {
+    width: 40px;
+}
+
+#request-username-loader {
+    width: 100%;
+}
+
+#request-username-loader, #search-username-loader {
+    display: none;
+}
+
+#request-username-loader.loading, #search-username-loader.loading {
+    display: initial;
+}
+
+.imgContainer {
+    width: 40px;
+    margin: 10px auto;
+}
+
+/* tab styling */
+
+.tabs {
+    margin: 4em auto;
+}
+
+button.tab {
+    background-color: var(--mediumGreen);
+    color: white;
+    width: 100%;
+    border: none;
+    font-size: 1.3em;
+    padding: 20px 10px;
+    box-sizing: border-box;
+}
+
+.tab.active {
+    background-color: var(--darkGreen);
+    border: 3px solid white;
+}
+
+/* message list styling */
+
+.conversation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: auto;
+    height: 60vh;
+    border: 2px solid var(--darkBlue);
+    box-sizing: border-box;
+}
+
+.send-message-form {
+    width: 100%;
+    height: 50px;
+    border: 2px solid var(--darkBlue);
+    border-top: none;
+    box-sizing: border-box;
+}
+
+.send-message-form input {
+    height: 100%;
+}
+
+.send-message-form :nth-child(1) {
+    box-sizing: border-box;
+    width: 85%;
+}
+
+.send-message-form :nth-child(2) {
+    box-sizing: border-box;
+    width: 15%;
+}
+
+.message-list {
+    display: flex;
+    flex-direction: column-reverse;
+    box-sizing: border-box;
+    padding: 0 30px;
+    width: 100%;
+    overflow-y: auto;
+    background-color: var(--lightGreen);
+    border-radius: 8px;
+}
+
+.message-container {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0;
+}
+
+.message-container:has(.message-left) {
+    justify-content: flex-start;
+}
+
+.message-container:has(.message-right) {
+    justify-content: flex-end;
+}
+
+.message-content {
+    border: 2px solid var(--darkBlue);
+    border-radius: 8px;
+    padding: 5px 10px;
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+/* different colors */
+
+.message-right .message-content {
+    background-color: var(--darkGreen);
+    color: white;
+}
+
+.message-left .message-content {
+    background-color: var(--green);
+}
+
+.message-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 50%;
+}
+
+.message-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 50%;
+}
+
+.message-left .message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.message-right .message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.message-list p {
+    margin: 5px;
+}

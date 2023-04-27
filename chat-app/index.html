@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="module" src="./chat.js"></script>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>
+        6.S063 Chat App
+      </h1>
+    </header>
+    <main>
+      <div class="aside">
+        <p>
+          <button @click="$gf.toggleLogIn">
+            <!-- If we have a user ID, we're logged in so show "Log Out" -->
+            <!-- Otherwise, show "Log In" -->
+            {{ $gf.me? 'Log Out' : 'Log In' }}
+          </button>
+        </p>
+        <div v-if="$gf.me">
+          <form id="requestUsername" @submit.prevent="requestUsername">
+            <label>Request Username: <input type="text" name="username" id="username"></label>
+            <button>Submit</button>
+          </form>
+          <div class="imgContainer">
+            <img id="request-username-loader" src="img/loader.svg">
+          </div>
+          <p v-if="showRequestError" class="errorMessage">That username is already taken. Please try something else.</p>
+  
+          <p>
+            <!-- We display names in multiple places, so we made a -->
+            <!-- reusable <name></name> component. -->
+            <!-- See below for the template. -->
+            My Name: <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
+          </p>
+          <div class="tabs">
+            <button class="tab active" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
+            <button class="tab" id="pm" type="button" @click="changeTab('pm')">Private Messaging</button>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="$gf.me">  
+        <div id="channelInput" v-if="!privateMessaging">
+          <label for="channel">
+            Channel: 
+          </label>
+          <input id="channel" v-model="channel"/>
+        </div>
+        <div id="usernameInputContainer" v-else>
+          <div id="usernameInput">
+            <label>
+              Recipient Username: 
+            </label>
+            <form @submit.prevent="getActorIdFromUsername">
+              <input list="usernames" id="recipientUsername" v-model="recipientUsername"/>
+              <datalist id="usernames">
+                <option v-for="username of Object.values(actorsToUsernames)" :value="username">
+                </option>
+              </datalist>
+              <input type="submit">
+            </form>
+            <img id="search-username-loader" src="img/loader.svg">
+          </div>
+          <p v-if="showActorIdError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
+        </div>
+  
+        <div class="conversation">
+          <div class="message-list">
+            <!-- List all the messages -->
+            <div v-for="message of messages" :key="message.id" class="message-container">
+              <div v-if="message.actor!=$gf.me" class="message-left">
+                <!-- Display and edit form if we're editing a message -->
+                <form v-if="editID==message.id" @submit.prevent="saveEditMessage(message)">
+                  <input v-model="editText">
+                  <input type="submit" value="Save"/>
+                </form>
+  
+                <!-- Otherwise, display a bunch of properties from the message -->
+                <div v-else class="message">
+                  <p>
+                    <!-- Published at time -->
+                    {{ formatTime(message.published) }}
+                  </p>
+                  <p class="message-content">{{ message.content }}</p>
+                  <p>
+                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
+                  </p>
+                </div>
+              </div>
+              <div v-else class="message-right">
+                <!-- Display and edit form if we're editing a message -->
+                <form v-if="editID==message.id" @submit.prevent="saveEditMessage(message)">
+                  <input v-model="editText">
+                  <input type="submit" value="Save"/>
+                </form>
+  
+                <!-- Otherwise, display a bunch of properties from the message -->
+                <div v-else class="message">
+                  <p>
+                    <!-- Published at time -->
+                    {{ formatTime(message.published) }}
+                  </p>
+                  <p class="message-content">{{ message.content }}</p>
+                  <p>
+                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
+                  </p>
+                </div>
+                <!-- Only add these controls if the message is ours -->
+                <!-- You can't edit or delete other people's messages -->
+                <button @click="removeMessage(message)">
+                  Delete Message
+                </button>
+                <button @click="startEditMessage(message)">
+                  Edit Message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- A form for sending messages -->
+        <form class="send-message-form" @submit.prevent="sendMessage">
+          <input v-model="messageText" placeholder="Type a message..."/>
+          <input type="submit" value="Send"/>
+        </form>
+      </div>
+      <div v-else>
+        <p id="loginNotice">** Log in to see messages **</p>
+      </div>
+    </main>
+  </div>
+
+  <template id="name">
+    <span v-if="!editing">
+
+      <!-- If we're not editing the name-->
+      <!-- Display the profile's name, if it exists -->
+      <!-- or anonymous if it doesn't -->
+      {{ profile? `${profile.name} (username: ${username})` : 'Anonymous' }}
+
+      <!-- Also if the name is "editable" add an edit button -->
+      <button v-if="editable" @click="editName">
+        Edit Name
+      </button>
+    </span>
+
+    <!-- If we're in the editing state, create something to edit the name-->
+    <form v-else @submit.prevent="saveName">
+      <input v-model="editText"/>
+      <input type="submit" value="Save Name"/>
+    </form>
+  </template>
+</body>
+</html>
