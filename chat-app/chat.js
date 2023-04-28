@@ -377,6 +377,20 @@ const Like = {
   },
 
   methods: {
+    handleLike() {
+      // check if you have already liked the message
+      if (this.myLikes.length > 0) {
+        // message has already been liked -> undo like
+        this.$el.nextElementSibling.classList.remove("liked");
+        this.undoLike();
+      } else {
+        // message has not already been liked -> like message
+        this.$el.nextElementSibling.classList.add("liked");
+        this.sendLike();
+      }
+
+    },
+
     sendLike() {
       const like = {
         type: 'Like',

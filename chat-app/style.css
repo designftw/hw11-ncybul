@@ -255,6 +255,10 @@ button.tab {
 
 /* animations */
 
+.likeButton.liked {
+    background-color: lightblue;
+}
+
 .tabs button:hover {
     background-color: var(--darkGreen);
     border: 3px solid white;
