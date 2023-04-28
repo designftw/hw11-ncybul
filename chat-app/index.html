@@ -86,7 +86,16 @@
                     <!-- Published at time -->
                     {{ formatTime(message.published) }}
                   </p>
-                  <p class="message-content">{{ message.content }}</p>
+                  <div class="message-content">
+                    <p>{{ message.content }}</p>
+                    <div v-if="message.attachment">
+                      <div v-if="downloadedImages[message.attachment.magnet]">
+                        <img :src="downloadedImages[message.attachment.magnet]"/>
+                      </div>
+                      <img v-else src="img/loader.svg">
+                    </div>
+                  </div>
+                  <like :messageid="message.id"></like>
                   <p>
                     <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
                   </p>
@@ -105,7 +114,16 @@
                     <!-- Published at time -->
                     {{ formatTime(message.published) }}
                   </p>
-                  <p class="message-content">{{ message.content }}</p>
+                  <div class="message-content">
+                    <p>{{ message.content }}</p>
+                    <div v-if="message.attachment">
+                      <div v-if="downloadedImages[message.attachment.magnet]">
+                        <img :src="downloadedImages[message.attachment.magnet]"/>
+                      </div>
+                      <img v-else src="img/loader.svg">
+                    </div>
+                  </div>
+                  <like :messageID="message.id"></like>
                   <p>
                     <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
                   </p>
@@ -127,6 +145,7 @@
           <input v-model="messageText" placeholder="Type a message..."/>
           <input type="submit" value="Send"/>
         </form>
+        <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
       </div>
       <div v-else>
         <p id="loginNotice">** Log in to see messages **</p>
@@ -153,6 +172,9 @@
       <input v-model="editText"/>
       <input type="submit" value="Save Name"/>
     </form>
+  </template>
+  <template id="like">
+    <button @click="sendLike">Like</button>
   </template>
 </body>
 </html>

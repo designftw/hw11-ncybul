@@ -41,11 +41,24 @@ const app = {
       showActorIdError: false,
       username: undefined,
       showRequestError: false,
-      actorsToUsernames: {}
+      actorsToUsernames: {},
+      file: undefined,
+      downloadedImages: {}
     }
   },
 
   watch: {
+
+    async messagesWithImages(newMessages) {
+      for (const message of newMessages) {
+        if (!this.downloadedImages[message.attachment.magnet]) {
+          const media = await this.$gf.media.fetch(message.attachment.magnet);
+          const link = URL.createObjectURL(media);
+          this.downloadedImages[message.attachment.magnet] = link;
+        }
+      }
+    },
+
     async allMessages(newMessages) {
       const lastMessage = newMessages.pop();
       // check if already added this username
@@ -64,6 +77,15 @@ const app = {
   },
 
   computed: {
+
+    messagesWithImages() {
+      let messages = this.messagesRaw.filter(m => 
+        m.attachment &&
+        m.attachment.type === "Image" &&
+        typeof m.attachment.magnet ==='string'
+      );
+      return messages;
+    },
 
     allMessages() {
       // get all messages with actors
@@ -111,6 +133,17 @@ const app = {
   },
 
   methods: {
+
+    resetImageContents() {
+      // reset image contents
+      this.file = undefined;
+      document.querySelector("input[type='file']").value = "";
+    },
+
+    onImageAttachment(event) {
+      const file = event.target.files[0];
+      this.file = file;
+    },
 
     changeTab(selection) {
       // remove 'active' class from all other tabs
@@ -179,10 +212,24 @@ const app = {
         });
     },
 
-    sendMessage() {
-      const message = {
-        type: 'Note',
-        content: this.messageText,
+    async sendMessage() {
+      let message;
+      if (this.file) {
+        const magnet = await this.$gf.media.store(this.file);
+        message = {
+          type: 'Note',
+          content: this.messageText,
+          attachment: {
+            type: 'Image',
+            magnet: magnet
+          }
+        }
+        this.resetImageContents();
+      } else {
+        message = {
+          type: 'Note',
+          content: this.messageText
+        }
       }
 
       // The context field declares which
@@ -290,7 +337,19 @@ const Name = {
   template: '#name'
 }
 
-app.components = { Name }
+const Like = {
+  props: ["messageid"],
+
+  methods: {
+    sendLike() {
+      console.log(this.messageid);
+    }
+  },
+
+  template: '#like'
+}
+
+app.components = { Name, Like }
 Vue.createApp(app)
    .use(GraffitiPlugin(Vue))
    .mount('#app')
