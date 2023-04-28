@@ -134,6 +134,7 @@ button.tab {
     font-size: 1.3em;
     padding: 20px 10px;
     box-sizing: border-box;
+    transition: 200ms;
 }
 
 .tab.active {
@@ -253,6 +254,11 @@ button.tab {
 
 
 /* animations */
+
+.tabs button:hover {
+    background-color: var(--darkGreen);
+    border: 3px solid white;
+}
 
 input.error, label.error {
     animation: shake 0.2s;
