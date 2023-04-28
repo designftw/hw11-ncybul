@@ -143,6 +143,12 @@ const app = {
           } else {
             // let user know the actor ID could not be found
             this.showActorIdError = true;
+            document.querySelectorAll("#usernameInput input").forEach(element => {
+              // https://stackoverflow.com/questions/44846614/trigger-css-animations-in-javascript
+              element.classList.remove("error");
+              element.offsetWidth;
+            });
+            document.querySelectorAll("#usernameInput input").forEach(element => element.classList.add("error"));
           }
         });
     },
@@ -164,6 +170,12 @@ const app = {
           document.getElementById("request-username-loader").classList.remove("loading");
           // let user know the username is already taken
           this.showRequestError = true;
+          document.querySelectorAll("#requestUsername input").forEach(element => {
+            // https://stackoverflow.com/questions/44846614/trigger-css-animations-in-javascript
+            element.classList.remove("error");
+            element.offsetWidth;
+          });
+          document.querySelectorAll("#requestUsername input").forEach(element => element.classList.add("error"));
         });
     },
 

@@ -1,1 +1,79 @@
-/* css for all of your write ups here */
+/* general page styling */
+
+:root {
+    --tan: #FFCDB2;
+    --peach: #FFB4A2;
+    --pink: #E5989B;
+    --purple: #B5838D;
+    --indigo: #6D6875;
+}
+
+body {
+    margin: 0 0 3em 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* header styling */
+
+h1 {
+    font-size: 4em;
+    letter-spacing: 0.2em;
+}
+
+h1, h2, header p {
+    margin: 0;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header {
+    background-color: var(--indigo);
+    color: white;
+}
+
+/* main styling */
+
+main {
+    width: 80%;
+    margin: auto;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+p, li {
+    max-width: 80ch;
+    line-height: 1.5em;
+    margin: 40px auto;
+}
+
+ ul {
+    width: fit-content;
+    margin: auto;
+ }
+
+/* figure styling */
+
+figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+figure img {
+    width: 100%;
+    outline: 4px solid var(--indigo);
+    border-radius: 8px;
+}
+
+figcaption {
+    padding: 10px 0;
+}
