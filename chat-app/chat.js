@@ -340,9 +340,41 @@ const Name = {
 const Like = {
   props: ["messageid"],
 
+  setup(props) {
+    const $gf = Vue.inject('graffiti')
+    const messageID = Vue.toRef(props, 'messageid')
+    const { objects: likesRaw } = $gf.useObjects([messageID])
+    return { likesRaw }
+  },
+
+  computed: {
+    likes() {
+      // filter to get all likes
+      const likes = this.likesRaw.filter(
+        it => it.type === "Like" && it.object === this.messageid
+      );
+      const allActors = new Set();
+      // deduplicate likes from the same actor
+      const deduplicatedLikes = [];
+      for (const like of likes) {
+        const actor = like.actorId;
+        if (!allActors.has(actor)) {
+          deduplicatedLikes.push(like);
+          allActors.add(actor);
+        }
+      }
+      return deduplicatedLikes;
+    }
+  },
+
   methods: {
     sendLike() {
-      console.log(this.messageid);
+      const like = {
+        type: 'Like',
+        object: this.messageid,
+        context: [this.messageid]
+      }
+      this.$gf.post(like);
     }
   },
 
