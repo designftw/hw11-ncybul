@@ -348,6 +348,15 @@ const Like = {
   },
 
   computed: {
+
+    myLikes() {
+      // filter to get all my likes
+      const mylikes = this.likesRaw.filter(
+        it => it.type === "Like" && it.object === this.messageid && it.actor == this.$gf.me
+      );
+      return mylikes;
+    },
+
     likes() {
       // filter to get all likes
       const likes = this.likesRaw.filter(
@@ -375,6 +384,12 @@ const Like = {
         context: [this.messageid]
       }
       this.$gf.post(like);
+    },
+
+    undoLike() {
+      // remove all of my likes on this post
+      const myLikes = this.myLikes;
+      myLikes.forEach(it => this.$gf.remove(it));
     }
   },
 

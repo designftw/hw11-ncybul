@@ -175,6 +175,7 @@
   </template>
   <template id="like">
     <button @click="sendLike">Like ({{ likes.length }})</button>
+    <button v-if="myLikes.length > 0" @click="undoLike">Undo Like</button>
   </template>
 </body>
 </html>
