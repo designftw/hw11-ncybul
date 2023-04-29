@@ -41,6 +41,11 @@
             <button class="tab active" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
             <button class="tab" id="pm" type="button" @click="changeTab('pm')">Private Messaging</button>
           </div>
+          <div class="show-read-receipts">
+            <label>
+              <input v-model="showReadReceipts" type="checkbox"> Show Read Receipts
+            </label>
+          </div>
         </div>
       </div>
 
@@ -95,6 +100,10 @@
                       <img v-else src="img/loader.svg">
                     </div>
                   </div>
+                  <div class="read-receipt">
+                    <span v-if="messageRead(message.id)">Read</span>
+                    <span v-else>Unread</span>
+                  </div>
                   <like :messageid="message.id"></like>
                   <p>
                     <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
@@ -122,6 +131,10 @@
                       </div>
                       <img v-else src="img/loader.svg">
                     </div>
+                  </div>
+                  <div class="read-receipt">
+                    <span v-if="messageRead(message.id)">Read</span>
+                    <span v-else>Unread</span>
                   </div>
                   <like :messageID="message.id"></like>
                   <p>
@@ -174,7 +187,8 @@
     </form>
   </template>
   <template id="like">
-    <button class="likeButton" @click="handleLike">Like ({{ likes.length }})</button>
+    <button v-if="myLikes.length > 0" class="likeButton liked" @click="handleLike"><span>👍</span> ({{ likes.length }})</button>
+    <button v-else class="likeButton" @click="handleLike"><span class="grey-thumbs-up">👍</span> ({{ likes.length }})</button>
   </template>
 </body>
 </html>

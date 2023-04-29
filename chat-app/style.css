@@ -139,7 +139,7 @@ button.tab {
 
 .tab.active {
     background-color: var(--darkGreen);
-    border: 3px solid white;
+    outline: 3px solid white;
 }
 
 /* message list styling */
@@ -252,16 +252,24 @@ button.tab {
     margin: 5px;
 }
 
+.likeButton {
+    margin-top: 5px;
+}
+
+.grey-thumbs-up {
+    filter: grayscale(100%);
+}
+
+.likeButton.liked {
+    background-color: rgb(253, 253, 225);
+}
+
 
 /* animations */
 
-.likeButton.liked {
-    background-color: lightblue;
-}
-
 .tabs button:hover {
     background-color: var(--darkGreen);
-    border: 3px solid white;
+    outline: 3px solid white;
 }
 
 input.error, label.error {

@@ -43,7 +43,8 @@ const app = {
       showRequestError: false,
       actorsToUsernames: {},
       file: undefined,
-      downloadedImages: {}
+      downloadedImages: {},
+      showReadReceipts: false
     }
   },
 
@@ -61,8 +62,24 @@ const app = {
 
     async allMessages(newMessages) {
       const lastMessage = newMessages.pop();
+
+      if (lastMessage === undefined) return;
+
+      // const readReceipts = this.readReceipts.filter(m => m.actor === this.$gf.me && m.object === lastMessage.id);
+      // if (readReceipts.length === 0) {
+      //   // post a read receipt if none exists for this message already
+      //   const readReceipt = {
+      //     type: 'Read',
+      //     object: lastMessage.id,
+      //     context: [lastMessage.id]
+      //   };
+      //   // set to private if not showing read receipts
+      //   if (!this.showReadReceipts) readReceipt.bto = [];
+      //   this.$gf.post(readReceipt);
+      // } 
+
       // check if already added this username
-      if (lastMessage === undefined || this.actorsToUsernames[lastMessage.actor]) return;
+      if (this.actorsToUsernames[lastMessage.actor]) return;
       this.resolver.actorToUsername(lastMessage.actor).then(
 
         (res) => this.actorsToUsernames[lastMessage.actor] = res
@@ -77,6 +94,13 @@ const app = {
   },
 
   computed: {
+
+    readReceipts() {
+      let readReceipts = this.messagesRaw.filter(m => 
+        m.type === 'Read'
+      );
+      return readReceipts;
+    },
 
     messagesWithImages() {
       let messages = this.messagesRaw.filter(m => 
@@ -133,6 +157,11 @@ const app = {
   },
 
   methods: {
+
+    messageRead(messageid) {
+      // true if > 0 read indicators for this messageid from someone else and false otherwise
+      return this.readReceipts.filter(m => m.context === messageid && m.actor !== this.$gf.me).length > 0;
+    },
 
     resetImageContents() {
       // reset image contents
@@ -381,11 +410,11 @@ const Like = {
       // check if you have already liked the message
       if (this.myLikes.length > 0) {
         // message has already been liked -> undo like
-        this.$el.nextElementSibling.classList.remove("liked");
+        this.$el.classList.remove("liked");
         this.undoLike();
       } else {
         // message has not already been liked -> like message
-        this.$el.nextElementSibling.classList.add("liked");
+        this.$el.classList.add("liked");
         this.sendLike();
       }
 
