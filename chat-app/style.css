@@ -327,3 +327,15 @@ input.error, label.error {
     75% { transform: translateX(8px); }
     100% { transform: translateX(0); }
 }
+
+@keyframes like {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-3px); }
+    50% { transform: translateY(-5px); }
+    75% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}
+
+.likeButton.liked  {
+    animation: like cubic-bezier(.07,.62,.93,.62) 0.3s;
+}
