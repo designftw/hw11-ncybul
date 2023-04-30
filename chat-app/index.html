@@ -107,7 +107,7 @@
                     <p>{{ message.content }}</p>
                     <div v-if="message.attachment">
                       <div v-if="downloadedImages[message.attachment.magnet]">
-                        <img :src="downloadedImages[message.attachment.magnet]"/>
+                        <img class="attachment" :src="downloadedImages[message.attachment.magnet]"/>
                       </div>
                       <img v-else src="img/loader.svg">
                     </div>
@@ -143,7 +143,7 @@
                     <p>{{ message.content }}</p>
                     <div v-if="message.attachment">
                       <div v-if="downloadedImages[message.attachment.magnet]">
-                        <img :src="downloadedImages[message.attachment.magnet]"/>
+                        <img class="attachment" :src="downloadedImages[message.attachment.magnet]"/>
                       </div>
                       <img v-else src="img/loader.svg">
                     </div>

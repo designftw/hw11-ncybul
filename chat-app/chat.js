@@ -53,12 +53,13 @@ const app = {
   watch: {
 
     async messagesWithImages(newMessages) {
-      for (const message of newMessages) {
-        if (!this.downloadedImages[message.attachment.magnet]) {
-          const media = await this.$gf.media.fetch(message.attachment.magnet);
-          const link = URL.createObjectURL(media);
-          this.downloadedImages[message.attachment.magnet] = link;
-        }
+      const lastMessage = newMessages.pop()
+      if (lastMessage === undefined) return;
+      
+      if (!this.downloadedImages[lastMessage.attachment.magnet]) {
+        const media = await this.$gf.media.fetch(lastMessage.attachment.magnet);
+        const link = URL.createObjectURL(media);
+        this.downloadedImages[lastMessage.attachment.magnet] = link;
       }
     },
 

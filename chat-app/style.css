@@ -237,6 +237,10 @@ button.tab {
     word-wrap: break-word;
 }
 
+.message-content .attachment {
+    max-width: 100%;
+}
+
 /* different colors */
 
 .message-right .message-content {
