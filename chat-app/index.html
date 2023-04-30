@@ -179,7 +179,7 @@
           </div>
         </div>
         <!-- A form for sending messages -->
-        <div v-if="!this.viewingThreads">
+        <div v-if="(!this.viewingThreads) || (this.viewingThreads && this.currentThread)">
           <form class="send-message-form" @submit.prevent="sendMessage">
             <input v-model="messageText" placeholder="Type a message..."/>
             <input type="submit" value="Send"/>
