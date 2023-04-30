@@ -108,6 +108,16 @@ label[for='channel'], #usernameInput .input {
     box-sizing: border-box;
 }
 
+.threadsList {
+    width: 100%;
+}
+
+.threadsList button {
+    width: 100%;
+    font-size: 1em;
+    text-align: start;
+}
+
 .errorMessage {
     color: red;
     font-size: initial;

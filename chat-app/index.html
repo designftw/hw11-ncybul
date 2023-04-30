@@ -78,12 +78,12 @@
               <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
               <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
             </div>
+            <p v-if="showActorIdError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
           </div>
-          <p v-if="showActorIdError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
         </div>
         <div class="threads-container" v-if="viewingThreads && !currentThread">
           <div v-for="thread of allThreads" :key="thread" class="threadsList">
-            <button v-if="thread" @click="goToThread(thread)">{{ getThreadContent(thread) }}</button>
+            <button v-if="thread" @click="goToThread(thread)">Thread: {{ getThreadContent(thread) }}</button>
           </div>
         </div>
         <div v-else class="conversation">
@@ -174,11 +174,13 @@
           </div>
         </div>
         <!-- A form for sending messages -->
-        <form class="send-message-form" @submit.prevent="sendMessage">
-          <input v-model="messageText" placeholder="Type a message..."/>
-          <input type="submit" value="Send"/>
-        </form>
-        <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
+        <div v-if="!this.viewingThreads">
+          <form class="send-message-form" @submit.prevent="sendMessage">
+            <input v-model="messageText" placeholder="Type a message..."/>
+            <input type="submit" value="Send"/>
+          </form>
+          <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
+        </div>
       </div>
       <div v-else>
         <p id="loginNotice">** Log in to see messages **</p>
