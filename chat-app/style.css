@@ -50,6 +50,19 @@ h1 {
 
 /* miscellaneous info styling */
 
+.profilePic {
+    width: 30px;
+}
+
+.profilePicContainer {
+    width: 30%;
+    margin: 10px auto;
+}
+
+.profilePicContainer .profilePic {
+    width: 100%;
+}
+
 .aside {
     display: flex;
     flex-direction: column;

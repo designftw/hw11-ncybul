@@ -46,7 +46,10 @@ const app = {
       downloadedImages: {},
       showReadReceipts: false,
       viewingThreads: false,
-      currentThread: undefined
+      currentThread: undefined,
+      editingProfilePic: false,
+      profilePic: undefined,
+      profilePicTemp: undefined
     }
   },
 
@@ -55,7 +58,7 @@ const app = {
     async messagesWithImages(newMessages) {
       const lastMessage = newMessages.pop()
       if (lastMessage === undefined) return;
-      
+
       if (!this.downloadedImages[lastMessage.attachment.magnet]) {
         const media = await this.$gf.media.fetch(lastMessage.attachment.magnet);
         const link = URL.createObjectURL(media);
@@ -432,6 +435,102 @@ const Name = {
   template: '#name'
 }
 
+const Profile = {
+  props: ['actor', 'editable'],
+
+  setup(props) {
+    // Get a collection of all objects associated with the actor
+    const { actor } = Vue.toRefs(props)
+    const $gf = Vue.inject('graffiti')
+    return $gf.useObjects([actor])
+  },
+
+  computed: {
+    profile() {
+      return this.objects
+        // Filter the raw objects for profile data
+        // https://www.w3.org/TR/activitystreams-vocabulary/#dfn-profile
+        .filter(m=>
+          // Does the message have a type property?
+          m.type &&
+          // Is the value of that property 'Profile'?
+          m.type=='Profile' &&
+          // Does the message have an icon with a magnet property?
+          ((m.icon && m.icon.magnet) || (m.image && m.image.magnet)))
+        // Choose the most recent one or null if none exists
+        .reduce((prev, curr)=> !prev || curr.published > prev.published? curr : prev, null)
+    },
+
+  },
+
+  data() {
+    return {
+      placeholderPic : "img/blank-profile-photo.jpeg",
+      editing: false,
+      profilePicWhileEditing: undefined,
+      profilePicTemp: undefined
+    }
+  },
+
+  methods: {
+
+    // returns link that should be used in profile image src attribute
+    // async profilePic() {
+    //   if (!this.profile) return this.placeholderPic;
+    //   const magnet = (this.profile.icon) ? this.profile.icon.magnet : this.profile.image.magnet;
+    //   const blob = await this.$gf.media.fetch(magnet);
+    //   return URL.createObjectURL(blob);
+    // },
+
+    profilePic() {
+      return this.placeholderPic;
+    },
+
+    async editProfile() {
+      this.editing = true
+      // show a profile pic while editing (either the old profile pic or a placeholder image)
+      if (this.profile) {
+        const magnet = (this.profile.icon) ? this.profile.icon.magnet : this.profile.image.magnet;
+        this.profilePicWhileEditing = await this.$gf.media.fetch(magnet);
+      } else {
+        this.profilePicWhileEditing = this.placeholderPic;
+      }
+    },
+
+    async saveProfilePic() {
+      if (this.profile) {
+        // If we already have a profile, just change the magnet
+        if (this.profile.icon) {
+          this.profile.icon.magnet = await this.$gf.media.store(this.profilePicTemp);
+        }
+      } else {
+        // Otherwise create a profile
+        const magnet = await this.$gf.media.store(this.profilePicTemp);
+        const post = {
+          type: 'Profile',
+          icon: {
+            type: 'Image',
+            magnet: magnet
+          }
+        }
+        await this.$gf.post(post); 
+      }
+
+      // Exit the editing state
+      this.editing = false;
+      this.profilePicTemp = undefined;
+    },
+
+    onProfileImageAttachment(event) {
+      const profileImg = event.target.files[0];
+      this.profilePicTemp = profileImg;
+    },
+
+  },
+
+  template: '#profile'
+}
+
 const Like = {
   props: ["messageid"],
 
@@ -505,7 +604,7 @@ const Like = {
   template: '#like'
 }
 
-app.components = { Name, Like }
+app.components = { Name, Like, Profile }
 Vue.createApp(app)
    .use(GraffitiPlugin(Vue))
    .mount('#app')

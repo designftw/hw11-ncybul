@@ -31,12 +31,15 @@
           </div>
           <p v-if="showRequestError" class="errorMessage">That username is already taken. Please try something else.</p>
   
-          <p>
+          <div>
             <!-- We display names in multiple places, so we made a -->
             <!-- reusable <name></name> component. -->
             <!-- See below for the template. -->
             My Name: <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
-          </p>
+            <div class="profilePicContainer">
+              <profile :actor="$gf.me" :editable="true"></profile>
+            </div>
+          </div>
           <div class="tabs">
             <button class="tab active" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
             <button class="tab" id="pm" type="button" @click="changeTab('pm')">Private Messaging</button>
@@ -122,6 +125,7 @@
                     <button v-else @click="goToThread(message.id)">View Thread</button>
                   </div>
                   <p>
+                    <profile :actor="message.actor"></profile>
                     <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
                   </p>
                 </div>
@@ -157,8 +161,9 @@
                     <button v-if="!allThreads.includes(message.id)" @click="startThread(message.id)">Create Thread From Message</button>
                     <button v-else @click="goToThread(message.id)">View Thread</button>
                   </div>
-                  <p>
+                  <p>                    
                     <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
+                    <profile :actor="message.actor"></profile>
                   </p>
                 </div>
                 <!-- Only add these controls if the message is ours -->
@@ -211,6 +216,27 @@
   <template id="like">
     <button v-if="myLikes.length > 0" class="likeButton liked" @click="handleLike"><span>👍</span> ({{ likes.length }})</button>
     <button v-else class="likeButton" @click="handleLike"><span class="grey-thumbs-up">👍</span> ({{ likes.length }})</button>
+  </template>
+  <template id="profile">
+    <span v-if="!editing">
+
+      <!-- If we're not editing the profile pic-->
+      <!-- Display the profile pic, if it exists -->
+      <!-- or placeholder if it doesn't -->
+
+      <img class="profilePic" v-bind:src="profilePic()">
+
+      <!-- Also if the profile pic is "editable" add an edit button -->
+      <button v-if="editable" @click="editProfile">
+        Edit Profile Picture
+      </button>
+    </span>
+
+    <!-- If we're in the editing state, create something to edit the name-->
+    <form v-else @submit.prevent="saveProfilePic">
+      <input type="file" accept="image/png, image/jpeg" @change="onProfileImageAttachment"/>
+      <button type="submit">Upload</button>
+    </form>
   </template>
 </body>
 </html>
