@@ -121,7 +121,10 @@
                   </div>
                   <like :messageid="message.id"></like>
                   <div v-if="!this.viewingThreads">
-                    <button v-if="!allThreads.includes(message.id)" @click="startThread(message.id)">Create Thread From Message</button>
+                    <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
+                      <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                      <p class="replyHelp">Create Thread From Message</p>
+                    </div>
                     <button v-else @click="goToThread(message.id)">View Thread</button>
                   </div>
                   <p>
@@ -158,7 +161,10 @@
                   </div>
                   <like :messageID="message.id"></like>
                   <div v-if="!this.viewingThreads">
-                    <button v-if="!allThreads.includes(message.id)" @click="startThread(message.id)">Create Thread From Message</button>
+                    <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
+                      <p class="replyHelp">Create Thread From Message</p>
+                      <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                    </div>
                     <button v-else @click="goToThread(message.id)">View Thread</button>
                   </div>
                   <p>                    

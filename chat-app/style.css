@@ -307,6 +307,14 @@ button.tab {
     background-color: rgb(253, 253, 225);
 }
 
+.replyButton img {
+    width: 20px;
+}
+
+.replyButtonContainer {
+    display: flex;
+}
+
 
 /* animations */
 
@@ -338,4 +346,27 @@ input.error, label.error {
 
 .likeButton.liked  {
     animation: like cubic-bezier(.07,.62,.93,.62) 0.3s;
+}
+
+.replyHelp {
+	transform: scale(0);
+    color: white;
+    background-color: rgb(81, 81, 81);
+    padding: 2px;
+    font-size: 0.8em;
+    border-radius: 4px;
+}
+
+.message-left .replyHelp {
+    transform-origin: left;
+}
+
+.message-right .replyHelp {
+    transform-origin: right;
+}
+
+.replyButton:hover + .replyHelp, .replyButtonContainer:has(.replyButton:hover) .replyHelp  {
+    transition: 200ms;
+    height: inherit;
+    transform: scale(100%);
 }
