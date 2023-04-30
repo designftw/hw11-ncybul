@@ -53,31 +53,43 @@
         <div id="channelInput" v-if="!privateMessaging">
           <label for="channel">
             Channel: 
+            <input id="channel" v-model="channel"/> 
           </label>
-          <input id="channel" v-model="channel"/>
+          <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
+          <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
         </div>
-        <div id="usernameInputContainer" v-else>
-          <div id="usernameInput">
-            <label>
-              Recipient Username: 
-            </label>
-            <form @submit.prevent="getActorIdFromUsername">
-              <input list="usernames" id="recipientUsername" v-model="recipientUsername"/>
-              <datalist id="usernames">
-                <option v-for="username of Object.values(actorsToUsernames)" :value="username">
-                </option>
-              </datalist>
-              <input type="submit">
-            </form>
-            <img id="search-username-loader" src="img/loader.svg">
+        <div v-else>
+          <div id="usernameInputContainer">
+            <div id="usernameInput">
+              <div class="input">
+                <label>
+                  Recipient Username: 
+                </label>
+                <form @submit.prevent="getActorIdFromUsername">
+                  <input list="usernames" id="recipientUsername" v-model="recipientUsername"/>
+                  <datalist id="usernames">
+                    <option v-for="username of Object.values(actorsToUsernames)" :value="username">
+                    </option>
+                  </datalist>
+                  <input type="submit">
+                </form>
+                <img id="search-username-loader" src="img/loader.svg">
+              </div>
+              <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
+              <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
+            </div>
           </div>
           <p v-if="showActorIdError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
         </div>
-  
-        <div class="conversation">
+        <div class="threads-container" v-if="viewingThreads && !currentThread">
+          <div v-for="thread of allThreads" :key="thread" class="threadsList">
+            <button v-if="thread" @click="goToThread(thread)">{{ getThreadContent(thread) }}</button>
+          </div>
+        </div>
+        <div v-else class="conversation">
           <div class="message-list">
             <!-- List all the messages -->
-            <div v-for="message of messages" :key="message.id" class="message-container">
+            <div v-for="message of getMessages()" :key="message.id" class="message-container">
               <div v-if="message.actor!=$gf.me" class="message-left">
                 <!-- Display and edit form if we're editing a message -->
                 <form v-if="editID==message.id" @submit.prevent="saveEditMessage(message)">
@@ -105,6 +117,10 @@
                     <span v-else>Unread</span>
                   </div>
                   <like :messageid="message.id"></like>
+                  <div v-if="!this.viewingThreads">
+                    <button v-if="!allThreads.includes(message.id)" @click="startThread(message.id)">Create Thread From Message</button>
+                    <button v-else @click="goToThread(message.id)">View Thread</button>
+                  </div>
                   <p>
                     <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
                   </p>
@@ -137,6 +153,10 @@
                     <span v-else>Unread</span>
                   </div>
                   <like :messageID="message.id"></like>
+                  <div v-if="!this.viewingThreads">
+                    <button v-if="!allThreads.includes(message.id)" @click="startThread(message.id)">Create Thread From Message</button>
+                    <button v-else @click="goToThread(message.id)">View Thread</button>
+                  </div>
                   <p>
                     <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
                   </p>

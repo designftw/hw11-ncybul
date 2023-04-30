@@ -44,7 +44,9 @@ const app = {
       actorsToUsernames: {},
       file: undefined,
       downloadedImages: {},
-      showReadReceipts: false
+      showReadReceipts: false,
+      viewingThreads: false,
+      currentThread: undefined
     }
   },
 
@@ -88,8 +90,9 @@ const app = {
 
     messages(newMessages) {
       // reset scroll
-      const messageList = document.querySelector(".message-list");
-      messageList.scrollTop = 0;
+      waitForElm(".message-list").then(messageList =>
+        messageList.scrollTop = 0
+      );
     }
   },
 
@@ -154,9 +157,51 @@ const app = {
         // Only show the 10 most recent ones
         // .slice(0,10)
     },
+
+    allThreads() {
+      // get all notes that start a thread
+      let threadBases = new Set();
+      const messageIds = this.messages.map(m => m.id);
+      this.messages.forEach(m => {
+        // make sure message still exists and add if so add it to all threads set
+        if (messageIds.includes(m.inReplyTo)) threadBases.add(m.inReplyTo);
+      });
+      return Array.from(threadBases);
+    },
   },
 
   methods: {
+
+    getThreadContent(threadId) {
+      // find message and return its content
+      const thread = this.messages.filter(m => m.id == threadId)[0];
+      return thread ? thread.content : "error?";
+    },
+
+    goToThread(thread) {
+      this.viewingThreads = true;
+      this.currentThread = thread;
+    },
+
+    getMessages() {
+      // if not in threads, return regular messages without replies
+      if (!this.viewingThreads) return this.messages.filter(m => !m.inReplyTo);
+      // figure out what thread we are viewing
+      const messagesInThread = this.messages.filter(m => 
+        // thread base
+        m.id === this.currentThread ||
+        // reply to thread base
+        m.inReplyTo === this.currentThread
+      );
+      return messagesInThread;
+    },
+
+    viewThreads() {
+      this.viewingThreads = !this.viewingThreads;
+      if (!this.viewingThreads) {
+        this.currentThread = undefined;
+      }
+    },
 
     messageRead(messageid) {
       // true if > 0 read indicators for this messageid from someone else and false otherwise
@@ -175,6 +220,9 @@ const app = {
     },
 
     changeTab(selection) {
+      // no longer viewing threads
+      this.viewingThreads = false;
+      this.currentThread = undefined;
       // remove 'active' class from all other tabs
       document.querySelectorAll('.tab.active').forEach(it => it.classList.remove('active'));
       // set private messaging to correct value
@@ -272,6 +320,11 @@ const app = {
         message.context = [this.channel]
       }
 
+      // add inReplyTo if sending message in thread
+      if (this.currentThread) {
+        message.inReplyTo = this.currentThread;
+      }
+
       // Send!
       this.$gf.post(message)
 
@@ -279,8 +332,14 @@ const app = {
       this.messageText = "";
     },
 
-    removeMessage(message) {
-      this.$gf.remove(message)
+    async removeMessage(message) {
+      // remove all replies to that message if it is the base of the message
+      if (this.currentThread === message.id) {
+        this.messages.filter(m => m.inReplyTo === message.id).forEach(m => async () => await this.$gf.remove(m));
+        // go back to main chat
+        this.viewThreads();
+      }
+      await this.$gf.remove(message);
     },
 
     startEditMessage(message) {
@@ -296,7 +355,13 @@ const app = {
       message.content = this.editText
       // And clear the edit mark
       this.editID = ''
-    }
+    },
+
+    startThread(messageid) {
+      // change view to a new thread starting at this message
+      this.currentThread = messageid;
+      this.viewingThreads = true;
+    },
   }
 }
 
@@ -443,3 +508,25 @@ app.components = { Name, Like }
 Vue.createApp(app)
    .use(GraffitiPlugin(Vue))
    .mount('#app')
+
+
+// https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
+function waitForElm(selector) {
+  return new Promise(resolve => {
+      if (document.querySelector(selector)) {
+          return resolve(document.querySelector(selector));
+      }
+
+      const observer = new MutationObserver(mutations => {
+          if (document.querySelector(selector)) {
+              resolve(document.querySelector(selector));
+              observer.disconnect();
+          }
+      });
+
+      observer.observe(document.body, {
+          childList: true,
+          subtree: true
+      });
+  });
+}
