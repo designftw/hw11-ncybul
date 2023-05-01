@@ -25,6 +25,7 @@ main {
     grid-template-rows: auto;
     padding: 40px 10px;
     box-sizing: border-box;
+    row-gap: 10px;
 }
 
 @media (min-width: 900px) {
@@ -134,7 +135,18 @@ label[for='channel'], #usernameInput .input {
 .errorMessage {
     color: red;
     font-size: initial;
-} 
+}
+
+.messageButtons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.messageButtons button {
+    height: 30px;
+}
 
 /* loader styling */
 
@@ -293,10 +305,6 @@ button.tab {
 
 .message-list p {
     margin: 5px;
-}
-
-.likeButton {
-    margin-top: 5px;
 }
 
 .grey-thumbs-up {

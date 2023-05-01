@@ -127,13 +127,15 @@
                     <span v-if="messageRead(message.id)">Read</span>
                     <span v-else>Unread</span>
                   </div>
-                  <like :messageid="message.id"></like>
-                  <div v-if="!this.viewingThreads">
-                    <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
-                      <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
-                      <p class="replyHelp">Create Thread From Message</p>
+                  <div class="messageButtons">
+                    <like :messageid="message.id"></like>
+                    <div v-if="!this.viewingThreads">
+                      <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
+                        <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                        <p class="replyHelp">Create Thread From Message</p>
+                      </div>
+                      <button v-else @click="goToThread(message.id)">View Thread</button>
                     </div>
-                    <button v-else @click="goToThread(message.id)">View Thread</button>
                   </div>
                   <p>
                     <profile :actor="message.actor"></profile>
@@ -167,13 +169,15 @@
                     <span v-if="messageRead(message.id)">Read</span>
                     <span v-else>Unread</span>
                   </div>
-                  <like :messageID="message.id"></like>
-                  <div v-if="!this.viewingThreads">
-                    <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
-                      <p class="replyHelp">Create Thread From Message</p>
-                      <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                  <div class="messageButtons">
+                    <div v-if="!this.viewingThreads">
+                      <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
+                        <p class="replyHelp">Create Thread From Message</p>
+                        <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                      </div>
+                      <button v-else @click="goToThread(message.id)">View Thread</button>
                     </div>
-                    <button v-else @click="goToThread(message.id)">View Thread</button>
+                    <like :messageID="message.id"></like>
                   </div>
                   <p>                    
                     <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
