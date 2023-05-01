@@ -71,19 +71,6 @@ const app = {
 
       if (lastMessage === undefined) return;
 
-      // const readReceipts = this.readReceipts.filter(m => m.actor === this.$gf.me && m.object === lastMessage.id);
-      // if (readReceipts.length === 0) {
-      //   // post a read receipt if none exists for this message already
-      //   const readReceipt = {
-      //     type: 'Read',
-      //     object: lastMessage.id,
-      //     context: [lastMessage.id]
-      //   };
-      //   // set to private if not showing read receipts
-      //   if (!this.showReadReceipts) readReceipt.bto = [];
-      //   this.$gf.post(readReceipt);
-      // } 
-
       // check if already added this username
       if (this.actorsToUsernames[lastMessage.actor]) return;
       this.resolver.actorToUsername(lastMessage.actor).then(
@@ -188,8 +175,35 @@ const app = {
     },
 
     getMessages() {
+
       // if not in threads, return regular messages without replies
-      if (!this.viewingThreads) return this.messages.filter(m => !m.inReplyTo);
+      if (!this.viewingThreads) {
+        // if not in threads, return regular messages without replies
+        const messagesToReturn = this.messages.filter(m => !m.inReplyTo);
+
+        // for each message being returned, add a read receipt to it if none exists already
+        messagesToReturn.forEach(m => {
+          const readReceipts = this.readReceipts.filter(r => r.actor === this.$gf.me && r.object === m.id);
+          if (readReceipts.length === 0) {
+            // post a read receipt if none exists for this message already
+            const readReceipt = {
+              type: 'Read',
+              object: m.id
+            };
+            // set to private if not showing read receipts
+            if (!this.showReadReceipts) readReceipt.bto = [];
+            // set context to this message id + channel or private messaging contexts
+            if (this.privateMessaging) {
+              readReceipt.context = [m.id, this.$gf.me, this.recipient]
+            } else {
+              readReceipt.context = [m.id, this.channel]
+            }
+            this.$gf.post(readReceipt);
+          } 
+        });
+
+        return messagesToReturn;
+      }
       // figure out what thread we are viewing
       const messagesInThread = this.messages.filter(m => 
         // thread base
@@ -209,7 +223,7 @@ const app = {
 
     messageRead(messageid) {
       // true if > 0 read indicators for this messageid from someone else and false otherwise
-      return this.readReceipts.filter(m => m.context === messageid && m.actor !== this.$gf.me).length > 0;
+      return this.readReceipts.filter(m => m.object === messageid && m.actor !== this.$gf.me).length > 0;
     },
 
     resetImageContents() {
