@@ -15,10 +15,13 @@
     <main>
       <div class="aside">
         <p>
-          <button @click="$gf.toggleLogIn">
+          <button v-if="$gf.me" @click="$gf.toggleLogIn">
             <!-- If we have a user ID, we're logged in so show "Log Out" -->
             <!-- Otherwise, show "Log In" -->
-            {{ $gf.me? 'Log Out' : 'Log In' }}
+            {{ 'Log Out' }}
+          </button>
+          <button v-else class="loginButton" @click="$gf.toggleLogIn">
+            {{ 'Log In' }}
           </button>
         </p>
         <div v-if="$gf.me">

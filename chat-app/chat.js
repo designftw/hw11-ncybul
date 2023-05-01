@@ -179,7 +179,7 @@ const app = {
     getThreadContent(threadId) {
       // find message and return its content
       const thread = this.messages.filter(m => m.id == threadId)[0];
-      return thread ? thread.content : "error?";
+      return thread ? thread.content : "";
     },
 
     goToThread(thread) {

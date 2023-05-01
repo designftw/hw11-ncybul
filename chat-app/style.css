@@ -386,6 +386,14 @@ input.error, label.error {
     background-color: var(--lightGreen);
 }
 
+.loginButton {
+    transition: 300ms;
+}
+
+.loginButton:hover {
+    transform: scale(1.2);
+}
+
 /* TODO: could not figure this out exactly */
 /* .thread-title-enter-from, .thread-title-leave-to {
     transform: translateY(-100%);
