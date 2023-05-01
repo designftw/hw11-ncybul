@@ -315,6 +315,17 @@ button.tab {
     display: flex;
 }
 
+.thread-title {
+    background-color: var(--green);
+    border-bottom: 2px solid var(--darkBlue);
+    width: 100%;
+    text-align: left;
+}
+
+.thread-title p {
+    padding: 5px 20px;
+}
+
 
 /* animations */
 
@@ -370,3 +381,16 @@ input.error, label.error {
     height: inherit;
     transform: scale(100%);
 }
+
+.send-message-form:has(input[value="Send"]:active) input {
+    background-color: var(--lightGreen);
+}
+
+/* TODO: could not figure this out exactly */
+/* .thread-title-enter-from, .thread-title-leave-to {
+    transform: translateY(-100%);
+}
+
+.thread-title-enter-active, .thread-title-leave-active {
+    transition: transform 400ms ease;
+} */

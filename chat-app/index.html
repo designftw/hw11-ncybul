@@ -90,6 +90,11 @@
           </div>
         </div>
         <div v-else class="conversation">
+          <transition name="thread-title">
+            <div v-if="currentThread" class="thread-title">
+              <p>Thread: {{ getThreadContent(currentThread) }}</p>
+            </div>
+          </transition>
           <div class="message-list">
             <!-- List all the messages -->
             <div v-for="message of getMessages()" :key="message.id" class="message-container">
