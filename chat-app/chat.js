@@ -82,7 +82,8 @@ const app = {
 
     messages(newMessages) {
       // reset scroll
-      document.querySelector(".message-list").scrollTop = 0;
+      const messageList = document.querySelector(".message-list");
+      if (messageList) messageList.scrollTop = 0;
     }
   },
 

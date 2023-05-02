@@ -195,7 +195,7 @@ button.tab {
 
 /* message list styling */
 
-.conversation, .threads-container {
+.threads-or-convo-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -205,6 +205,14 @@ button.tab {
     height: 60vh;
     border: 2px solid var(--darkBlue);
     box-sizing: border-box;
+}
+
+.threads-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .send-message-form {
@@ -402,7 +410,6 @@ input.error, label.error {
     transform: scale(1.2);
 }
 
-/* TODO: could not figure this out exactly */
 .thread-title-enter-from, .thread-title-leave-to {
     transform: translateY(-100%);
     z-index: -1;
