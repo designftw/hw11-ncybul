@@ -146,6 +146,7 @@ label[for='channel'], #usernameInput .input {
 
 .messageButtons button {
     height: 30px;
+    white-space: nowrap;
 }
 
 /* loader styling */
@@ -329,6 +330,8 @@ button.tab {
 
 .replyButtonContainer {
     display: flex;
+    align-items: center;
+
 }
 
 .thread-title {
