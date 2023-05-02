@@ -403,10 +403,12 @@ input.error, label.error {
 }
 
 /* TODO: could not figure this out exactly */
-/* .thread-title-enter-from, .thread-title-leave-to {
+.thread-title-enter-from, .thread-title-leave-to {
     transform: translateY(-100%);
+    z-index: -1;
 }
 
 .thread-title-enter-active, .thread-title-leave-active {
     transition: transform 400ms ease;
-} */
+    z-index: -1;
+}

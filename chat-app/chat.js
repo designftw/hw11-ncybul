@@ -15,7 +15,8 @@ const app = {
   setup() {
 
     // Initialize the name of the channel we're chatting in
-    const channel = Vue.ref('default')
+    // const channel = Vue.ref('default')
+    const channel = Vue.ref('nicoles channel')
 
     // And a flag for whether or not we're private-messaging
     const privateMessaging = Vue.ref(false)
@@ -44,7 +45,7 @@ const app = {
       actorsToUsernames: {},
       file: undefined,
       downloadedImages: {},
-      showReadReceipts: false,
+      showReadReceipts: true,
       viewingThreads: false,
       currentThread: undefined,
       editingProfilePic: false,
@@ -81,9 +82,7 @@ const app = {
 
     messages(newMessages) {
       // reset scroll
-      waitForElm(".message-list").then(messageList =>
-        messageList.scrollTop = 0
-      );
+      document.querySelector(".message-list").scrollTop = 0;
     }
   },
 
@@ -377,8 +376,8 @@ const app = {
 
     startThread(messageid) {
       // change view to a new thread starting at this message
-      this.currentThread = messageid;
       this.viewingThreads = true;
+      this.currentThread = messageid;
     },
   }
 }
@@ -477,38 +476,28 @@ const Profile = {
 
   },
 
+  watch: {
+    async profile(newProfile) {
+      // fetch new profile pic
+      const magnet = (newProfile.icon) ? newProfile.icon.magnet : newProfile.image.magnet;
+      this.$gf.media.fetch(magnet).then((blob) => {
+        this.profilePic = URL.createObjectURL(blob);
+      });
+    }
+  },
+
   data() {
     return {
-      placeholderPic : "img/blank-profile-photo.jpeg",
       editing: false,
-      profilePicWhileEditing: undefined,
+      profilePic: "img/blank-profile-photo.jpeg",
       profilePicTemp: undefined
     }
   },
 
   methods: {
 
-    // returns link that should be used in profile image src attribute
-    // async profilePic() {
-    //   if (!this.profile) return this.placeholderPic;
-    //   const magnet = (this.profile.icon) ? this.profile.icon.magnet : this.profile.image.magnet;
-    //   const blob = await this.$gf.media.fetch(magnet);
-    //   return URL.createObjectURL(blob);
-    // },
-
-    profilePic() {
-      return this.placeholderPic;
-    },
-
     async editProfile() {
       this.editing = true
-      // show a profile pic while editing (either the old profile pic or a placeholder image)
-      if (this.profile) {
-        const magnet = (this.profile.icon) ? this.profile.icon.magnet : this.profile.image.magnet;
-        this.profilePicWhileEditing = await this.$gf.media.fetch(magnet);
-      } else {
-        this.profilePicWhileEditing = this.placeholderPic;
-      }
     },
 
     async saveProfilePic() {
@@ -622,25 +611,3 @@ app.components = { Name, Like, Profile }
 Vue.createApp(app)
    .use(GraffitiPlugin(Vue))
    .mount('#app')
-
-
-// https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
-function waitForElm(selector) {
-  return new Promise(resolve => {
-      if (document.querySelector(selector)) {
-          return resolve(document.querySelector(selector));
-      }
-
-      const observer = new MutationObserver(mutations => {
-          if (document.querySelector(selector)) {
-              resolve(document.querySelector(selector));
-              observer.disconnect();
-          }
-      });
-
-      observer.observe(document.body, {
-          childList: true,
-          subtree: true
-      });
-  });
-}

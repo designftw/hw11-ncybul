@@ -94,7 +94,7 @@
         </div>
         <div v-else class="conversation">
           <transition name="thread-title">
-            <div v-if="currentThread" class="thread-title">
+            <div v-if="viewingThreads && currentThread" class="thread-title">
               <p>Thread: {{ getThreadContent(currentThread) }}</p>
             </div>
           </transition>
@@ -242,7 +242,7 @@
       <!-- Display the profile pic, if it exists -->
       <!-- or placeholder if it doesn't -->
 
-      <img class="profilePic" v-bind:src="profilePic()">
+      <img class="profilePic" v-bind:src="profilePic">
 
       <!-- Also if the profile pic is "editable" add an edit button -->
       <button v-if="editable" @click="editProfile">
