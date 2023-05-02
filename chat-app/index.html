@@ -125,10 +125,10 @@
                   <div class="message-content">
                     <p>{{ message.content }}</p>
                     <div v-if="message.attachment">
-                      <div v-if="downloadedImages[message.attachment.magnet]">
+                      <div v-if="!imageError(message.attachment.magnet)">
                         <img class="attachment" :src="downloadedImages[message.attachment.magnet]"/>
                       </div>
-                      <img v-else src="img/loader.svg">
+                      <p v-else>(Error fetching image)</p>
                     </div>
                   </div>
                   <read-receipt :messageid="message.id"></read-receipt>
@@ -164,10 +164,10 @@
                   <div class="message-content">
                     <p>{{ message.content }}</p>
                     <div v-if="message.attachment">
-                      <div v-if="downloadedImages[message.attachment.magnet]">
+                      <div v-if="!imageError(message.attachment.magnet)">
                         <img class="attachment" :src="downloadedImages[message.attachment.magnet]"/>
                       </div>
-                      <img v-else src="img/loader.svg">
+                      <p v-else>(Error fetching image)</p>
                     </div>
                   </div>
                   <read-receipt :messageid="message.id"></read-receipt>

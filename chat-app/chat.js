@@ -53,32 +53,32 @@ const app = {
 
   watch: {
 
-    async messagesWithImages(newMessages) {
-      const lastMessage = newMessages.pop()
-      if (lastMessage === undefined) return;
+    // async messagesWithImages(newMessages) {
+    //   const lastMessage = newMessages.pop()
+    //   if (lastMessage === undefined) return;
 
-      if (!this.downloadedImages[lastMessage.attachment.magnet]) {
-        const media = await this.$gf.media.fetch(lastMessage.attachment.magnet);
-        const link = URL.createObjectURL(media);
-        this.downloadedImages[lastMessage.attachment.magnet] = link;
-      }
-    },
-
-    // async messagesWithImages(messages) {
-    //   for (const m of messages) {
-    //     if (!(this.downloadedImages[m.attachment.magnet])) {
-    //       this.downloadedImages[m.attachment.magnet] = "downloading"
-    //       let blob
-    //       try {
-    //         blob = await this.$gf.media.fetch(m.attachment.magnet)
-    //       } catch(e) {
-    //         this.downloadedImages[m.attachment.magnet] = "error"
-    //         continue
-    //       }
-    //       this.downloadedImages[m.attachment.magnet] = URL.createObjectURL(blob)
-    //     }
+    //   if (!this.downloadedImages[lastMessage.attachment.magnet]) {
+    //     const media = await this.$gf.media.fetch(lastMessage.attachment.magnet);
+    //     const link = URL.createObjectURL(media);
+    //     this.downloadedImages[lastMessage.attachment.magnet] = link;
     //   }
     // },
+
+    async messagesWithImages(messages) {
+      for (const m of messages) {
+        if (!(this.downloadedImages[m.attachment.magnet])) {
+          this.downloadedImages[m.attachment.magnet] = "img/loader.svg"
+          let blob
+          try {
+            blob = await this.$gf.media.fetch(m.attachment.magnet)
+          } catch(e) {
+            this.downloadedImages[m.attachment.magnet] = "error"
+            continue
+          }
+          this.downloadedImages[m.attachment.magnet] = URL.createObjectURL(blob)
+        }
+      }
+    },
 
     async allMessages(newMessages) {
       const lastMessage = newMessages.pop();
@@ -175,6 +175,10 @@ const app = {
   },
 
   methods: {
+
+    imageError(magnet) {
+      return this.downloadedImages[magnet] === 'error';
+    },
 
     getThreadContent(threadId) {
       // find message and return its content
