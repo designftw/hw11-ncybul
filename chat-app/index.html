@@ -131,10 +131,7 @@
                       <img v-else src="img/loader.svg">
                     </div>
                   </div>
-                  <div class="read-receipt">
-                    <span v-if="messageRead(message.id)">Read by {{ getNumberReaders(message.id) }}</span>
-                    <span v-else>Unread by others</span>
-                  </div>
+                  <read-receipt :messageid="message.id"></read-receipt>
                   <div class="messageButtons">
                     <like :messageid="message.id"></like>
                     <div v-if="!this.viewingThreads">
@@ -173,10 +170,7 @@
                       <img v-else src="img/loader.svg">
                     </div>
                   </div>
-                  <div class="read-receipt">
-                    <span v-if="messageRead(message.id)">Read by {{ getNumberReaders(message.id) }}</span>
-                    <span v-else>Unread by others</span>
-                  </div>
+                  <read-receipt :messageid="message.id"></read-receipt>
                   <div class="messageButtons">
                     <div v-if="!this.viewingThreads">
                       <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
@@ -263,6 +257,12 @@
       <input type="file" accept="image/png, image/jpeg" @change="onProfileImageAttachment"/>
       <button type="submit">Upload</button>
     </form>
+  </template>
+  <template id="read-receipt">
+    <div>
+      <p v-if="readByOthers()">Read by {{ getNumReads() }}</p>
+      <p v-else>Unread by others</p>
+    </div>
   </template>
 </body>
 </html>

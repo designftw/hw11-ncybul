@@ -590,7 +590,7 @@ const Like = {
       // deduplicate likes from the same actor
       const deduplicatedLikes = [];
       for (const like of likes) {
-        const actor = like.actorId;
+        const actor = like.actor;
         if (!allActors.has(actor)) {
           deduplicatedLikes.push(like);
           allActors.add(actor);
@@ -634,7 +634,53 @@ const Like = {
   template: '#like'
 }
 
-app.components = { Name, Like, Profile }
+const ReadReceipt = {
+  props: ["messageid"],
+
+  setup(props) {
+    const $gf = Vue.inject('graffiti')
+    const messageID = Vue.toRef(props, 'messageid')
+    const { objects: messagesRaw } = $gf.useObjects([messageID])
+    return { messagesRaw }
+  },
+
+  computed: {
+
+    readReceipts() {
+      // filter to get all likes
+      const readReceipts = this.messagesRaw.filter(
+        m => m.type === "Read" && m.object === this.messageid && m.actor !== this.$gf.me
+      );
+      const allActors = new Set();
+      // deduplicate reads from the same actor
+      const deduplicatedReads = [];
+      for (const read of readReceipts) {
+        const actor = read.actor;
+        if (!allActors.has(actor)) {
+          deduplicatedReads.push(read);
+          allActors.add(actor);
+        }
+      }
+      return deduplicatedReads;
+    }
+  },
+
+  methods: {
+
+    readByOthers() {
+      return this.readReceipts.length > 0;
+    },
+
+    getNumReads() {
+      return this.readReceipts.length;
+    }
+
+  },
+
+  template: '#read-receipt'
+}
+
+app.components = { Name, Like, Profile, ReadReceipt }
 Vue.createApp(app)
    .use(GraffitiPlugin(Vue))
    .mount('#app')
