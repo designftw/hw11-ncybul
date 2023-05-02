@@ -242,6 +242,12 @@ const app = {
       return this.readReceipts.filter(m => m.object === messageid && m.actor !== this.$gf.me).length > 0;
     },
 
+    getNumberReaders(messageid) {
+      // create set of actors that have read this message
+      const uniqueReaders = new Set(this.readReceipts.filter(m => m.object === messageid && m.actor !== this.$gf.me).map(m => m.actor));
+      return uniqueReaders.size;
+    },
+
     resetImageContents() {
       // reset image contents
       this.file = undefined;

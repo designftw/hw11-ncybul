@@ -124,7 +124,7 @@
                     </div>
                   </div>
                   <div class="read-receipt">
-                    <span v-if="messageRead(message.id)">Read by others</span>
+                    <span v-if="messageRead(message.id)">Read by {{ getNumberReaders(message.id) }}</span>
                     <span v-else>Unread by others</span>
                   </div>
                   <div class="messageButtons">
@@ -166,7 +166,7 @@
                     </div>
                   </div>
                   <div class="read-receipt">
-                    <span v-if="messageRead(message.id)">Read by others</span>
+                    <span v-if="messageRead(message.id)">Read by {{ getNumberReaders(message.id) }}</span>
                     <span v-else>Unread by others</span>
                   </div>
                   <div class="messageButtons">
