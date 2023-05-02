@@ -48,9 +48,7 @@ const app = {
       showReadReceipts: true,
       viewingThreads: false,
       currentThread: undefined,
-      editingProfilePic: false,
-      profilePic: undefined,
-      profilePicTemp: undefined
+      queryByUsername: "username"
     }
   },
 
@@ -280,27 +278,33 @@ const app = {
       return this.actorsToUsernames[actorId] ?? 'unknown';
     },
 
-    async getActorIdFromUsername() {
-      // initiate loading
-      document.getElementById("search-username-loader").classList.add("loading");
-      const recipientUsername = document.getElementById("recipientUsername").value;
-      await this.resolver.usernameToActor(recipientUsername)
-        .then((res) => {
-          document.getElementById("search-username-loader").classList.remove("loading");
-          if (res) {
-            this.showActorIdError = false;
-            this.recipient = res;
-          } else {
-            // let user know the actor ID could not be found
-            this.showActorIdError = true;
-            document.querySelectorAll("#usernameInput input").forEach(element => {
-              // https://stackoverflow.com/questions/44846614/trigger-css-animations-in-javascript
-              element.classList.remove("error");
-              element.offsetWidth;
-            });
-            document.querySelectorAll("#usernameInput input").forEach(element => element.classList.add("error"));
-          }
-        });
+    async getActorId() {
+      if(this.queryByUsername !== "username") {
+        const recipientActorId = document.getElementById("recipientUsername").value;
+        this.showActorIdError = false;
+        this.recipient = recipientActorId;
+      } else {
+        // initiate loading
+        document.getElementById("search-username-loader").classList.add("loading");
+        const recipientUsername = document.getElementById("recipientUsername").value;
+        await this.resolver.usernameToActor(recipientUsername)
+          .then((res) => {
+            document.getElementById("search-username-loader").classList.remove("loading");
+            if (res) {
+              this.showActorIdError = false;
+              this.recipient = res;
+            } else {
+              // let user know the actor ID could not be found
+              this.showActorIdError = true;
+              document.querySelectorAll("#usernameInput input").forEach(element => {
+                // https://stackoverflow.com/questions/44846614/trigger-css-animations-in-javascript
+                element.classList.remove("error");
+                element.offsetWidth;
+              });
+              document.querySelectorAll("#usernameInput input").forEach(element => element.classList.add("error"));
+            }
+          });
+      }
     },
 
     async requestUsername() {

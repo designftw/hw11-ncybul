@@ -69,9 +69,13 @@
             <div id="usernameInput">
               <div class="input">
                 <label>
-                  Recipient Username: 
+                  Recipient 
+                  <select name="queryByUsername" id="queryByUsername" v-model="queryByUsername">
+                    <option value="username">Username</option>
+                    <option value="actorID">Actor ID</option>
+                  </select> : 
                 </label>
-                <form @submit.prevent="getActorIdFromUsername">
+                <form @submit.prevent="getActorId">
                   <input list="usernames" id="recipientUsername" v-model="recipientUsername"/>
                   <datalist id="usernames">
                     <option v-for="username of Object.values(actorsToUsernames)" :value="username">

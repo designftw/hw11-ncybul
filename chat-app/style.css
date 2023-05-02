@@ -345,6 +345,11 @@ button.tab {
     padding: 5px 20px;
 }
 
+#queryByUsername {
+    background-color: var(--green);
+    font-size: inherit;
+}
+
 
 /* animations */
 
