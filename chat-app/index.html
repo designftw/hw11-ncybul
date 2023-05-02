@@ -75,12 +75,16 @@
                     <option value="actorID">Actor ID</option>
                   </select> : 
                 </label>
-                <form @submit.prevent="getActorId">
-                  <input list="usernames" id="recipientUsername" v-model="recipientUsername"/>
+                <form v-if="queryByUsername === 'username'" @submit.prevent="getActorId">
+                  <input list="usernames" id="recipientUsername"/>
                   <datalist id="usernames">
                     <option v-for="username of Object.values(actorsToUsernames)" :value="username">
                     </option>
                   </datalist>
+                  <input type="submit">
+                </form>
+                <form v-else @submit.prevent="getActorId">
+                  <input type="text" id="recipientActorId">
                   <input type="submit">
                 </form>
                 <img id="search-username-loader" src="img/loader.svg">

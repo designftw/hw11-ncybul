@@ -38,7 +38,6 @@ const app = {
       editID: '',
       editText: '',
       recipient: '',
-      recipientUsername: undefined,
       showActorIdError: false,
       username: undefined,
       showRequestError: false,
@@ -280,7 +279,7 @@ const app = {
 
     async getActorId() {
       if(this.queryByUsername !== "username") {
-        const recipientActorId = document.getElementById("recipientUsername").value;
+        const recipientActorId = document.getElementById("recipientActorId").value;
         this.showActorIdError = false;
         this.recipient = recipientActorId;
       } else {
