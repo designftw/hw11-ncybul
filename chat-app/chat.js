@@ -56,14 +56,30 @@ const app = {
 
   watch: {
 
-    async messagesWithImages(newMessages) {
-      const lastMessage = newMessages.pop()
-      if (lastMessage === undefined) return;
+    // async messagesWithImages(newMessages) {
+    //   const lastMessage = newMessages.pop()
+    //   if (lastMessage === undefined) return;
 
-      if (!this.downloadedImages[lastMessage.attachment.magnet]) {
-        const media = await this.$gf.media.fetch(lastMessage.attachment.magnet);
-        const link = URL.createObjectURL(media);
-        this.downloadedImages[lastMessage.attachment.magnet] = link;
+    //   if (!this.downloadedImages[lastMessage.attachment.magnet]) {
+    //     const media = await this.$gf.media.fetch(lastMessage.attachment.magnet);
+    //     const link = URL.createObjectURL(media);
+    //     this.downloadedImages[lastMessage.attachment.magnet] = link;
+    //   }
+    // },
+
+    async messagesWithImages(messages) {
+      for (const m of messages) {
+        if (!(m.attachment.magnet in this.imageDownloads)) {
+          this.downloadedImages[m.attachment.magnet] = "downloading"
+          let blob
+          try {
+            blob = await this.$gf.media.fetch(m.attachment.magnet)
+          } catch(e) {
+            this.downloadedImages[m.attachment.magnet] = "error"
+            continue
+          }
+          this.downloadedImages[m.attachment.magnet] = URL.createObjectURL(blob)
+        }
       }
     },
 
@@ -97,7 +113,7 @@ const app = {
     },
 
     messagesWithImages() {
-      let messages = this.messagesRaw.filter(m => 
+      let messages = this.messages.filter(m => 
         m.attachment &&
         m.attachment.type === "Image" &&
         typeof m.attachment.magnet ==='string'
