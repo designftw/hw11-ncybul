@@ -56,6 +56,10 @@ const app = {
 
   watch: {
 
+    '$gf.me': async function(me) {
+      this.username = await this.resolver.actorToUsername(me)
+    },
+
     async messagesWithImages(messages) {
       for (const m of messages) {
         if (!(this.downloadedImages[m.attachment.magnet])) {
