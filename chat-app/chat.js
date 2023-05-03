@@ -53,17 +53,6 @@ const app = {
 
   watch: {
 
-    // async messagesWithImages(newMessages) {
-    //   const lastMessage = newMessages.pop()
-    //   if (lastMessage === undefined) return;
-
-    //   if (!this.downloadedImages[lastMessage.attachment.magnet]) {
-    //     const media = await this.$gf.media.fetch(lastMessage.attachment.magnet);
-    //     const link = URL.createObjectURL(media);
-    //     this.downloadedImages[lastMessage.attachment.magnet] = link;
-    //   }
-    // },
-
     async messagesWithImages(messages) {
       for (const m of messages) {
         if (!(this.downloadedImages[m.attachment.magnet])) {
@@ -80,17 +69,15 @@ const app = {
       }
     },
 
-    async allMessages(newMessages) {
-      const lastMessage = newMessages.pop();
-
-      if (lastMessage === undefined) return;
-
-      // check if already added this username
-      if (this.actorsToUsernames[lastMessage.actor]) return;
-      this.resolver.actorToUsername(lastMessage.actor).then(
-
-        (res) => this.actorsToUsernames[lastMessage.actor] = res
-      )
+    async allMessages(messages) {
+      for (const m of messages) {
+        if (!(m.actor in this.actorsToUsernames)) {
+          this.actorsToUsernames[m.actor] = await this.resolver.actorToUsername(m.actor)
+        }
+        if (m.bto && m.bto.length && !(m.bto[0] in this.actorsToUsernames)) {
+          this.actorsToUsernames[m.bto[0]] = await this.resolver.actorToUsername(m.bto[0])
+        }
+      }
     },
 
     messages(newMessages) {
