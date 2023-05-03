@@ -150,7 +150,7 @@
                   <form @submit.prevent="saveEditMessage(message)">
                     <input v-model="editText">
                     <input type="submit" value="Save"/>
-                    <button @click="cancelEditMessage()">Cancel</button>
+                    <button type="button" @click="cancelEditMessage()">Cancel</button>
                   </form> 
                 </div>
   
