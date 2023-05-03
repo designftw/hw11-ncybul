@@ -325,6 +325,7 @@ const app = {
             this.actorsToUsernames[this.$gf.me] = requestedUsername;
           }
           document.getElementById("request-username-loader").classList.remove("loading");
+          document.getElementById("username").value = "";
         })
         .catch(() => {
           document.getElementById("request-username-loader").classList.remove("loading");
