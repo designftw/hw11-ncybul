@@ -545,6 +545,12 @@ const Profile = {
 
   methods: {
 
+    cancelEdit() {
+      // Exit the editing state
+      this.editing = false;
+      this.profilePicTemp = undefined;
+    },
+
     async editProfile() {
       this.editing = true
     },
@@ -569,13 +575,11 @@ const Profile = {
       }
 
       // Exit the editing state
-      this.editing = false;
-      this.profilePicTemp = undefined;
+      this.cancelEdit();
     },
 
     onProfileImageAttachment(event) {
-      const profileImg = event.target.files[0];
-      this.profilePicTemp = profileImg;
+      this.profilePicTemp = event.target.files[0];
     },
 
   },

@@ -259,11 +259,15 @@
       </button>
     </span>
 
-    <!-- If we're in the editing state, create something to edit the name-->
-    <form v-else @submit.prevent="saveProfilePic">
-      <input type="file" accept="image/png, image/jpeg" @change="onProfileImageAttachment"/>
-      <button type="submit">Upload</button>
-    </form>
+    <!-- If we're in the editing state, create something to edit the profile-->
+    <div v-else>
+      <form @submit.prevent="saveProfilePic">
+        <img class="profilePic" v-bind:src="profilePic">
+        <input type="file" accept="image/png, image/jpeg" @change="onProfileImageAttachment"/>
+        <button type="submit">Upload</button>
+      </form>
+      <button @click="cancelEdit">Cancel</button>
+    </div>
   </template>
   <template id="read-receipt">
     <!-- for messages on the RHS -->
