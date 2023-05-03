@@ -382,8 +382,7 @@ input.error, label.error {
 
 .replyHelp {
 	transform: scale(0);
-    color: white;
-    background-color: rgb(81, 81, 81);
+    background-color: rgb(180, 180, 180);
     padding: 2px;
     font-size: 0.8em;
     border-radius: 4px;
