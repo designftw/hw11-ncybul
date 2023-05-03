@@ -34,7 +34,7 @@ header {
 /* main styling */
 
 main {
-    width: 80%;
+    width: 90%;
     margin: auto;
 }
 
@@ -57,6 +57,12 @@ p, li {
     margin: auto;
  }
 
+ /* detail styling */
+
+ details:hover {
+    cursor: pointer;
+ }
+
 /* figure styling */
 
 figure {
@@ -64,16 +70,11 @@ figure {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: 600px;
     margin: 20px auto;
 }
 
-figure img {
+figure video {
     width: 100%;
     outline: 4px solid var(--indigo);
     border-radius: 8px;
-}
-
-figcaption {
-    padding: 10px 0;
 }
