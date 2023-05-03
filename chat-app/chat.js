@@ -637,7 +637,12 @@ const Like = {
 }
 
 const ReadReceipt = {
-  props: ["messageid"],
+  props: ["messageid", "side"],
+
+  // Import resolver
+  created() {
+    this.resolver = new Resolver(this.$gf)
+  },
 
   setup(props) {
     const $gf = Vue.inject('graffiti')
@@ -667,7 +672,30 @@ const ReadReceipt = {
     }
   },
 
+  watch: {
+    async readReceipts(newReadReceipts) {
+      for (const newReadReceipt of newReadReceipts) {
+        if (!newReadReceipt) continue;
+        // fetch username for this actor and add to readers list
+        this.resolver.actorToUsername(newReadReceipt.actor).then(
+          (res) => {if (res) this.readersList.push(res);}
+        )
+      }
+    }
+  },
+
+  data() {
+    return {
+      readersList: []
+    }
+  },
+
   methods: {
+
+    getReaders() {
+      if (!this.readersList) return "Loading...";
+      return this.readersList.join(", ");
+    },
 
     readByOthers() {
       return this.readReceipts.length > 0;

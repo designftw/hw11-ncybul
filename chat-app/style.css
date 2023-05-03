@@ -325,10 +325,9 @@ button.tab {
     width: 20px;
 }
 
-.replyButtonContainer {
+.replyButtonContainer, .readerContainer {
     display: flex;
     align-items: center;
-
 }
 
 .thread-title {
@@ -390,15 +389,31 @@ input.error, label.error {
     border-radius: 4px;
 }
 
-.message-left .replyHelp {
+.message-left .replyHelp, .message-left .readersList {
     transform-origin: left;
 }
 
-.message-right .replyHelp {
+.message-right .replyHelp, .message-right .readersList {
     transform-origin: right;
 }
 
 .replyButton:hover + .replyHelp, .replyButtonContainer:has(.replyButton:hover) .replyHelp  {
+    transition: 200ms;
+    height: inherit;
+    transform: scale(100%);
+}
+
+/* reader list */
+
+.readersList {
+    transform: scale(0);
+    background-color: rgb(180, 180, 180);
+    padding: 2px;
+    font-size: 0.8em;
+    border-radius: 4px;
+}
+
+.readerContainer:hover .readersList {
     transition: 200ms;
     height: inherit;
     transform: scale(100%);

@@ -131,7 +131,7 @@
                       <p v-else>(Error fetching image)</p>
                     </div>
                   </div>
-                  <read-receipt :messageid="message.id"></read-receipt>
+                  <read-receipt :messageid="message.id" :side="'left'"></read-receipt>
                   <div class="messageButtons">
                     <like :messageid="message.id"></like>
                     <div v-if="!this.viewingThreads">
@@ -170,7 +170,7 @@
                       <p v-else>(Error fetching image)</p>
                     </div>
                   </div>
-                  <read-receipt :messageid="message.id"></read-receipt>
+                  <read-receipt :messageid="message.id" :side="'right'"></read-receipt>
                   <div class="messageButtons">
                     <div v-if="!this.viewingThreads">
                       <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
@@ -259,9 +259,25 @@
     </form>
   </template>
   <template id="read-receipt">
-    <div>
-      <p v-if="readByOthers()">Read by {{ getNumReads() }}</p>
-      <p v-else>Unread by others</p>
+    <!-- for messages on the RHS -->
+    <div v-if="side === 'right'">
+      <div v-if="readByOthers()" class="readerContainer">
+        <p class="readersList">{{ getReaders() }}</p>
+        <p>Read by {{ getNumReads() }}</p>
+      </div>
+      <div v-else>
+        <p>Unread by others</p>
+      </div>
+    </div>
+    <!-- for messages on the LHS -->
+    <div v-else>
+      <div v-if="readByOthers()" class="readerContainer">
+        <p>Read by {{ getNumReads() }}</p>
+        <p class="readersList">{{ getReaders() }}</p>
+      </div>
+      <div v-else>
+        <p>Unread by others</p>
+      </div>
     </div>
   </template>
 </body>
