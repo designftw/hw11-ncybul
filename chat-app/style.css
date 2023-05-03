@@ -159,6 +159,12 @@ label[for='channel'], #usernameInput .input {
     justify-content: flex-end;
 }
 
+.senderInfo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 .message-left .senderInfo {
     text-align: left;
 }
