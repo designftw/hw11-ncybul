@@ -376,6 +376,11 @@ button.tab {
     font-size: inherit;
 }
 
+.editMessageForm {
+    display: flex;
+    align-items: center;
+}
+
 
 /* animations */
 

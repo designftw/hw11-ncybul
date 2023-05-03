@@ -422,6 +422,11 @@ const app = {
       this.editID = ''
     },
 
+    cancelEditMessage() {
+      this.editID = '';
+      this.editText = '';
+    },
+
     startThread(messageid) {
       // change view to a new thread starting at this message
       this.viewingThreads = true;
@@ -526,6 +531,7 @@ const Profile = {
 
   watch: {
     async profile(newProfile) {
+      if (!newProfile) return;
       // fetch new profile pic
       const magnet = (newProfile.icon) ? newProfile.icon.magnet : newProfile.image.magnet;
       this.$gf.media.fetch(magnet).then((blob) => {

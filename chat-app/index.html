@@ -111,14 +111,9 @@
             <!-- List all the messages -->
             <div v-for="message of getMessages()" :key="message.id" class="message-container">
               <div v-if="message.actor!=$gf.me" class="message-left">
-                <!-- Display and edit form if we're editing a message -->
-                <form v-if="editID==message.id" @submit.prevent="saveEditMessage(message)">
-                  <input v-model="editText">
-                  <input type="submit" value="Save"/>
-                </form>
-  
+ 
                 <!-- Otherwise, display a bunch of properties from the message -->
-                <div v-else class="message">
+                <div class="message">
                   <p>
                     <!-- Published at time -->
                     {{ formatTime(message.published) }}
@@ -151,10 +146,13 @@
               </div>
               <div v-else class="message-right">
                 <!-- Display and edit form if we're editing a message -->
-                <form v-if="editID==message.id" @submit.prevent="saveEditMessage(message)">
-                  <input v-model="editText">
-                  <input type="submit" value="Save"/>
-                </form>
+                <div v-if="editID==message.id" class="editMessageForm">
+                  <form @submit.prevent="saveEditMessage(message)">
+                    <input v-model="editText">
+                    <input type="submit" value="Save"/>
+                  </form>
+                  <button @click="cancelEditMessage()">Cancel</button>
+                </div>
   
                 <!-- Otherwise, display a bunch of properties from the message -->
                 <div v-else class="message">
