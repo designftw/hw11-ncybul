@@ -132,7 +132,10 @@
                       <p v-else>(Error fetching image)</p>
                     </div>
                   </div>
-                  <read-receipt :messageid="message.id" :side="'left'"></read-receipt>
+                  <p class="senderInfo">
+                    <profile :actor="message.actor"></profile>
+                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
+                  </p>
                   <div class="messageButtons">
                     <like :messageid="message.id"></like>
                     <div v-if="!this.viewingThreads">
@@ -143,10 +146,7 @@
                       <button v-else @click="goToThread(message.id)">View Thread</button>
                     </div>
                   </div>
-                  <p>
-                    <profile :actor="message.actor"></profile>
-                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
-                  </p>
+                  <read-receipt :messageid="message.id" :side="'left'"></read-receipt>
                 </div>
               </div>
               <div v-else class="message-right">
@@ -171,7 +171,10 @@
                       <p v-else>(Error fetching image)</p>
                     </div>
                   </div>
-                  <read-receipt :messageid="message.id" :side="'right'"></read-receipt>
+                  <p class="senderInfo">                    
+                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
+                    <profile :actor="message.actor"></profile>
+                  </p>
                   <div class="messageButtons">
                     <div v-if="!this.viewingThreads">
                       <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
@@ -182,10 +185,7 @@
                     </div>
                     <like :messageID="message.id"></like>
                   </div>
-                  <p>                    
-                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
-                    <profile :actor="message.actor"></profile>
-                  </p>
+                  <read-receipt :messageid="message.id" :side="'right'"></read-receipt>
                 </div>
                 <!-- Only add these controls if the message is ours -->
                 <!-- You can't edit or delete other people's messages -->

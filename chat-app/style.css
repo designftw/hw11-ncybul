@@ -150,6 +150,14 @@ label[for='channel'], #usernameInput .input {
     white-space: nowrap;
 }
 
+.message-left .senderInfo {
+    text-align: left;
+}
+
+.message-right .senderInfo {
+    text-align: right;
+}
+
 /* loader styling */
 
 #search-username-loader {
