@@ -84,6 +84,7 @@ h1 {
 .aside .errorMessage {
     width: fit-content;
     margin: auto;
+    text-align: center;
 }
 
 button:hover, input[type="submit"] {
