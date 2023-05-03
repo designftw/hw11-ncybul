@@ -408,10 +408,6 @@ input.error, label.error {
     transition: 300ms;
 }
 
-.loginButton:hover {
-    transform: scale(1.2);
-}
-
 .thread-title-enter-from, .thread-title-leave-to {
     transform: translateY(-100%);
     z-index: -1;
