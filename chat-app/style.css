@@ -270,7 +270,7 @@ button.tab {
 .message-container {
     display: flex;
     flex-direction: row;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .message-container:has(.message-left) {
@@ -343,10 +343,15 @@ button.tab {
     height: 20px;
 }
 
-.replyButtonContainer, .readerContainer, .deleteButtonContainer, .editButtonContainer {
+.replyButtonContainer, .deleteButtonContainer, .editButtonContainer {
     display: flex;
     align-items: center;
     position: relative;
+}
+
+.readerContainer {
+    display: flex;
+    align-items: center;
 }
 
 .thread-title {
