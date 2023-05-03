@@ -273,6 +273,9 @@ const app = {
 
     async getActorId() {
       if(this.queryByUsername !== "username") {
+        // clear out previous username input
+        this.recipientUsername = undefined;
+        this.showUsernameError = false;
         const recipientActorId = this.recipientActorId;
         const regex =  /^graffitiactor:\/\/[0-9a-f]{64}$/;
         if (regex.test(recipientActorId)) {
@@ -288,8 +291,15 @@ const app = {
             element.offsetWidth;
           });
           document.querySelectorAll("#usernameInput input").forEach(element => element.classList.add("error"));
+          // reset recipient
+          this.recipient = undefined;
+          // switch to no longer view threads
+          if (this.viewingThreads) this.viewThreads();
         }
       } else {
+        // clear out previous actor ID input
+        this.recipientActorId = undefined;
+        this.showActorIdError = false;
         // initiate loading
         document.getElementById("search-username-loader").classList.add("loading");
         const recipientUsername = this.recipientUsername;
@@ -308,6 +318,10 @@ const app = {
                 element.offsetWidth;
               });
               document.querySelectorAll("#usernameInput input").forEach(element => element.classList.add("error"));
+              // reset recipient
+              this.recipient = undefined;
+              // switch to no longer view threads
+              if (this.viewingThreads) this.viewThreads();
             }
           });
       }

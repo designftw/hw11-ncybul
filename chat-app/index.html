@@ -204,7 +204,7 @@
           </div>
         </div>
         <!-- A form for sending messages -->
-        <div v-if="(!this.viewingThreads) || (this.viewingThreads && this.currentThread)">
+        <div v-if="((!viewingThreads) || (viewingThreads && currentThread)) && (!privateMessaging || recipient)">
           <form class="send-message-form" @submit.prevent="sendMessage">
             <input v-model="messageText" placeholder="Type a message..."/>
             <input type="submit" value="Send"/>
