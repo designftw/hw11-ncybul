@@ -609,11 +609,9 @@ const Like = {
       // check if you have already liked the message
       if (this.myLikes.length > 0) {
         // message has already been liked -> undo like
-        this.$el.classList.remove("liked");
         this.undoLike();
       } else {
         // message has not already been liked -> like message
-        this.$el.classList.add("liked");
         this.sendLike();
       }
 

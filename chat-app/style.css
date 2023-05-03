@@ -320,10 +320,6 @@ button.tab {
     filter: grayscale(100%);
 }
 
-.likeButton.liked {
-    background-color: rgb(253, 253, 225);
-}
-
 .replyButton img {
     width: 20px;
 }
@@ -381,6 +377,7 @@ input.error, label.error {
 
 .likeButton.liked  {
     animation: like cubic-bezier(.07,.62,.93,.62) 0.3s;
+    background-color: rgb(253, 253, 225);
 }
 
 .replyHelp {
