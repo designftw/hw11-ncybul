@@ -123,6 +123,10 @@
                     <!-- Published at time -->
                     {{ formatTime(message.published) }}
                   </p>
+                  <p class="senderInfo">
+                    <profile :actor="message.actor"></profile>
+                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
+                  </p>
                   <div class="message-content">
                     <p>{{ message.content }}</p>
                     <div v-if="message.attachment">
@@ -131,19 +135,15 @@
                       </div>
                       <p v-else>(Error fetching image)</p>
                     </div>
-                  </div>
-                  <p class="senderInfo">
-                    <profile :actor="message.actor"></profile>
-                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
-                  </p>
-                  <div class="messageButtons">
-                    <like :messageid="message.id"></like>
-                    <div v-if="!this.viewingThreads">
-                      <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
-                        <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
-                        <p class="replyHelp">Create Thread From Message</p>
+                    <div class="messageButtons">
+                      <like :messageid="message.id"></like>
+                      <div v-if="!this.viewingThreads">
+                        <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
+                          <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                          <p class="tooltip">Create Thread From Message</p>
+                        </div>
+                        <button v-else @click="goToThread(message.id)">View Thread</button>
                       </div>
-                      <button v-else @click="goToThread(message.id)">View Thread</button>
                     </div>
                   </div>
                   <read-receipt :messageid="message.id" :side="'left'"></read-receipt>
@@ -162,6 +162,10 @@
                     <!-- Published at time -->
                     {{ formatTime(message.published) }}
                   </p>
+                  <p class="senderInfo">                    
+                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
+                    <profile :actor="message.actor"></profile>
+                  </p>
                   <div class="message-content">
                     <p>{{ message.content }}</p>
                     <div v-if="message.attachment">
@@ -170,31 +174,31 @@
                       </div>
                       <p v-else>(Error fetching image)</p>
                     </div>
-                  </div>
-                  <p class="senderInfo">                    
-                    <name :actor="message.actor" :username="getUsernameFromActorId(message.actor)"></name>
-                    <profile :actor="message.actor"></profile>
-                  </p>
-                  <div class="messageButtons">
-                    <div v-if="!this.viewingThreads">
-                      <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
-                        <p class="replyHelp">Create Thread From Message</p>
-                        <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                    <div class="messageButtons">
+                      <div v-if="!this.viewingThreads">
+                        <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
+                          <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                          <p class="tooltip">Create Thread From Message</p>
+                        </div>
+                        <button v-else @click="goToThread(message.id)">View Thread</button>
                       </div>
-                      <button v-else @click="goToThread(message.id)">View Thread</button>
+                      <like :messageID="message.id"></like>
+                      <div class="deleteButtonContainer">
+                        <button class="deleteButton" @click="removeMessage(message)">
+                          ❌
+                        </button>
+                        <p class="tooltip">Delete Message</p>
+                      </div>
+                      <div class="editButtonContainer">
+                        <button class="editButton" @click="startEditMessage(message)">
+                          <img src="img/edit.png">
+                        </button>
+                        <p class="tooltip">Edit Message</p>
+                      </div>
                     </div>
-                    <like :messageID="message.id"></like>
                   </div>
                   <read-receipt :messageid="message.id" :side="'right'"></read-receipt>
                 </div>
-                <!-- Only add these controls if the message is ours -->
-                <!-- You can't edit or delete other people's messages -->
-                <button @click="removeMessage(message)">
-                  Delete Message
-                </button>
-                <button @click="startEditMessage(message)">
-                  Edit Message
-                </button>
               </div>
             </div>
           </div>
@@ -235,8 +239,10 @@
     </form>
   </template>
   <template id="like">
-    <button v-if="myLikes.length > 0" class="likeButton liked" @click="handleLike"><span>👍</span> ({{ likes.length }})</button>
-    <button v-else class="likeButton" @click="handleLike"><span class="grey-thumbs-up">👍</span> ({{ likes.length }})</button>
+    <div class="likeButtonContainer">
+      <button v-if="myLikes.length > 0" class="likeButton liked" @click="handleLike"><span>👍</span> ({{ likes.length }})</button>
+      <button v-else class="likeButton" @click="handleLike"><span class="grey-thumbs-up">👍</span> ({{ likes.length }})</button>
+    </div>
   </template>
   <template id="profile">
     <span v-if="!editing">

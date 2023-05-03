@@ -141,13 +141,22 @@ label[for='channel'], #usernameInput .input {
 .messageButtons {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 5px 0;
+    gap: 5px;
+    color: white;
 }
 
 .messageButtons button {
     height: 30px;
     white-space: nowrap;
+    border: none;
+}
+
+.message-left .messageButtons {
+    justify-content: flex-start;
+}
+
+.message-right .messageButtons {
+    justify-content: flex-end;
 }
 
 .message-left .senderInfo {
@@ -282,6 +291,7 @@ button.tab {
 
 .message-content .attachment {
     max-width: 100%;
+    width: 100px;
 }
 
 /* different colors */
@@ -329,13 +339,14 @@ button.tab {
     filter: grayscale(100%);
 }
 
-.replyButton img {
-    width: 20px;
+.messageButtons img {
+    height: 20px;
 }
 
-.replyButtonContainer, .readerContainer {
+.replyButtonContainer, .readerContainer, .deleteButtonContainer, .editButtonContainer {
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .thread-title {
@@ -388,23 +399,44 @@ input.error, label.error {
     background-color: rgb(253, 253, 225);
 }
 
-.replyHelp {
+p.tooltip {
+    position: absolute;
+    top: 30px;
 	transform: scale(0);
-    background-color: rgb(180, 180, 180);
+    background-color: rgb(140, 140, 140);
     padding: 2px;
     font-size: 0.8em;
     border-radius: 4px;
+    margin: 0;
+    margin-top: 5px;
+    white-space: nowrap;
 }
 
-.message-left .replyHelp, .message-left .readersList {
+/* set transform origins */
+
+.replyButtonContainer p.tooltip {
+    transform-origin: top left;
+}
+
+.deleteButtonContainer p.tooltip {
+    transform-origin: top right;
+    right: 0;
+}
+
+.editButtonContainer p.tooltip {
+    transform-origin: top right;
+    right: 0;
+}
+
+.message-left .readersList {
     transform-origin: left;
 }
 
-.message-right .replyHelp, .message-right .readersList {
+.message-right .readersList {
     transform-origin: right;
 }
 
-.replyButton:hover + .replyHelp, .replyButtonContainer:has(.replyButton:hover) .replyHelp  {
+.replyButton:hover + .tooltip, .deleteButton:hover + .tooltip, .editButton:hover + .tooltip {
     transition: 200ms;
     height: inherit;
     transform: scale(100%);
@@ -414,7 +446,8 @@ input.error, label.error {
 
 .readersList {
     transform: scale(0);
-    background-color: rgb(180, 180, 180);
+    background-color: rgb(140, 140, 140);
+    color: white;
     padding: 2px;
     font-size: 0.8em;
     border-radius: 4px;
