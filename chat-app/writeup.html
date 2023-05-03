@@ -6,6 +6,86 @@
 		<link rel="stylesheet" href="writeup.css" />
 	</head>
 	<body>
-
+		<header>
+			<h1>Chat App Progress Writeup</h1>
+		</header>
+		<main>
+			<h2>Discussion of HW11 Features</h2>
+			<ul>
+				<li>
+					I added read indicators to messages. As part of my design for this feature, 
+					I provide a toggle in the side-bar where users can select whether they would
+					like their read receipts to be publically visible (i.e. other users
+					can tell when they have read a message). When this value is true, the user's read
+					receipts will be public and when this value is false, no one besides the user
+					will be able to see their read receipts (this is controlled by the bto field in the 
+					activity post). The data about the number of users that have seen a particular 
+					message appears beneath that specific message in the chat. If the message has 
+					not been viewed by anyone (other than the current user) who has their read receipts
+					set to public, then the note "Unread by others" is displayed to the user under that message.
+					Otherwise, the message will have a note like "Read by X" where X is the number of users
+					that have publically viewed that particular message.
+				</li>
+				<li>
+					I added the ability to reply to a message. The way I implemented this feature is closely
+					related to the functionality that I wanted to provide in the original design of my chat
+					app which allows users to organize their messages into threads. By replying to a message X,
+					users are automatically creating a thread with message X as the base of that thread. The replies
+					to message X will not show up in the main chat but will instead be collapsed into the thread
+					beginning at message X. Currently, users can navigate to this thread in a couple of ways.
+					The first way is by clicking on the "View Thread" button which appears underneath any message
+					that serves as the base of a thread. This button will automatically switch the user to viewing
+					that particular thread. Alternatively, users can navigate to the "Threads" page for any
+					given context by clicking on the "Threads" button in the top right of the conversation panel.
+					The Threads page shows all of the threads that have been created in that particular context
+					with the name of the thread being the content of the base message. Clicking on any of these
+					individual threads will allow the user to see all messages that have been sent in that thread.
+					When on the Threads page, users can also navigate back to the main chat by clicking on the 
+					"Return To Chat" button in the top right corner.
+				</li>
+				<li>
+					I have added functionality that lets users choose a profile picture and displays the profile 
+					pictures of other users. In the side panel of the chat app, I show an enlarged version of the
+					current user's profile picture (or a default profile picture if they have never set
+					their profile picture). I allow users to edit their profile picture by clicking on the "Edit Profile Picture"
+					button below it. This allows the user to choose a new file which will be their new picture that
+					will be displayed after it is successfully fetched. The profile picture of the current user
+					and the profile pictures of all other users will show up next to their name underneath any
+					messages that they send in the conversation.
+				</li>
+			</ul>
+			<h2>Additional Features Added to Chat App</h2>
+			<ul>
+				<li>
+					In the private messaging section of my chat app, users need to specify
+					the recipient that they would like to talk to. Originally, users needed to 
+					specify the recipient using a long actor ID. In my improved design, I allow
+					users to instead query for a particular recipient by inputting that 
+					user's username. If the user does not have a username for some reason,
+					then the user can instead find their recipient by inputting their actor ID. 
+					This involves using the dropdown menu located before the input box and selecting 
+					Actor ID then inputting the recipient's actor ID into the input box and submitting.
+				</li>
+				<li>
+					I added several animations as part of HW11 Exercise 1 which improved the 
+					visual components of my chat app and provided better feedback and visibility of system
+					status to my users.
+				</li>
+			</ul>
+			<h2>Future Work</h2>
+			<ul>
+				<li>
+					Allow users to reply without having to create a thread.
+				</li>
+				<li>
+					Allow users to edit the title of threads to be something other than the content
+					of the base message.
+				</li>
+				<li>
+					Show the usernames of people who have read a particular message when hovering over
+					the read receipt indicator.
+				</li>
+			</ul>
+		</main>
 	</body>
 </html>
