@@ -702,12 +702,13 @@ const ReadReceipt = {
   methods: {
 
     getReaders() {
-      if (!this.readersList) return "Loading...";
+      if (this.readersList.length === 0) return "No readers with usernames to display";
       if (this.readersList.length <= 3) {
-        return this.readersList.join(", "); 
+        return "Includes Username(s): " + this.readersList.join(", "); 
       }
       const firstThree = this.readersList.slice(0,3).join(", ");
-      return (this.readersList.length === 4) ? firstThree + " and 1 other": firstThree + ` and ${this.readersList.length - 3} others`;
+      const readerList = "Includes Username(s): " + firstThree;
+      return (this.readersList.length === 4) ? readerList + " and 1 other": readerList + ` and ${this.readersList.length - 3} others`;
     },
 
     readByOthers() {
