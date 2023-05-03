@@ -679,10 +679,14 @@ const ReadReceipt = {
   watch: {
     async readReceipts(newReadReceipts) {
       for (const newReadReceipt of newReadReceipts) {
-        if (!newReadReceipt) continue;
+        if (!newReadReceipt || this.readersListActorIds.has(newReadReceipt.actor)) continue;
         // fetch username for this actor and add to readers list
-        this.resolver.actorToUsername(newReadReceipt.actor).then(
-          (res) => {if (res) this.readersList.push(res);}
+        this.resolver.actorToUsername(newReadReceipt.actor).then((res) => {
+            if (res) {
+              this.readersList.push(res);
+              this.readersListActorIds.add(newReadReceipt.actor);
+            }
+          }
         )
       }
     }
@@ -690,6 +694,7 @@ const ReadReceipt = {
 
   data() {
     return {
+      readersListActorIds: new Set([]), // save these to check for quick membership in watcher
       readersList: []
     }
   },
@@ -698,7 +703,11 @@ const ReadReceipt = {
 
     getReaders() {
       if (!this.readersList) return "Loading...";
-      return this.readersList.join(", ");
+      if (this.readersList.length <= 3) {
+        return this.readersList.join(", "); 
+      }
+      const firstThree = this.readersList.slice(0,3).join(", ");
+      return (this.readersList.length === 4) ? firstThree + " and 1 other": firstThree + ` and ${this.readersList.length - 3} others`;
     },
 
     readByOthers() {
