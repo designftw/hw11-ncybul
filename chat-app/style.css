@@ -404,10 +404,6 @@ input.error, label.error {
     transform: scale(100%);
 }
 
-.send-message-form:has(input[value="Send"]:active) input {
-    background-color: var(--lightGreen);
-}
-
 .loginButton {
     transition: 300ms;
 }
