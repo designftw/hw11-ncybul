@@ -7,13 +7,17 @@
 </head>
 <body>
   <div id="app">
-    <header>
-      <h1>
-        6.S063 Chat App
-      </h1>
-    </header>
     <main>
       <div class="aside">
+        <div class="profileContainer">
+          <div class="profilePicContainer">
+            <profile :actor="$gf.me" :editable="true"></profile>
+          </div>
+          <!-- We display names in multiple places, so we made a -->
+          <!-- reusable <name></name> component. -->
+          <!-- See below for the template. -->
+          <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
+        </div>
         <p>
           <button v-if="$gf.me" @click="$gf.toggleLogIn">
             <!-- If we have a user ID, we're logged in so show "Log Out" -->
@@ -34,15 +38,6 @@
           </div>
           <p v-if="showRequestError" class="errorMessage">That username is already taken. Please try something else.</p>
   
-          <div>
-            <!-- We display names in multiple places, so we made a -->
-            <!-- reusable <name></name> component. -->
-            <!-- See below for the template. -->
-            My Name: <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
-            <div class="profilePicContainer">
-              <profile :actor="$gf.me" :editable="true"></profile>
-            </div>
-          </div>
           <div class="tabs">
             <button class="tab active" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
             <button class="tab" id="pm" type="button" @click="changeTab('pm')">Private Messaging</button>
@@ -217,24 +212,29 @@
   </div>
 
   <template id="name">
-    <span v-if="!editing">
+    <div class="name-component">
+      <span v-if="!editing">
 
-      <!-- If we're not editing the name-->
-      <!-- Display the profile's name, if it exists -->
-      <!-- or anonymous if it doesn't -->
-      {{ profile? `${profile.name} (username: ${username})` : 'Anonymous' }}
+        <!-- If we're not editing the name-->
+        <!-- Display the profile's name, if it exists -->
+        <!-- or anonymous if it doesn't -->
+        <p v-if="profile">
+          {{ profile.name }}<br>(username: {{ username }})
+        </p>
+        <p v-else>Anonymous</p>
 
-      <!-- Also if the name is "editable" add an edit button -->
-      <button v-if="editable" @click="editName">
-        Edit Name
-      </button>
-    </span>
+        <!-- Also if the name is "editable" add an edit button -->
+        <button v-if="editable" @click="editName">
+          Edit Name
+        </button>
+      </span>
 
-    <!-- If we're in the editing state, create something to edit the name-->
-    <form v-else @submit.prevent="saveName">
-      <input v-model="editText"/>
-      <input type="submit" value="Save Name"/>
-    </form>
+      <!-- If we're in the editing state, create something to edit the name-->
+      <form v-else @submit.prevent="saveName">
+        <input v-model="editText"/>
+        <input type="submit" value="Save Name"/>
+      </form>
+    </div>
   </template>
   <template id="like">
     <div class="likeButtonContainer">
@@ -253,7 +253,7 @@
 
       <!-- Also if the profile pic is "editable" add an edit button -->
       <button v-if="editable" @click="editProfile">
-        Edit Profile Picture
+        Edit
       </button>
     </span>
 

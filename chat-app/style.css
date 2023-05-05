@@ -51,17 +51,32 @@ h1 {
 
 /* miscellaneous info styling */
 
+.profileContainer .name-component span {
+    font-size: 1.5em;
+}
+
+.profileContainer .name-component button {
+    font-size: initial;
+}
+
+.profileContainer {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 3em;
+}
+
 .profilePic {
     width: 30px;
 }
 
 .profilePicContainer {
-    width: 30%;
-    margin: 20px auto;
+    width: 100px;
 }
 
 .profilePicContainer .profilePic {
-    width: 100%;
+    width: 100px;
 }
 
 .aside {
