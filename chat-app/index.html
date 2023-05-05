@@ -9,14 +9,24 @@
   <div id="app">
     <main>
       <div class="aside">
-        <div class="profileContainer">
-          <div class="profilePicContainer">
-            <profile :actor="$gf.me" :editable="true"></profile>
+        <div v-if="$gf.me">
+          <div class="profileContainer">
+            <div class="profilePicContainer">
+              <profile :actor="$gf.me" :editable="true"></profile>
+            </div>
+            <!-- We display names in multiple places, so we made a -->
+            <!-- reusable <name></name> component. -->
+            <!-- See below for the template. -->
+            <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
           </div>
-          <!-- We display names in multiple places, so we made a -->
-          <!-- reusable <name></name> component. -->
-          <!-- See below for the template. -->
-          <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
+          <form id="requestUsername" @submit.prevent="requestUsername">
+            <label>Request Username: <input type="text" name="username" id="username"></label>
+            <button>Submit</button>
+          </form>
+          <div class="imgContainer">
+            <img id="request-username-loader" src="img/loader.svg">
+          </div>
+          <p v-if="showRequestError" class="errorMessage">That username is already taken. Please try something else.</p>
         </div>
         <p>
           <button v-if="$gf.me" @click="$gf.toggleLogIn">
@@ -29,15 +39,6 @@
           </button>
         </p>
         <div v-if="$gf.me">
-          <form id="requestUsername" @submit.prevent="requestUsername">
-            <label>Request Username: <input type="text" name="username" id="username"></label>
-            <button>Submit</button>
-          </form>
-          <div class="imgContainer">
-            <img id="request-username-loader" src="img/loader.svg">
-          </div>
-          <p v-if="showRequestError" class="errorMessage">That username is already taken. Please try something else.</p>
-  
           <div class="tabs">
             <button class="tab active" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
             <button class="tab" id="pm" type="button" @click="changeTab('pm')">Private Messaging</button>
