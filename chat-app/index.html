@@ -40,9 +40,10 @@
         </p>
         <div v-if="$gf.me">
           <div class="tabs">
-            <button class="tab active" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
+            <button class="tab" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
             <button class="tab" id="pm" type="button" @click="changeTab('pm')">Private Messaging</button>
           </div>
+          <button class="plus-button" @click="goToExploreGroups"><img src="img/plus.svg"></button>
           <div class="show-read-receipts">
             <label>
               <input v-model="showReadReceipts" type="checkbox"> Show Read Receipts
@@ -51,8 +52,9 @@
         </div>
       </div>
 
+      <!-- if logged in and looking at messages -->
       <div v-if="$gf.me">  
-        <div id="channelInput" v-if="!privateMessaging">
+        <div id="channelInput" v-if="viewState === 'channel'">
           <label for="channel">
             Channel: 
             <input id="channel" v-model="channel"/> 
@@ -60,7 +62,7 @@
           <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
           <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
         </div>
-        <div v-else>
+        <div v-if="viewState === 'pm'">
           <div id="usernameInputContainer">
             <div id="usernameInput">
               <div class="input">
@@ -92,7 +94,7 @@
             <p v-if="showActorIdError" class="errorMessage">Please enter an Actor ID with the correct format.</p>
           </div>
         </div>
-        <div class="threads-or-convo-container">
+        <div v-if="viewState !== 'explore'" class="threads-or-convo-container">
           <transition name="thread-title">
             <div v-if="viewingThreads && currentThread" class="thread-title">
               <p>Thread: {{ getThreadContent(currentThread) }}</p>
@@ -198,15 +200,40 @@
           </div>
         </div>
         <!-- A form for sending messages -->
-        <div v-if="((!viewingThreads) || (viewingThreads && currentThread)) && (!privateMessaging || recipient)">
+        <div v-if="(viewState !== 'explore') && ((!viewingThreads) || (viewingThreads && currentThread)) && (viewState !== 'pm' || recipient)">
           <form class="send-message-form" @submit.prevent="sendMessage">
             <input v-model="messageText" placeholder="Type a message..."/>
             <input type="submit" value="Send"/>
           </form>
           <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
+        </div v-if="viewState ==='explore'">
+        <!-- explore groups page -->
+        <div v-if="$gf.me && viewState === 'explore'" id="explore-groups">
+          <div id="explore-groups-header">
+            <p>Explore Groups</p>
+            <button id="new-group-button" @click="openDialog">Create Group</button>
+          </div>
+          <div class="groups-list">
+            <ul v-for="group of classes">
+              <li>
+                {{group.name}}
+                <button v-if="group.actor===$gf.me" @click="deleteGroup(group.id)">Delete</button>
+              </li>
+            </ul>
+          </div>
+          <dialog id="create-new-group-dialog">
+            <p>Create New Class Group Chat</p>
+            <label>
+              Class Name
+              <input type="text" v-model="newGroupName">
+            </label>
+            <button @click="closeDialog">Cancel</button>
+            <button @click="createGroup">Create Group</button>
+          </dialog>
         </div>
       </div>
-      <div v-else>
+      <!-- Log in notice -->
+      <div v-if="!$gf.me">
         <p id="loginNotice">** Log in to see messages **</p>
       </div>
     </main>

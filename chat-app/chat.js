@@ -18,17 +18,20 @@ const app = {
     // const channel = Vue.ref('default')
     const channel = Vue.ref('nicoles channel')
 
-    // And a flag for whether or not we're private-messaging
-    const privateMessaging = Vue.ref(false)
+    const viewState = Vue.ref("channel") // one of [explore, channel, pm] as of right now
 
-    // If we're private messaging use "me" as the channel,
-    // otherwise use the channel value
+    // pick the correct context based on the viewState
     const $gf = Vue.inject('graffiti')
-    const context = Vue.computed(()=> privateMessaging.value? [$gf.me] : [channel.value])
+    const context = Vue.computed(() => {
+      if (viewState.value === 'explore') return ['classes'];
+      if (viewState.value === 'channel') return [channel.value];
+      if (viewState.value === 'pm') return [$gf.me];
+      return []; // default is empty context
+    })
 
     // Initialize the collection of messages associated with the context
     const { objects: messagesRaw } = $gf.useObjects(context)
-    return { channel, privateMessaging, messagesRaw }
+    return { channel, messagesRaw, viewState }
   },
 
   data() {
@@ -50,7 +53,8 @@ const app = {
       currentThread: undefined,
       queryByUsername: "username",
       recipientActorId: undefined,
-      recipientUsername: undefined
+      recipientUsername: undefined,
+      newGroupName: ""
     }
   },
 
@@ -96,6 +100,15 @@ const app = {
 
   computed: {
 
+    classes() {
+      let classes = this.messagesRaw.filter(m => 
+        m.type === 'Class' &&
+        m.name &&
+        typeof m.name === 'string'
+      );
+      return classes;
+    },
+
     readReceipts() {
       let readReceipts = this.messagesRaw.filter(m => 
         m.type === 'Read'
@@ -134,7 +147,7 @@ const app = {
           typeof m.content=='string') 
 
       // Do some more filtering for private messaging
-      if (this.privateMessaging) {
+      if (this.viewState === 'pm') {
         messages = messages.filter(m=>
           // Is the message private?
           m.bto &&
@@ -170,6 +183,40 @@ const app = {
 
   methods: {
 
+    goToExploreGroups() {
+      this.viewState = "explore";
+      this.changeTab('explore');
+    },
+
+    openDialog() {
+      const dialog = document.getElementById("create-new-group-dialog");
+      dialog.show();
+    },
+
+    closeDialog() {
+      // clear all input fields
+      this.newGroupName = "";
+      const dialog = document.getElementById("create-new-group-dialog");
+      dialog.close();
+    },
+
+    async createGroup() {
+      const group = {
+        type: 'Class',
+        name: this.newGroupName,
+        uri: `class://mit:${this.newGroupName}`,
+        context: ['classes'] // classes context for now
+      };
+
+      await this.$gf.post(group); // post new class
+      this.closeDialog();
+    },
+
+    async deleteGroup(groupId) {
+      // remove class with this id
+      this.classes.filter(c => c.id === groupId).forEach(it => this.$gf.remove(it));
+    },
+
     imageError(magnet) {
       return this.downloadedImages[magnet] === 'error';
     },
@@ -204,7 +251,7 @@ const app = {
             // set to private if not showing read receipts
             if (!this.showReadReceipts) readReceipt.bto = [];
             // set context to this message id + channel or private messaging contexts
-            if (this.privateMessaging) {
+            if (this.viewState === 'pm') {
               readReceipt.context = [m.id, this.$gf.me, this.recipient]
             } else {
               readReceipt.context = [m.id, this.channel]
@@ -260,10 +307,12 @@ const app = {
       this.currentThread = undefined;
       // remove 'active' class from all other tabs
       document.querySelectorAll('.tab.active').forEach(it => it.classList.remove('active'));
-      // set private messaging to correct value
-      this.privateMessaging = (selection === 'pm');
+      // set viewState to correct value
+      this.viewState = selection;
       // add 'active' class to current tab
-      document.getElementById(selection).classList.add('active');
+      if (selection !== 'explore') {
+        document.getElementById(selection).classList.add('active');
+      }
     },
 
     formatTime(datetime) {
@@ -382,7 +431,7 @@ const app = {
       // channel(s) the object is posted in
       // You can post in more than one if you want!
       // The bto field makes messages private
-      if (this.privateMessaging) {
+      if (this.viewState === 'pm') {
         message.bto = [this.recipient]
         message.context = [this.$gf.me, this.recipient]
       } else {

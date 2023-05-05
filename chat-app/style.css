@@ -96,6 +96,19 @@ h1 {
     margin: 10px auto;
 }
 
+.aside button.plus-button {
+    border-radius: 999px;
+    background-color: var(--darkBlue);
+    border: none;
+    padding: 10px;
+}
+
+.plus-button img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .aside .errorMessage {
     width: fit-content;
     margin: auto;
@@ -106,7 +119,7 @@ button:hover, input[type="submit"] {
     cursor: pointer;
 }
 
-#channelInput, #usernameInputContainer {
+#channelInput, #usernameInputContainer, #explore-groups-header {
     font-size: 2em;
     background-color: var(--green);
     box-sizing: border-box;
@@ -116,7 +129,7 @@ button:hover, input[type="submit"] {
     border-bottom: none;
 }
 
-#channelInput, #usernameInput {
+#channelInput, #usernameInput, #explore-groups-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -129,7 +142,7 @@ label[for='channel'], #usernameInput .input {
     gap: 20px;
 }
 
-#threadsButton, #returnButton {
+#threadsButton, #returnButton, #new-group-button {
     font-size: 0.7em;
     border: none;
     background-color: var(--darkBlue);
@@ -233,9 +246,9 @@ button.tab {
     outline: 3px solid white;
 }
 
-/* message list styling */
+/* message, threads, groups list styling */
 
-.threads-or-convo-container {
+.threads-or-convo-container, .groups-list {
     display: flex;
     flex-direction: column;
     align-items: center;
