@@ -303,7 +303,7 @@ const app = {
       // if not in threads, return regular messages without replies
       if (!this.viewingThreads) {
         // if not in threads, return regular messages without replies
-        const messagesToReturn = this.messages.filter(m => !m.inReplyTo);
+        const messagesToReturn = this.messages.filter(m => !m.inReplyTo && m.context.includes(this.channel));
 
         // for each message being returned, add a read receipt to it if none exists already
         messagesToReturn.forEach(m => {
@@ -487,7 +487,7 @@ const app = {
         message.bto = [this.recipient]
         message.context = [this.$gf.me, this.recipient]
       } else {
-        message.context = [this.channel]
+        message.context = [this.channel, 'classes']
       }
 
       // add inReplyTo if sending message in thread
