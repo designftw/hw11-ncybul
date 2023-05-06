@@ -283,6 +283,16 @@ const app = {
       await this.$gf.post(post); // post
     },
 
+    async leaveGroup(group) {
+      // remove any join posts to this group
+      let myJoins = this.messagesRaw.filter(m => 
+        m.type === 'Join' &&
+        m.context.includes(group.uri) &&
+        m.actor === this.$gf.me
+      );
+      myJoins.forEach(async (j) => await this.$gf.remove(j));
+    },
+
     imageError(magnet) {
       return this.downloadedImages[magnet] === 'error';
     },

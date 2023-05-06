@@ -246,6 +246,10 @@ button.tab {
     outline: 3px solid white;
 }
 
+.groupButtonControls {
+    display: flex;
+}
+
 /* message, threads, groups list styling */
 
 .threads-or-convo-container, .groups-list {
@@ -412,7 +416,7 @@ button.tab {
 
 /* animations */
 
-.tabs button:hover {
+.tabs button.tab:hover {
     background-color: var(--darkGreen);
     outline: 3px solid white;
 }

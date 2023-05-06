@@ -42,7 +42,10 @@
           <div class="tabs">
             <p>Classes</p>
             <div v-for="group of myJoinedClasses">
-              <button class="tab" type="button" @click="goToGroup(group)">{{group.name}}</button>
+              <div class="groupButtonControls">
+                <button class="tab" type="button" @click="goToGroup(group)">{{group.name}}</button>
+                <button @click="leaveGroup(group)">❌</button>
+              </div>
             </div>
             <button class="plus-button" @click="goToExploreGroups"><img src="img/plus.svg"></button>
             <button class="tab" id="pm" type="button" @click="goToPm()">Private Messaging</button>
@@ -58,7 +61,7 @@
       <!-- if logged in and looking at messages -->
       <div v-if="$gf.me">  
         <div id="channelInput" v-if="viewState === 'channel'">
-          <p>{{currentGroupName}}</p>
+          <p id="groupChatName">{{currentGroupName}}</p>
           <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
           <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
         </div>
@@ -94,6 +97,7 @@
             <p v-if="showActorIdError" class="errorMessage">Please enter an Actor ID with the correct format.</p>
           </div>
         </div>
+        <!-- messages for a particular convo -->
         <div v-if="viewState !== 'explore'" class="threads-or-convo-container">
           <transition name="thread-title">
             <div v-if="viewingThreads && currentThread" class="thread-title">
@@ -199,16 +203,8 @@
             </div>
           </div>
         </div>
-        <!-- A form for sending messages -->
-        <div v-if="(viewState !== 'explore') && ((!viewingThreads) || (viewingThreads && currentThread)) && (viewState !== 'pm' || recipient)">
-          <form class="send-message-form" @submit.prevent="sendMessage">
-            <input v-model="messageText" placeholder="Type a message..."/>
-            <input type="submit" value="Send"/>
-          </form>
-          <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
-        </div>
         <!-- explore groups page -->
-        <div v-if="$gf.me && viewState === 'explore'" id="explore-groups">
+        <div v-else id="explore-groups">
           <div id="explore-groups-header">
             <p>Explore Groups</p>
             <button id="new-group-button" @click="openDialog">Create Group</button>
@@ -231,6 +227,14 @@
             <button @click="closeDialog">Cancel</button>
             <button @click="createGroup">Create Group</button>
           </dialog>
+        </div>
+        <!-- A form for sending messages -->
+        <div v-if="(viewState !== 'explore') && ((!viewingThreads) || (viewingThreads && currentThread)) && (viewState !== 'pm' || recipient)">
+          <form class="send-message-form" @submit.prevent="sendMessage">
+            <input v-model="messageText" placeholder="Type a message..."/>
+            <input type="submit" value="Send"/>
+          </form>
+          <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
         </div>
       </div>
       <!-- Log in notice -->
