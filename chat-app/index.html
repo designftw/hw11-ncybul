@@ -42,6 +42,9 @@
           <div class="tabs">
             <button class="tab" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
             <button class="tab" id="pm" type="button" @click="changeTab('pm')">Private Messaging</button>
+            <div v-for="group of myJoinedClasses">
+              <button class="tab" type="button">{{group.name}}</button>
+            </div>
           </div>
           <button class="plus-button" @click="goToExploreGroups"><img src="img/plus.svg"></button>
           <div class="show-read-receipts">
@@ -206,7 +209,7 @@
             <input type="submit" value="Send"/>
           </form>
           <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
-        </div v-if="viewState ==='explore'">
+        </div>
         <!-- explore groups page -->
         <div v-if="$gf.me && viewState === 'explore'" id="explore-groups">
           <div id="explore-groups-header">
@@ -218,6 +221,7 @@
               <li>
                 {{group.name}}
                 <button v-if="group.actor===$gf.me" @click="deleteGroup(group.id)">Delete</button>
+                <button @click="joinGroup(group.id)">Join</button>
               </li>
             </ul>
           </div>

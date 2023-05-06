@@ -20,13 +20,12 @@ const app = {
 
     const viewState = Vue.ref("channel") // one of [explore, channel, pm] as of right now
 
-    // pick the correct context based on the viewState
+    // pick the correct context based on the viewState (always choose classes context as well)
     const $gf = Vue.inject('graffiti')
     const context = Vue.computed(() => {
-      if (viewState.value === 'explore') return ['classes'];
-      if (viewState.value === 'channel') return [channel.value];
-      if (viewState.value === 'pm') return [$gf.me];
-      return []; // default is empty context
+      if (viewState.value === 'channel') return [channel.value, 'classes'];
+      if (viewState.value === 'pm') return [$gf.me, 'classes'];
+      return ['classes']; // default is just classes context
     })
 
     // Initialize the collection of messages associated with the context
@@ -99,6 +98,34 @@ const app = {
   },
 
   computed: {
+
+    allJoins() {
+      let joins = this.messagesRaw.filter(m => 
+        m.type === 'Join' &&
+        m.context.includes("classes")
+      );
+      return joins;
+    },
+
+    // return all classes that I have joined
+    myJoinedClasses() {
+      // find all join posts made by me
+      let myJoins = this.messagesRaw.filter(m => 
+        m.type === 'Join' &&
+        m.context.includes("classes") &&
+        m.actor === this.$gf.me
+      );
+
+      // find the uris of all the classes I have joined
+      let uris = myJoins
+        .reduce((accumulator, value) => accumulator.concat(value.context), [])
+        .filter((context) => context !== 'classes'); // remove 'classes' context to leave just the URIs
+      uris = [...new Set(uris)]; // deduplicate URIs
+
+      // find Class objects with these uris
+      const myClasses = this.classes.filter((c) => uris.includes(c.uri));
+      return [...new Set(myClasses)]; // class names should be unique
+    },
 
     classes() {
       let classes = this.messagesRaw.filter(m => 
@@ -201,6 +228,9 @@ const app = {
     },
 
     async createGroup() {
+      // check that this class name is not already in use
+      if (this.classes.map(c => c.name).includes(this.newGroupName)) throw new Error('Class name is taken!');
+
       const group = {
         type: 'Class',
         name: this.newGroupName,
@@ -214,7 +244,23 @@ const app = {
 
     async deleteGroup(groupId) {
       // remove class with this id
-      this.classes.filter(c => c.id === groupId).forEach(it => this.$gf.remove(it));
+      const classToRemove = this.classes.find(c => c.id === groupId)
+      const removedUri = classToRemove.uri;
+      await this.$gf.remove(classToRemove);
+      // remove all Join objects to this class
+      this.allJoins.filter(j => j.context.includes(removedUri)).forEach(async (it) => {
+        await this.$gf.remove(it);
+      });
+    },
+
+    async joinGroup(groupId) {
+      // find class and join it
+      const group = this.classes.find(c => c.id === groupId);
+      const post = {
+        type: 'Join',
+        context: ['classes', group.uri] // classes context and class group uri
+      }; 
+      await this.$gf.post(post); // post
     },
 
     imageError(magnet) {
