@@ -210,6 +210,15 @@ const app = {
 
   methods: {
 
+    joinedClassAlready(groupName) {
+      return this.myJoinedClasses.map(it => it.name).filter(it => it === groupName).length > 0;
+    },
+
+    goToGroup(groupUri) {
+      this.viewState = "channel";
+      this.channel = groupUri;
+    },
+
     goToExploreGroups() {
       this.viewState = "explore";
       this.changeTab('explore');
@@ -247,8 +256,9 @@ const app = {
       const classToRemove = this.classes.find(c => c.id === groupId)
       const removedUri = classToRemove.uri;
       await this.$gf.remove(classToRemove);
-      // remove all Join objects to this class
-      this.allJoins.filter(j => j.context.includes(removedUri)).forEach(async (it) => {
+      // remove all objects posted in this context
+      this.allMessages.forEach(it => console.log(`type = ${it.type}, context = ${it.context}`));
+      this.allMessages.filter(m => m.context.includes(removedUri)).forEach(async (it) => {
         await this.$gf.remove(it);
       });
     },
@@ -481,7 +491,7 @@ const app = {
         message.bto = [this.recipient]
         message.context = [this.$gf.me, this.recipient]
       } else {
-        message.context = [this.channel]
+        message.context = [this.channel, 'classes']
       }
 
       // add inReplyTo if sending message in thread
