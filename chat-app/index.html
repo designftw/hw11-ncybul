@@ -40,13 +40,13 @@
         </p>
         <div v-if="$gf.me">
           <div class="tabs">
-            <button class="tab" id="channel" type="button" @click="changeTab('channel')">Channel-based Public Chat</button>
-            <button class="tab" id="pm" type="button" @click="changeTab('pm')">Private Messaging</button>
+            <p>Classes</p>
             <div v-for="group of myJoinedClasses">
-              <button class="tab" type="button" @click="goToGroup(group.uri)">{{group.name}}</button>
+              <button class="tab" type="button" @click="goToGroup(group)">{{group.name}}</button>
             </div>
+            <button class="plus-button" @click="goToExploreGroups"><img src="img/plus.svg"></button>
+            <button class="tab" id="pm" type="button" @click="goToPm()">Private Messaging</button>
           </div>
-          <button class="plus-button" @click="goToExploreGroups"><img src="img/plus.svg"></button>
           <div class="show-read-receipts">
             <label>
               <input v-model="showReadReceipts" type="checkbox"> Show Read Receipts
@@ -58,10 +58,7 @@
       <!-- if logged in and looking at messages -->
       <div v-if="$gf.me">  
         <div id="channelInput" v-if="viewState === 'channel'">
-          <label for="channel">
-            Channel: 
-            <input id="channel" v-model="channel"/> 
-          </label>
+          <p>{{currentGroupName}}</p>
           <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
           <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
         </div>

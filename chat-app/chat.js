@@ -18,7 +18,7 @@ const app = {
     // const channel = Vue.ref('default')
     const channel = Vue.ref('nicoles channel')
 
-    const viewState = Vue.ref("channel") // one of [explore, channel, pm] as of right now
+    const viewState = Vue.ref("explore") // one of [explore, channel, pm] as of right now
 
     // pick the correct context based on the viewState (always choose classes context as well)
     const $gf = Vue.inject('graffiti')
@@ -53,7 +53,8 @@ const app = {
       queryByUsername: "username",
       recipientActorId: undefined,
       recipientUsername: undefined,
-      newGroupName: ""
+      newGroupName: "",
+      currentGroupName: undefined
     }
   },
 
@@ -214,14 +215,24 @@ const app = {
       return this.myJoinedClasses.map(it => it.name).filter(it => it === groupName).length > 0;
     },
 
-    goToGroup(groupUri) {
+    goToGroup(group) {
       this.viewState = "channel";
-      this.channel = groupUri;
+      this.viewingThreads = false;
+      this.currentThread = undefined;
+      this.channel = group.uri;
+      this.currentGroupName = group.name;
+    },
+
+    goToPm() {
+      this.viewState = "pm";
+      this.viewingThreads = false;
+      this.currentThread = undefined;
     },
 
     goToExploreGroups() {
       this.viewState = "explore";
-      this.changeTab('explore');
+      this.viewingThreads = false;
+      this.currentThread = undefined;
     },
 
     openDialog() {
@@ -257,7 +268,6 @@ const app = {
       const removedUri = classToRemove.uri;
       await this.$gf.remove(classToRemove);
       // remove all objects posted in this context
-      this.allMessages.forEach(it => console.log(`type = ${it.type}, context = ${it.context}`));
       this.allMessages.filter(m => m.context.includes(removedUri)).forEach(async (it) => {
         await this.$gf.remove(it);
       });
@@ -355,20 +365,6 @@ const app = {
     onImageAttachment(event) {
       const file = event.target.files[0];
       this.file = file;
-    },
-
-    changeTab(selection) {
-      // no longer viewing threads
-      this.viewingThreads = false;
-      this.currentThread = undefined;
-      // remove 'active' class from all other tabs
-      document.querySelectorAll('.tab.active').forEach(it => it.classList.remove('active'));
-      // set viewState to correct value
-      this.viewState = selection;
-      // add 'active' class to current tab
-      if (selection !== 'explore') {
-        document.getElementById(selection).classList.add('active');
-      }
     },
 
     formatTime(datetime) {
@@ -491,7 +487,7 @@ const app = {
         message.bto = [this.recipient]
         message.context = [this.$gf.me, this.recipient]
       } else {
-        message.context = [this.channel, 'classes']
+        message.context = [this.channel]
       }
 
       // add inReplyTo if sending message in thread
