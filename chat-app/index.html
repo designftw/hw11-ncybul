@@ -61,7 +61,7 @@
       <!-- if logged in and looking at messages -->
       <div v-if="$gf.me">  
         <div id="channelInput" v-if="viewState === 'channel'">
-          <p id="groupChatName">{{currentGroupName}}</p>
+          <span id="groupChatName">{{currentGroupName}}</span>
           <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
           <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
         </div>
@@ -206,18 +206,18 @@
         <!-- explore groups page -->
         <div v-else id="explore-groups">
           <div id="explore-groups-header">
-            <p>Explore Groups</p>
+            <span>Explore Groups</span>
             <button id="new-group-button" @click="openDialog">Create Group</button>
           </div>
-          <div class="groups-list">
-            <ul v-for="group of classes">
-              <li>
-                {{group.name}}
+          <ul class="groups-list">
+            <li v-for="group of classes">
+              {{group.name}}
+              <div class="group-listing-buttons">
                 <button v-if="group.actor===$gf.me" @click="deleteGroup(group.id)">Delete</button>
                 <button v-if="!joinedClassAlready(group.name)" @click="joinGroup(group.id)">Join</button>
-              </li>
-            </ul>
-          </div>
+              </div>
+            </li>
+          </ul>
           <dialog id="create-new-group-dialog">
             <p>Create New Class Group Chat</p>
             <label>

@@ -121,12 +121,13 @@ button:hover, input[type="submit"] {
 
 #channelInput, #usernameInputContainer, #explore-groups-header {
     font-size: 2em;
-    background-color: var(--green);
+    background-color: var(--mediumGreen);
     box-sizing: border-box;
     padding: 20px;
     width: 100%;
     border: 2px solid var(--darkBlue);
     border-bottom: none;
+    color: white;
 }
 
 #channelInput, #usernameInput, #explore-groups-header {
@@ -142,7 +143,7 @@ label[for='channel'], #usernameInput .input {
     gap: 20px;
 }
 
-#threadsButton, #returnButton, #new-group-button {
+#threadsButton, #returnButton, #new-group-button, .group-listing-buttons button {
     font-size: 0.7em;
     border: none;
     background-color: var(--darkBlue);
@@ -252,7 +253,34 @@ button.tab {
 
 /* message, threads, groups list styling */
 
-.threads-or-convo-container, .groups-list {
+.groups-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    width: 100%;
+    margin: auto;
+    height: 60vh;
+    border: 2px solid var(--darkBlue);
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.groups-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: var(--green);
+    color: white;
+    border-bottom: 2px solid var(--darkBlue);
+    font-size: 2em;
+}
+
+.group-listing-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.threads-or-convo-container {
     display: flex;
     flex-direction: column;
     align-items: center;
