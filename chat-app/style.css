@@ -10,7 +10,6 @@
 
 body {
     margin: 0;
-    margin-bottom: 3em;
     background-color: var(--lightGreen);
 }
 
@@ -23,7 +22,6 @@ body * {
 main {
     display: grid;
     grid-template-rows: auto;
-    /* padding: 40px 10px; */
     box-sizing: border-box;
     row-gap: 10px;
 }
@@ -40,8 +38,10 @@ main {
 .content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 100vh;
+    justify-content: space-between;
+    border: 2px solid var(--darkBlue);
+    border-top: none;
 }
 
 /* header styling */
@@ -134,9 +134,7 @@ button:hover, input[type="submit"] {
     box-sizing: border-box;
     padding: 20px;
     width: 100%;
-    border: 2px solid var(--darkBlue);
-    border-bottom: none;
-    border-top: none;
+    border-bottom: 2px solid var(--darkBlue);
     color: white;
 }
 
@@ -270,7 +268,6 @@ button.tab {
     width: 100%;
     margin: auto;
     height: 60vh;
-    border: 2px solid var(--darkBlue);
     box-sizing: border-box;
     padding: 0;
 }
@@ -296,10 +293,10 @@ button.tab {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    height: 60%;
     margin: auto;
-    height: 80vh;
-    border: 2px solid var(--darkBlue);
     box-sizing: border-box;
+    margin: 0;
 }
 
 .threads-container {
@@ -313,8 +310,7 @@ button.tab {
 .send-message-form {
     width: 100%;
     height: 50px;
-    border: 2px solid var(--darkBlue);
-    border-top: none;
+    border-top: 2px solid var(--darkBlue);
     box-sizing: border-box;
 }
 

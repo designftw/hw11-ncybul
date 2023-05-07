@@ -66,37 +66,35 @@
           <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
           <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
         </div>
-        <div v-if="viewState === 'pm'">
-          <div id="usernameInputContainer">
-            <div id="usernameInput">
-              <div class="input">
-                <label>
-                  Recipient 
-                  <select name="queryByUsername" id="queryByUsername" v-model="queryByUsername">
-                    <option value="username">Username</option>
-                    <option value="actorID">Actor ID</option>
-                  </select> : 
-                </label>
-                <form v-if="queryByUsername === 'username'" @submit.prevent="getActorId">
-                  <input list="usernames" id="recipientUsername" v-model="recipientUsername"/>
-                  <datalist id="usernames">
-                    <option v-for="username of Object.values(actorsToUsernames)" :value="username">
-                    </option>
-                  </datalist>
-                  <input type="submit">
-                </form>
-                <form v-else @submit.prevent="getActorId">
-                  <input type="text" id="recipientActorId" v-model="recipientActorId">
-                  <input type="submit">
-                </form>
-                <img id="search-username-loader" src="img/loader.svg">
-              </div>
-              <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
-              <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
+        <div v-if="viewState === 'pm'" id="usernameInputContainer">
+          <div id="usernameInput">
+            <div class="input">
+              <label>
+                Recipient 
+                <select name="queryByUsername" id="queryByUsername" v-model="queryByUsername">
+                  <option value="username">Username</option>
+                  <option value="actorID">Actor ID</option>
+                </select> : 
+              </label>
+              <form v-if="queryByUsername === 'username'" @submit.prevent="getActorId">
+                <input list="usernames" id="recipientUsername" v-model="recipientUsername"/>
+                <datalist id="usernames">
+                  <option v-for="username of Object.values(actorsToUsernames)" :value="username">
+                  </option>
+                </datalist>
+                <input type="submit">
+              </form>
+              <form v-else @submit.prevent="getActorId">
+                <input type="text" id="recipientActorId" v-model="recipientActorId">
+                <input type="submit">
+              </form>
+              <img id="search-username-loader" src="img/loader.svg">
             </div>
-            <p v-if="showUsernameError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
-            <p v-if="showActorIdError" class="errorMessage">Please enter an Actor ID with the correct format.</p>
+            <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
+            <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
           </div>
+          <p v-if="showUsernameError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
+          <p v-if="showActorIdError" class="errorMessage">Please enter an Actor ID with the correct format.</p>
         </div>
         <!-- messages for a particular convo -->
         <div v-if="viewState !== 'explore'" class="threads-or-convo-container">
@@ -205,12 +203,12 @@
           </div>
         </div>
         <!-- A form for sending messages -->
-        <div v-if="(viewState !== 'explore') && ((!viewingThreads) || (viewingThreads && currentThread)) && (viewState !== 'pm' || recipient)">
+        <div v-if="(viewState !== 'explore') && ((!viewingThreads) || (viewingThreads && currentThread)) && (viewState !== 'pm' || recipient)" class="send-form-container">
+          <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
           <form class="send-message-form" @submit.prevent="sendMessage">
             <input v-model="messageText" placeholder="Type a message..."/>
             <input type="submit" value="Send"/>
           </form>
-          <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
         </div>
         <!-- explore groups page -->
         <div v-if="viewState === 'explore'" id="explore-groups">
