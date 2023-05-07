@@ -136,6 +136,7 @@ button:hover, input[type="submit"] {
     width: 100%;
     border-bottom: 2px solid var(--darkBlue);
     color: white;
+    height: 20%;
 }
 
 #channelInput, #usernameInput, #explore-groups-header {
@@ -261,13 +262,17 @@ button.tab {
 
 /* message, threads, groups list styling */
 
+#explore-groups {
+    height: 80%;
+}
+
 .groups-list {
     display: flex;
     flex-direction: column;
     list-style: none;
     width: 100%;
     margin: auto;
-    height: 60vh;
+    height: 100%;
     box-sizing: border-box;
     padding: 0;
 }
@@ -293,10 +298,17 @@ button.tab {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 60%;
     margin: auto;
     box-sizing: border-box;
     margin: 0;
+}
+
+.threads-or-convo-container:has(.threads-container) {
+    height: 80%;
+}
+
+.threads-or-convo-container:not(:has(.threads-container)) {
+    height: 70%;
 }
 
 .threads-container {
@@ -307,25 +319,30 @@ button.tab {
     width: 100%;
 }
 
-.send-message-form {
-    width: 100%;
-    height: 50px;
-    border-top: 2px solid var(--darkBlue);
-    box-sizing: border-box;
+.send-form-container {
+    height: 10%;
 }
 
-.send-message-form input {
-    height: 100%;
+.send-form-container :first-child {
+    height: 30%;
+}
+
+.send-message-form {
+    width: 100%;
+    height: 70%;
+    box-sizing: border-box;
 }
 
 .send-message-form :nth-child(1) {
     box-sizing: border-box;
     width: 85%;
+    height: 100%;
 }
 
 .send-message-form :nth-child(2) {
     box-sizing: border-box;
     width: 15%;
+    height: 100%;
 }
 
 .message-list {

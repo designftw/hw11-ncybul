@@ -96,6 +96,10 @@
           <p v-if="showUsernameError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
           <p v-if="showActorIdError" class="errorMessage">Please enter an Actor ID with the correct format.</p>
         </div>
+        <div v-if="viewState === 'explore'" id="explore-groups-header">
+          <span>Explore Groups</span>
+          <button id="new-group-button" @click="openDialog">Create Group</button>
+        </div>
         <!-- messages for a particular convo -->
         <div v-if="viewState !== 'explore'" class="threads-or-convo-container">
           <transition name="thread-title">
@@ -212,10 +216,6 @@
         </div>
         <!-- explore groups page -->
         <div v-if="viewState === 'explore'" id="explore-groups">
-          <div id="explore-groups-header">
-            <span>Explore Groups</span>
-            <button id="new-group-button" @click="openDialog">Create Group</button>
-          </div>
           <ul class="groups-list">
             <li v-for="group of classes">
               {{group.name}}
