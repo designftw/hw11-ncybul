@@ -59,7 +59,8 @@
       </div>
 
       <!-- if logged in and looking at messages -->
-      <div v-if="$gf.me">  
+      <div v-if="$gf.me" class="content">  
+        <!-- special headers -->
         <div id="channelInput" v-if="viewState === 'channel'">
           <span id="groupChatName">{{currentGroupName}}</span>
           <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
@@ -113,7 +114,7 @@
             <!-- List all the messages -->
             <div v-for="message of getMessages()" :key="message.id" class="message-container">
               <div v-if="message.actor!=$gf.me" class="message-left">
- 
+
                 <!-- Otherwise, display a bunch of properties from the message -->
                 <div class="message">
                   <p>
@@ -203,8 +204,16 @@
             </div>
           </div>
         </div>
+        <!-- A form for sending messages -->
+        <div v-if="(viewState !== 'explore') && ((!viewingThreads) || (viewingThreads && currentThread)) && (viewState !== 'pm' || recipient)">
+          <form class="send-message-form" @submit.prevent="sendMessage">
+            <input v-model="messageText" placeholder="Type a message..."/>
+            <input type="submit" value="Send"/>
+          </form>
+          <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
+        </div>
         <!-- explore groups page -->
-        <div v-else id="explore-groups">
+        <div v-if="viewState === 'explore'" id="explore-groups">
           <div id="explore-groups-header">
             <span>Explore Groups</span>
             <button id="new-group-button" @click="openDialog">Create Group</button>
@@ -228,18 +237,11 @@
             <button @click="createGroup">Create Group</button>
           </dialog>
         </div>
-        <!-- A form for sending messages -->
-        <div v-if="(viewState !== 'explore') && ((!viewingThreads) || (viewingThreads && currentThread)) && (viewState !== 'pm' || recipient)">
-          <form class="send-message-form" @submit.prevent="sendMessage">
-            <input v-model="messageText" placeholder="Type a message..."/>
-            <input type="submit" value="Send"/>
-          </form>
-          <input type="file" accept="image/png, image/jpeg" @change="onImageAttachment"/>
-        </div>
       </div>
       <!-- Log in notice -->
-      <div v-if="!$gf.me">
+      <div v-if="!$gf.me" class="content">
         <p id="loginNotice">** Log in to see messages **</p>
+      </div>
       </div>
     </main>
   </div>

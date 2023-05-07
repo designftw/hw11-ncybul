@@ -23,7 +23,7 @@ body * {
 main {
     display: grid;
     grid-template-rows: auto;
-    padding: 40px 10px;
+    /* padding: 40px 10px; */
     box-sizing: border-box;
     row-gap: 10px;
 }
@@ -33,6 +33,15 @@ main {
         grid-template-columns: 1fr 3fr;
         column-gap: 40px;
     }
+}
+
+/* content styling */
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
 }
 
 /* header styling */
@@ -127,6 +136,7 @@ button:hover, input[type="submit"] {
     width: 100%;
     border: 2px solid var(--darkBlue);
     border-bottom: none;
+    border-top: none;
     color: white;
 }
 
@@ -287,7 +297,7 @@ button.tab {
     justify-content: space-between;
     width: 100%;
     margin: auto;
-    height: 60vh;
+    height: 80vh;
     border: 2px solid var(--darkBlue);
     box-sizing: border-box;
 }

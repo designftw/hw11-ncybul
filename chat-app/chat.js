@@ -225,6 +225,8 @@ const app = {
 
     goToPm() {
       this.viewState = "pm";
+      this.channel = undefined;
+      this.currentGroupName = undefined;
       this.viewingThreads = false;
       this.currentThread = undefined;
     },
@@ -313,7 +315,8 @@ const app = {
       // if not in threads, return regular messages without replies
       if (!this.viewingThreads) {
         // if not in threads, return regular messages without replies
-        const messagesToReturn = this.messages.filter(m => !m.inReplyTo && m.context.includes(this.channel));
+        let messagesToReturn = this.messages.filter(m => !m.inReplyTo);
+        if (this.viewState === "channel") messagesToReturn = messagesToReturn.filter(m => m.context.includes(this.channel));
 
         // for each message being returned, add a read receipt to it if none exists already
         messagesToReturn.forEach(m => {
