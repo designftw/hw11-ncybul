@@ -181,16 +181,6 @@ label[for='channel'], #usernameInput .input {
     box-sizing: border-box;
 }
 
-.threadsList {
-    width: 100%;
-}
-
-.threadsList button {
-    width: 100%;
-    font-size: 1em;
-    text-align: start;
-}
-
 .errorMessage {
     color: red;
     font-size: initial;
@@ -300,7 +290,15 @@ label[for='channel'], #usernameInput .input {
     height: 80%;
 }
 
-.groups-list {
+.threadsList button {
+    border: none;
+}
+
+.threadsList button:hover {
+    background-color: var(--mediumGreen);
+}
+
+.groups-list, .threadsList {
     display: flex;
     flex-direction: column;
     list-style: none;
@@ -311,7 +309,7 @@ label[for='channel'], #usernameInput .input {
     padding: 0;
 }
 
-.groups-list li {
+.groups-list li, .threadsList button {
     display: flex;
     justify-content: space-between;
     padding: 20px;
