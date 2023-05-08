@@ -307,16 +307,17 @@ label[for='channel'], #usernameInput .input {
     margin-top: 1.5em;
 }
 
-.groupButtonControls:has(.active) {
+.groupButtonControls.active {
     background-color: var(--mediumGreen);
 }
 
 .groupButtonControls {
     display: flex;
+    background-color: var(--green);
 }
 
 .groupButtonControls button {
-    background-color: var(--green);
+    background-color: inherit;
     color: white;
     border: none;
     font-size: 1.5em;
@@ -375,6 +376,7 @@ label[for='channel'], #usernameInput .input {
     color: white;
     border-bottom: 2px solid var(--darkBlue);
     font-size: 2em;
+    word-break: break-all;
 }
 
 .group-listing-buttons {

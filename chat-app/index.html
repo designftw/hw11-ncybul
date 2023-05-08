@@ -53,11 +53,9 @@
         <div v-if="$gf.me">
           <div class="tabs">
             <p class="tabHeader">Classes</p>
-            <div v-for="group of myJoinedClasses">
-              <div class="groupButtonControls">
-                <button class="tab" type="button" @click="goToGroup(group)">{{group.name}}</button>
-                <button @click="leaveGroup(group)" class="leaveGroupButton">❌</button>
-              </div>
+            <div v-for="group of myJoinedClasses" class="groupButtonControls" :class="{'active': currentGroupName === group.name}">
+              <button class="tab" type="button" @click="goToGroup(group)">{{group.name}}</button>
+              <button @click="leaveGroup(group)" class="leaveGroupButton">❌</button>
             </div>
             <button class="plus-button" @click="goToExploreGroups"><img src="img/plus.svg"></button>
             <p class="tabHeader">Direct Messaging</p>

@@ -224,11 +224,6 @@ const app = {
       this.currentThread = undefined;
       this.channel = group.uri;
       this.currentGroupName = group.name;
-      // remove active class from tabs
-      Array.from(document.querySelectorAll(".tab")).forEach(it => it.classList.remove("active"));
-      // add active tab to correct group
-      const selectedTab = Array.from(document.querySelectorAll(".tab")).find(it => it.textContent === group.name);
-      selectedTab.classList.add("active");
     },
 
     goToPm() {
@@ -237,16 +232,13 @@ const app = {
       this.currentGroupName = undefined;
       this.viewingThreads = false;
       this.currentThread = undefined;
-      // remove active class from tabs
-      Array.from(document.querySelectorAll(".tab")).forEach(it => it.classList.remove("active"));
     },
 
     goToExploreGroups() {
       this.viewState = "explore";
       this.viewingThreads = false;
       this.currentThread = undefined;
-      // remove active class from tabs
-      Array.from(document.querySelectorAll(".tab")).forEach(it => it.classList.remove("active"));
+      this.currentGroupName = undefined;
     },
 
     openUsernameDialog() {
