@@ -54,7 +54,8 @@ const app = {
       recipientActorId: undefined,
       recipientUsername: undefined,
       newGroupName: "",
-      currentGroupName: undefined
+      currentGroupName: undefined,
+      showCreateGroupError: false
     }
   },
 
@@ -256,11 +257,15 @@ const app = {
       this.newGroupName = "";
       const dialog = document.getElementById("create-new-group-dialog");
       dialog.close();
+      this.showCreateGroupError = false;
     },
 
     async createGroup() {
       // check that this class name is not already in use
-      if (this.classes.map(c => c.name).includes(this.newGroupName)) throw new Error('Class name is taken!');
+      if (this.classes.map(c => c.name).includes(this.newGroupName)) {
+        this.showCreateGroupError = true;
+        return;
+      };
 
       const group = {
         type: 'Class',
@@ -268,6 +273,8 @@ const app = {
         uri: `class://mit:${this.newGroupName}`,
         context: ['classes'] // classes context for now
       };
+
+      this.showCreateGroupError = false;
 
       await this.$gf.post(group); // post new class
       this.closeDialog();

@@ -236,6 +236,7 @@
                 Class Name
                 <input type="text" v-model="newGroupName">
               </label>
+              <p v-if="showCreateGroupError" class="errorMessage">That class name is already in use. Please try a different name.</p>
               <button @click="createGroup">Create Group</button>
             </div>
           </dialog>
