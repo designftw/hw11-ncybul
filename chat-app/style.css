@@ -137,7 +137,7 @@ h1 {
     text-align: center;
 }
 
-#classHeader {
+.tabHeader {
     color: var(--darkBlue);
     font-size: 2em;
     font-weight: bold;
@@ -256,13 +256,12 @@ label[for='channel'], #usernameInput .input {
 
 /* tab styling */
 
-.tabs {
-    margin: 1em auto;
+.tabs .tabHeader {
+    margin-top: 1em;
 }
 
-.tab.active {
-    background-color: var(--darkGreen);
-    outline: 3px solid white;
+.groupButtonControls:has(.active) {
+    background-color: var(--mediumGreen);
 }
 
 .groupButtonControls {
@@ -497,6 +496,61 @@ label[for='channel'], #usernameInput .input {
 .editMessageForm {
     display: flex;
     align-items: center;
+}
+
+/* dialog styling */
+
+dialog {
+    border: 2px solid var(--darkBlue);
+    background-color: var(--lightGreen);
+    padding: 0;
+}
+
+.dialogHeader {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--mediumGreen);
+    color: white;
+    font-size: 1.5em;
+    margin: 0;
+    border-bottom: 2px solid var(--darkBlue);
+}
+
+.dialogHeader p {
+    padding: 40px;
+    margin: 0;
+}
+
+.dialogHeader button {
+    padding: 20px;
+    font-size: 1.3em;
+    background-color: var(--mediumGreen);
+    border: none;
+}
+
+.dialogHeader button:hover {
+    background-color: var(--darkGreen);
+}
+
+.dialogContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px;
+    gap: 20px;
+}
+
+.dialogContent label {
+    font-size: 1.5em;
+    color: var(--darkBlue);
+}
+
+.dialogContent button {
+    background-color: var(--darkBlue);
+    color: white;
+    font-size: 1.3em;
+    border: none;
+    padding: 10px 20px;
 }
 
 

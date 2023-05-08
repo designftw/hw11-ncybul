@@ -40,7 +40,7 @@
         </p>
         <div v-if="$gf.me">
           <div class="tabs">
-            <p id="classHeader">Classes</p>
+            <p class="tabHeader">Classes</p>
             <div v-for="group of myJoinedClasses">
               <div class="groupButtonControls">
                 <button class="tab" type="button" @click="goToGroup(group)">{{group.name}}</button>
@@ -48,8 +48,9 @@
               </div>
             </div>
             <button class="plus-button" @click="goToExploreGroups"><img src="img/plus.svg"></button>
+            <p class="tabHeader">Direct Messaging</p>
+            <button class="tab" id="pm" type="button" @click="goToPm()">Chat</button>
           </div>
-          <button class="tab" id="pm" type="button" @click="goToPm()">Private Messaging</button>
           <div class="show-read-receipts">
             <label>
               <input v-model="showReadReceipts" type="checkbox"> Show Read Receipts
@@ -225,14 +226,18 @@
               </div>
             </li>
           </ul>
-          <dialog id="create-new-group-dialog">
-            <p>Create New Class Group Chat</p>
-            <label>
-              Class Name
-              <input type="text" v-model="newGroupName">
-            </label>
-            <button @click="closeDialog">Cancel</button>
-            <button @click="createGroup">Create Group</button>
+          <dialog id="create-new-group-dialog" aria-modal="true">
+            <div class="dialogHeader">
+              <p>Create New Class Group Chat</p>
+              <button @click="closeDialog">❌</button>
+            </div>
+            <div class="dialogContent">
+              <label>
+                Class Name
+                <input type="text" v-model="newGroupName">
+              </label>
+              <button @click="createGroup">Create Group</button>
+            </div>
           </dialog>
         </div>
       </div>
