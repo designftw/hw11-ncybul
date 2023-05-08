@@ -55,7 +55,9 @@ const app = {
       recipientUsername: undefined,
       newGroupName: "",
       currentGroupName: undefined,
-      showCreateGroupError: false
+      showCreateGroupError: false,
+      showSuccessMessage: false,
+      waitingForRequest: false
     }
   },
 
@@ -245,6 +247,19 @@ const app = {
       this.currentThread = undefined;
       // remove active class from tabs
       Array.from(document.querySelectorAll(".tab")).forEach(it => it.classList.remove("active"));
+    },
+
+    openUsernameDialog() {
+      const dialog = document.getElementById("request-username-dialog");
+      dialog.showModal(); 
+    },
+
+    closeUsernameDialog() {
+      document.getElementById("username").value = "";
+      const dialog = document.getElementById("request-username-dialog");
+      dialog.close();
+      this.showRequestError = false;
+      this.showSuccessMessage = false;
     },
 
     openDialog() {
@@ -463,7 +478,7 @@ const app = {
 
     async requestUsername() {
       // initiate loading
-      document.getElementById("request-username-loader").classList.add("loading");
+      this.waitingForRequest = true;
       const requestedUsername = document.getElementById("username").value;
       await this.resolver.requestUsername(requestedUsername)
         .then((res) => {
@@ -471,14 +486,16 @@ const app = {
             this.showRequestError = false;
             this.username = requestedUsername;
             this.actorsToUsernames[this.$gf.me] = requestedUsername;
+            this.showSuccessMessage = true;
           }
-          document.getElementById("request-username-loader").classList.remove("loading");
+          this.waitingForRequest = false;
           document.getElementById("username").value = "";
         })
         .catch(() => {
-          document.getElementById("request-username-loader").classList.remove("loading");
+          this.waitingForRequest = false;
           // let user know the username is already taken
           this.showRequestError = true;
+          this.showSuccessMessage = false;
           document.querySelectorAll("#requestUsername input").forEach(element => {
             // https://stackoverflow.com/questions/44846614/trigger-css-animations-in-javascript
             element.classList.remove("error");

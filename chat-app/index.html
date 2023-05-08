@@ -19,14 +19,24 @@
             <!-- See below for the template. -->
             <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
           </div>
-          <form id="requestUsername" @submit.prevent="requestUsername">
-            <label>Request Username: <input type="text" name="username" id="username"></label>
-            <button>Submit</button>
-          </form>
-          <div class="imgContainer">
-            <img id="request-username-loader" src="img/loader.svg">
-          </div>
-          <p v-if="showRequestError" class="errorMessage">That username is already taken. Please try something else.</p>
+          <button @click="openUsernameDialog">Change Username</button>
+          <dialog id="request-username-dialog" aria-modal="true">
+            <div class="dialogHeader">
+              <p>Request Username</p>
+              <button @click="closeUsernameDialog">❌</button>
+            </div>
+            <div class="dialogContent">
+              <form id="requestUsername" @submit.prevent="requestUsername">
+                <label>Request Username: <input type="text" name="username" id="username"></label>
+                <button type="submit">Submit</button>
+              </form>
+              <div v-if="waitingForRequest" class="imgContainer">
+                <img id="request-username-loader" src="img/loader.svg">
+              </div>
+              <p v-if="showRequestError" class="errorMessage">That username is already taken. Please try something else.</p>
+              <p v-if="showSuccessMessage" class="successMessage">Username successfully set to {{username}}</p>
+            </div>
+          </dialog>
         </div>
         <p>
           <button v-if="$gf.me" @click="$gf.toggleLogIn">
@@ -252,27 +262,33 @@
 
   <template id="name">
     <div class="name-component">
-      <span v-if="!editing">
+      <div v-if="!editing">
 
         <!-- If we're not editing the name-->
         <!-- Display the profile's name, if it exists -->
         <!-- or anonymous if it doesn't -->
-        <p v-if="profile">
-          {{ profile.name }}<br>(username: {{ username }})
-        </p>
-        <p v-else>Anonymous</p>
+        <div class="name-first-row">
+          <p v-if="profile">
+            {{ profile.name }}
+          </p>
+          <p v-else>Anonymous</p>
+          <!-- Also if the name is "editable" add an edit button -->
+          <button v-if="editable" @click="editName" class="editNameButton">
+            <img src="img/edit.png">
+          </button>
+        </div>
+        <p v-if="profile">(username: {{ username }})</p>
 
-        <!-- Also if the name is "editable" add an edit button -->
-        <button v-if="editable" @click="editName">
-          Edit Name
-        </button>
-      </span>
+      </div>
 
       <!-- If we're in the editing state, create something to edit the name-->
-      <form v-else @submit.prevent="saveName">
-        <input v-model="editText"/>
-        <input type="submit" value="Save Name"/>
-      </form>
+      <div v-else>
+        <form @submit.prevent="saveName" class="name-first-row">
+          <input v-model="editText"/>
+          <input type="submit" value="Save"/>
+        </form>
+        <p v-if="profile">(username: {{ username }})</p>
+      </div>
     </div>
   </template>
   <template id="like">

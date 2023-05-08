@@ -85,7 +85,7 @@ h1 {
 .profileContainer {
     display: flex;
     gap: 20px;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     font-size: 3em;
 }
@@ -100,6 +100,23 @@ h1 {
 
 .profilePicContainer .profilePic {
     width: 100px;
+}
+
+/* name component styling */
+.name-first-row {
+    display: flex;
+    align-content: center;
+}
+
+.name-first-row button.editNameButton {
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    background-color: var(--green);
+}
+
+.editNameButton img {
+    height: 20px;
 }
 
 .aside {
@@ -186,6 +203,13 @@ label[for='channel'], #usernameInput .input {
 .errorMessage {
     color: red;
     font-size: initial;
+    font-weight: bold;
+}
+
+.successMessage {
+    color: var(--darkGreen);
+    font-size: initial;
+    font-weight: bold;
 }
 
 .messageButtons {
@@ -233,11 +257,11 @@ label[for='channel'], #usernameInput .input {
     width: 100%;
 }
 
-#request-username-loader, #search-username-loader {
+#search-username-loader {
     display: none;
 }
 
-#request-username-loader.loading, #search-username-loader.loading {
+#search-username-loader.loading {
     display: initial;
 }
 
@@ -509,6 +533,7 @@ dialog {
 .dialogHeader {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: var(--mediumGreen);
     color: white;
     font-size: 1.5em;
@@ -517,7 +542,7 @@ dialog {
 }
 
 .dialogHeader p {
-    padding: 40px;
+    padding: 20px;
     margin: 0;
 }
 
@@ -526,6 +551,8 @@ dialog {
     font-size: 1.3em;
     background-color: var(--mediumGreen);
     border: none;
+    margin: 0;
+    border-radius: 0;
 }
 
 .dialogHeader button:hover {
