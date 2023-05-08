@@ -17,9 +17,11 @@
             <!-- We display names in multiple places, so we made a -->
             <!-- reusable <name></name> component. -->
             <!-- See below for the template. -->
-            <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
+            <div class="name-wrapper">
+              <name :actor="$gf.me" :editable="true" :username="getUsernameFromActorId($gf.me)"></name>
+              <button @click="openUsernameDialog" class="editNameButton">✏️</button>
+            </div>
           </div>
-          <button @click="openUsernameDialog">Change Username</button>
           <dialog id="request-username-dialog" aria-modal="true">
             <div class="dialogHeader">
               <p>Request Username</p>
@@ -274,7 +276,7 @@
           <p v-else>Anonymous</p>
           <!-- Also if the name is "editable" add an edit button -->
           <button v-if="editable" @click="editName" class="editNameButton">
-            <img src="img/edit.png">
+            ✏️
           </button>
         </div>
         <p v-if="profile">(username: {{ username }})</p>

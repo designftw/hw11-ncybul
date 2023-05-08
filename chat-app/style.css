@@ -74,8 +74,17 @@ h1 {
 
 /* miscellaneous info styling */
 
-.profileContainer .name-component span {
+.profileContainer .name-component {
     font-size: 1.5em;
+}
+
+.name-component input {
+    max-width: 100px;
+}
+
+.name-component p {
+    margin: 0;
+    align-self: center;
 }
 
 .profileContainer .name-component button {
@@ -108,21 +117,27 @@ h1 {
     align-content: center;
 }
 
-.name-first-row button.editNameButton {
+.profileContainer .editNameButton {
     padding: 5px;
-    margin: 5px;
+    margin: 0;
     border: none;
     background-color: var(--green);
 }
 
-.editNameButton img {
-    height: 20px;
+.name-wrapper {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .aside {
     display: flex;
     flex-direction: column;
     background-color: var(--green);
+}
+
+.aside p {
+    margin: 0;
 }
 
 .aside * {
