@@ -353,8 +353,12 @@ label[for='channel'], #usernameInput .input {
     border: none;
 }
 
-.threadsList button:hover {
+.threadsList:has(button:hover) button {
     background-color: var(--mediumGreen);
+}
+
+.threadsList button:not(.threadName):hover {
+    background-color: var(--darkGreen);
 }
 
 .groups-list, .threadsList {
@@ -366,6 +370,27 @@ label[for='channel'], #usernameInput .input {
     height: 100%;
     box-sizing: border-box;
     padding: 0;
+}
+
+.threadsList {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.threadsList .threadName {
+    width: 80%;
+}
+
+.threadsList span {
+    display: flex;
+    width: 20%;
+    text-align: center;
+}
+
+.threadsList button:not(.threadName) {
+    width: 50%;
+    text-align: center;
+    display: initial;
 }
 
 .groups-list li, .threadsList button {

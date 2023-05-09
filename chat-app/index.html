@@ -115,12 +115,17 @@
         <div v-if="viewState !== 'explore'" class="threads-or-convo-container">
           <transition name="thread-title">
             <div v-if="viewingThreads && currentThread" class="thread-title">
-              <p>Thread: {{ getThreadContent(currentThread) }}</p>
+              <p>Thread: {{ currentThreadName }}</p>
             </div>
           </transition>
           <div class="threads-container" v-if="viewingThreads && !currentThread">
-            <div v-for="thread of allThreads" :key="thread" class="threadsList">
-              <button v-if="thread" @click="goToThread(thread)">Thread: {{ getThreadContent(thread) }}</button>
+            <div v-for="thread of threads" :key="thread" class="threadsList">
+              <button v-if="thread" class="threadName" @click="goToThread(thread.base)">Thread: {{ thread.name }}</button>
+              <!-- add edit buttons if this thread was created by me -->
+              <span v-if="thread.actor === $gf.me">
+                <button class="editButton" @click="startEditThread(thread)">✏️</button>
+                <button @click="deleteThread(thread)">❌</button>
+              </span>
             </div>
           </div>
           <div v-else class="message-list">
@@ -149,7 +154,7 @@
                     <div class="messageButtons">
                       <like :messageid="message.id"></like>
                       <div v-if="!this.viewingThreads">
-                        <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
+                        <div v-if="!messageStartsThread(message.id)" class="replyButtonContainer">
                           <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
                           <p class="tooltip">Create Thread From Message</p>
                         </div>
@@ -190,7 +195,7 @@
                     </div>
                     <div class="messageButtons">
                       <div v-if="!this.viewingThreads">
-                        <div v-if="!allThreads.includes(message.id)" class="replyButtonContainer">
+                        <div v-if="!messageStartsThread(message.id)" class="replyButtonContainer">
                           <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
                           <p class="tooltip">Create Thread From Message</p>
                         </div>

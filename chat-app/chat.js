@@ -50,6 +50,8 @@ const app = {
       showReadReceipts: true,
       viewingThreads: false,
       currentThread: undefined,
+      currentThreadName: undefined,
+      currentThreadBase: undefined,
       queryByUsername: "username",
       recipientActorId: undefined,
       recipientUsername: undefined,
@@ -200,19 +202,33 @@ const app = {
         // .slice(0,10)
     },
 
-    allThreads() {
-      // get all notes that start a thread
-      let threadBases = new Set();
-      const messageIds = this.messages.map(m => m.id);
-      this.messages.forEach(m => {
-        // make sure message still exists and add if so add it to all threads set
-        if (messageIds.includes(m.inReplyTo)) threadBases.add(m.inReplyTo);
-      });
-      return Array.from(threadBases);
-    },
+    threads() {
+      const threads = this.allMessages.filter((m) => 
+        m.type === 'Thread' &&
+        m.base &&
+        m.name !== undefined &&
+        m.uri &&
+        typeof m.uri=='string'
+      );
+      return threads;
+    }
   },
 
   methods: {
+
+    startEditThread(thread) {
+      return;
+    },
+
+    deleteThread(thread) {
+      this.$gf.remove(thread);
+    },
+
+    clearThreadInfo() {
+      this.currentThread = undefined;
+      this.currentThreadName = undefined;
+      this.currentThreadBase = undefined;
+    },
 
     joinedClassAlready(groupName) {
       return this.myJoinedClasses.map(it => it.name).filter(it => it === groupName).length > 0;
@@ -221,7 +237,7 @@ const app = {
     goToGroup(group) {
       this.viewState = "channel";
       this.viewingThreads = false;
-      this.currentThread = undefined;
+      this.clearThreadInfo();
       this.channel = group.uri;
       this.currentGroupName = group.name;
     },
@@ -231,13 +247,13 @@ const app = {
       this.channel = undefined;
       this.currentGroupName = undefined;
       this.viewingThreads = false;
-      this.currentThread = undefined;
+      this.clearThreadInfo();
     },
 
     goToExploreGroups() {
       this.viewState = "explore";
       this.viewingThreads = false;
-      this.currentThread = undefined;
+      this.clearThreadInfo();
       this.currentGroupName = undefined;
     },
 
@@ -322,15 +338,25 @@ const app = {
       return this.downloadedImages[magnet] === 'error';
     },
 
+    messageStartsThread(messageId) {
+      return this.threads.map(t => t.base).filter(base => base === messageId).length > 0;
+    },
+
     getThreadContent(threadId) {
       // find message and return its content
       const thread = this.messages.filter(m => m.id == threadId)[0];
       return thread ? thread.content : "";
     },
 
-    goToThread(thread) {
+    findThreadFromBase(baseId) {
+      return this.threads.find(t => t.base === baseId); 
+    },
+
+    goToThread(threadBaseId) {
       this.viewingThreads = true;
-      this.currentThread = thread;
+      this.currentThread = this.findThreadFromBase(threadBaseId).uri;
+      this.currentThreadName = this.findThreadFromBase(threadBaseId).name;
+      this.currentThreadBase = threadBaseId;
     },
 
     getMessages() {
@@ -367,7 +393,7 @@ const app = {
       // figure out what thread we are viewing
       const messagesInThread = this.messages.filter(m => 
         // thread base
-        m.id === this.currentThread ||
+        m.id === this.currentThreadBase ||
         // reply to thread base
         m.inReplyTo === this.currentThread
       );
@@ -377,7 +403,7 @@ const app = {
     viewThreads() {
       this.viewingThreads = !this.viewingThreads;
       if (!this.viewingThreads) {
-        this.currentThread = undefined;
+        this.clearThreadInfo();
       }
     },
 
@@ -528,8 +554,19 @@ const app = {
         message.context = [this.channel, 'classes']
       }
 
-      // add inReplyTo if sending message in thread
       if (this.currentThread) {
+        // create a new thread if one does not already exist
+        if (!this.threads.map(t => t.uri).includes(this.currentThread)) {
+          const thread = {
+            type: 'Thread',
+            base: this.currentThreadBase,
+            name: this.currentThreadName,
+            uri: this.currentThread,
+            context: this.viewState === 'pm' ? [this.$gf.me, this.recipient] : [this.channel]
+          }
+          await this.$gf.post(thread);
+        }
+        // add inReplyTo field linked to thread uri
         message.inReplyTo = this.currentThread;
       }
 
@@ -541,12 +578,6 @@ const app = {
     },
 
     async removeMessage(message) {
-      // remove all replies to that message if it is the base of the message
-      if (this.currentThread === message.id) {
-        this.messages.filter(m => m.inReplyTo === message.id).forEach(m => async () => await this.$gf.remove(m));
-        // go back to main chat
-        this.viewThreads();
-      }
       await this.$gf.remove(message);
     },
 
@@ -573,7 +604,10 @@ const app = {
     startThread(messageid) {
       // change view to a new thread starting at this message
       this.viewingThreads = true;
-      this.currentThread = messageid;
+      // create a new URI
+      this.currentThread = `thread://:${crypto.randomUUID()}`;
+      this.currentThreadName = this.getThreadContent(messageid);
+      this.currentThreadBase = messageid;
     },
   }
 }
