@@ -120,14 +120,25 @@
               <p>Thread: {{ currentThreadName }}</p>
             </div>
           </transition>
-          <div class="threads-container" v-if="viewingThreads && !currentThread">
-            <div v-for="thread of threads" :key="thread" class="threadsList">
-              <button v-if="thread" class="threadName" @click="goToThread(thread.base)">Thread: {{ thread.name }}</button>
-              <!-- add edit buttons if this thread was created by me -->
-              <span v-if="thread.actor === $gf.me">
-                <button class="editButton" @click="startEditThread(thread)">✏️</button>
-                <button @click="deleteThread(thread)">❌</button>
-              </span>
+          <div v-if="viewingThreads && !currentThread" class="threads-container">
+            <div v-for="thread of threads" :key="thread" class="threadsListItem">
+              <div v-if="editingThread !== thread.uri" class="thread">
+                <button class="threadName" @click="goToThread(thread.base)">Thread: {{ thread.name }}</button>
+                <!-- add edit buttons if this thread was created by me -->
+                <span v-if="thread.actor === $gf.me" class="threadControls">
+                  <button class="editButton" @click="startEditThread(thread)">✏️</button>
+                  <button @click="deleteThread(thread)">❌</button>
+                </span>
+              </div>
+              <div v-else class="editingThreadName">
+                <form @submit.prevent="saveEditThread(thread)">
+                  <input v-model="editingThreadText" class="threadNameInput"/>
+                  <span class="editingThreadControls">
+                    <input type="submit" value="Save"/>
+                    <button type="button" @click="cancelEditThread">Cancel</button>
+                  </span>
+                </form>
+              </div>
             </div>
           </div>
           <div v-else class="message-list">

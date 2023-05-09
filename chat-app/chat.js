@@ -59,7 +59,9 @@ const app = {
       currentGroupName: undefined,
       showCreateGroupError: false,
       showSuccessMessage: false,
-      waitingForRequest: false
+      waitingForRequest: false,
+      editingThread: undefined,
+      editingThreadText: undefined
     }
   },
 
@@ -203,13 +205,23 @@ const app = {
     },
 
     threads() {
-      const threads = this.allMessages.filter((m) => 
+      let threads = this.allMessages.filter((m) => 
         m.type === 'Thread' &&
         m.base &&
         m.name !== undefined &&
         m.uri &&
         typeof m.uri=='string'
       );
+      // also filter on recipient if private messaging
+      if (this.viewState === 'pm') {
+        // hack to avoid getting all threads that I am a part of
+        if (this.recipient === this.$gf.me) {
+          // filter out threads with contexts that include anybody but me
+          threads = threads.filter(t => t.context.filter(c => c !== this.$gf.me).length === 0)
+        } else {
+          threads = threads.filter(t => t.context.includes(this.recipient));
+        }
+      }
       return threads;
     }
   },
@@ -217,7 +229,19 @@ const app = {
   methods: {
 
     startEditThread(thread) {
-      return;
+      this.editingThread = thread.uri;
+      this.editingThreadText = thread.name;
+    },
+
+    saveEditThread(thread) {
+      thread.name = this.editingThreadText;
+      this.editingThread = false;
+      this.editingThreadText = undefined;
+    },
+
+    cancelEditThread() {
+      this.editingThread = false;
+      this.editingThreadText = undefined;
     },
 
     deleteThread(thread) {

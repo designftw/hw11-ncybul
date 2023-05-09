@@ -349,19 +349,89 @@ label[for='channel'], #usernameInput .input {
     height: 80%;
 }
 
-.threadsList button {
+.threadsListItem, .editingThreadName form {
+    width: 100%;
+}
+
+.thread {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: var(--green);
+    color: white;
+    border-bottom: 2px solid var(--darkBlue);
+    word-break: break-all;
+}
+
+.thread button, .editingThreadControls * {
+    padding: 20px;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 2em;
+    background-color: inherit;
+    color: white;
     border: none;
 }
 
-.threadsList:has(button:hover) button {
+.thread .threadName {
+    width: 80%;
+    text-align: left;
+}
+
+.thread .threadControls {
+    width: 20%;
+}
+
+.editingThreadControls {
+    width: 30%;
+}
+
+.threadControls button, .editingThreadControls * {
+    width: 50%;
+}
+
+.thread:has(button:hover) {
     background-color: var(--mediumGreen);
 }
 
-.threadsList button:not(.threadName):hover {
+.threadControls button:hover, .editingThreadControls button:hover, .editingThreadControls input:hover {
     background-color: var(--darkGreen);
 }
 
-.groups-list, .threadsList {
+.editingThreadName {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: var(--green);
+    color: white;
+    border-bottom: 2px solid var(--darkBlue);
+    word-break: break-all;
+}
+
+.editingThreadName button, .editingThreadName input {
+    padding: 20px;
+    margin: 0;
+    border: none;
+    box-sizing: border-box;
+}
+
+.editingThreadName .threadNameInput {
+    width: 70%;
+}
+
+.editingThreadControls {
+    display: flex;
+}
+
+.editingThreadName form {
+    display: flex;
+}
+
+.threadNameInput {
+    font-size: 2em;
+}
+
+.groups-list {
     display: flex;
     flex-direction: column;
     list-style: none;
@@ -372,7 +442,7 @@ label[for='channel'], #usernameInput .input {
     padding: 0;
 }
 
-.threadsList {
+/* .threadsList {
     flex-direction: row;
     justify-content: space-between;
 }
@@ -391,9 +461,9 @@ label[for='channel'], #usernameInput .input {
     width: 50%;
     text-align: center;
     display: initial;
-}
+} */
 
-.groups-list li, .threadsList button {
+.groups-list li {
     display: flex;
     justify-content: space-between;
     padding: 20px;
