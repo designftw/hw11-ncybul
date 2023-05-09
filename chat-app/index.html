@@ -101,8 +101,10 @@
               </form>
               <img id="search-username-loader" src="img/loader.svg">
             </div>
-            <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
-            <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
+            <div v-if="recipient">
+              <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
+             <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
+            </div>
           </div>
           <p v-if="showUsernameError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
           <p v-if="showActorIdError" class="errorMessage">Please enter an Actor ID with the correct format.</p>
