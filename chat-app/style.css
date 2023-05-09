@@ -442,27 +442,6 @@ label[for='channel'], #usernameInput .input {
     padding: 0;
 }
 
-/* .threadsList {
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.threadsList .threadName {
-    width: 80%;
-}
-
-.threadsList span {
-    display: flex;
-    width: 20%;
-    text-align: center;
-}
-
-.threadsList button:not(.threadName) {
-    width: 50%;
-    text-align: center;
-    display: initial;
-} */
-
 .groups-list li {
     display: flex;
     justify-content: space-between;
