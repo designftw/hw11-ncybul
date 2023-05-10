@@ -431,6 +431,10 @@ const app = {
       }
     },
 
+    returnToThreads() {
+      this.clearThreadInfo();
+    },
+
     messageRead(messageid) {
       // true if > 0 read indicators for this messageid from someone else and false otherwise
       return this.readReceipts.filter(m => m.object === messageid && m.actor !== this.$gf.me).length > 0;

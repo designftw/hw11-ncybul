@@ -75,7 +75,8 @@
         <div id="channelInput" v-if="viewState === 'channel'">
           <span id="groupChatName">{{currentGroupName}}</span>
           <span class="threads-and-return">
-            <button id="threadsButton" v-if="!viewingThreads || currentThread !== undefined" @click="viewThreads">Threads</button>
+            <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">View All Threads</button>
+            <button id="threadsButton" v-if="viewingThreads && currentThread !== undefined" @click="returnToThreads">Return to Threads</button>
             <button id="returnButton" v-if="viewingThreads" @click="viewThreads">Return To Chat</button>
           </span>
         </div>
@@ -105,7 +106,8 @@
             </div>
             <div v-if="recipient">
               <span class="threads-and-return">
-                <button id="threadsButton" v-if="!viewingThreads || currentThread !== undefined" @click="viewThreads">Threads</button>
+                <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">View All Threads</button>
+                <button id="threadsButton" v-if="viewingThreads && currentThread !== undefined" @click="returnToThreads">Return to Threads</button>
                 <button id="returnButton" v-if="viewingThreads" @click="viewThreads">Return To Chat</button>
               </span>
             </div>
