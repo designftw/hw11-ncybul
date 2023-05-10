@@ -26,26 +26,6 @@ main {
     row-gap: 10px;
 }
 
-@media (min-width: 900px) {
-    main {
-        grid-template-columns: 1fr 3fr;
-        column-gap: 0;
-        height: 100vh;
-    }
-
-    body {
-        overflow-y: hidden;
-        height: 100vh;
-    }
-
-    .aside {
-        height: 100%;
-        overflow-y: auto;
-        box-sizing: border-box;
-        padding: 20px 0;
-    }
-}
-
 /* content styling */
 
 .content {
@@ -225,6 +205,11 @@ label[for='channel'], #usernameInput .input {
     color: white;
     padding: 10px 20px;
     box-sizing: border-box;
+}
+
+.threads-and-return {
+    display: flex;
+    gap: 10px;
 }
 
 #pm {
@@ -798,4 +783,45 @@ p.tooltip {
 .thread-title-enter-active, .thread-title-leave-active {
     transition: transform 400ms ease;
     z-index: -1;
+}
+
+/* media queries */
+
+@media (max-width: 900px) {
+    /* shrink font sizes */
+    .groups-list li, .threadNameInput, .thread button {
+        font-size: 1em;
+    }
+
+    .editingThreadName .threadNameInput {
+        width: 60%;
+    }
+
+    .editingThreadControls {
+        width: 40%;
+    }
+
+    .editingThreadControls * {
+        font-size: 0.7em;
+    }
+}
+
+@media (min-width: 900px) {
+    main {
+        grid-template-columns: 1fr 3fr;
+        column-gap: 0;
+        height: 100vh;
+    }
+
+    body {
+        overflow-y: hidden;
+        height: 100vh;
+    }
+
+    .aside {
+        height: 100%;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 20px 0;
+    }
 }

@@ -74,8 +74,10 @@
         <!-- special headers -->
         <div id="channelInput" v-if="viewState === 'channel'">
           <span id="groupChatName">{{currentGroupName}}</span>
-          <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
-          <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
+          <span class="threads-and-return">
+            <button id="threadsButton" v-if="!viewingThreads || currentThread !== undefined" @click="viewThreads">Threads</button>
+            <button id="returnButton" v-if="viewingThreads" @click="viewThreads">Return To Chat</button>
+          </span>
         </div>
         <div v-if="viewState === 'pm'" id="usernameInputContainer">
           <div id="usernameInput">
@@ -102,8 +104,10 @@
               <img id="search-username-loader" src="img/loader.svg">
             </div>
             <div v-if="recipient">
-              <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">Threads</button>
-             <button id="returnButton" v-else @click="viewThreads">Return To Chat</button>
+              <span class="threads-and-return">
+                <button id="threadsButton" v-if="!viewingThreads || currentThread !== undefined" @click="viewThreads">Threads</button>
+                <button id="returnButton" v-if="viewingThreads" @click="viewThreads">Return To Chat</button>
+              </span>
             </div>
           </div>
           <p v-if="showUsernameError" class="errorMessage">No one with that username exists. Please check the spelling or try a different username.</p>
