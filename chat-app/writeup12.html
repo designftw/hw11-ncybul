@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Chat App Design Writeup</title>
+		<link rel="stylesheet" href="writeup.css" />
+	</head>
+	<body>
+		<header>
+			<h1>Chat App Halfway Point Writeup</h1>
+		</header>
+		<main>
+			<h2>Overview</h2>
+			<p class="callout">
+				Note about FireFox: My CSS uses the :has selector which is not supported by FireFox
+				by default. In order to enable this feature in FireFox visit about:config and set the 
+				layout.css.has-selector.enabled preference to true.
+			</p>
+            <h2>Plans for Final Design</h2>
+            <p>
+                The plans for my final design include many of the features that I initially specified in my
+                Figma prototype. Since my chat app is intended to be used by MIT students in Course 6 to
+                join class group chats and get their questions answered, I want my final design to 
+                allow students to join these class group chats and create threads within these group chats
+                for discussing specific questions in greater depth. These overarching features were included in my Figma
+                design and will also be implemented in my final chat app design. I have, however, planned to make some changes to
+                my chat app design. For example, I am no longer implementing the feature which allows students to 
+                mark threads as resolved or unresolved. This decision is based on feedback I received from
+                my user testing in which many users expressed confusion about why this option was helpful. I am also
+                planning on changing the layout of several of my features, including the location of message
+                controls since I now have controls for viewing a thread created from a specific message, replying to a message, liking a message,
+                and potentially editing or deleting a message if the user is the original sender. Some of these features
+                were not included in my original Figma design, so I had to adjust my design to fit them into the 
+                user interface in an intuitive way. One way that I have simplified my design is that I am treating
+                class group chats differently from direct messages. In my original design, I allowed users to 
+                add direct message recipients to their sidebar in the same way that they can join classes and view
+                all of their joined classes in the sidebar. Instead, my final design will use the original 
+                infrastucture for direct messaging which involves having a recipient field where users can specify
+                who they would like to chat with and populating the conversation with all of the messages between the
+                user and the recipient once they have specified a valid recipient. Since I have limited time to 
+                complete the chat app, I decided to focus most of my energy on implementing the class group chats
+                and thread functionalities rather than focus on the direct messaging functionality since this is 
+                not unique to my design or my use case.
+            </p>
+            <h2>Halfway Point Progress</h2>
+            <p>
+                For my halfway point, I have completed the following tasks. These tasks represent a 
+                suitable halfway point as I have already implemented the bulk of the functionality
+                required of the two main features which I wanted to add into my chat app (class group
+                chats and threads). I have also implemented much of the styling that I designed in my Figma
+                prototype.
+            </p>
+            <ul>
+                <li>
+                    I have added functionality that allows users to view all
+                    existing class group chats on the Explore Groups page, join classes from this page, leave
+                    classes, and delete a class that has already been created (if they are the person who
+                    created that group chat initially).
+                </li>
+                <li>
+                    I have implemented functionality which allows users to create threads in a particular context by replying
+                    to a message in that conversation. Each class group chat or direct messaging conversation
+                    will also have a page that shows all of the existing threads that have been created within that
+                    conversation.
+                </li>
+                <li>
+                    I added functionality that allows users to edit the title of a thread or delete a specific thread
+                    (if they are the person who created that thread initially).
+                </li>
+                <li>
+                    I aligned the styling of my chat app with my Figma design to the best of my ability to 
+                    improve the usability of the chat app.
+                </li>
+            </ul>
+            <p>
+                For the final design, I would like to complete the following tasks.
+            </p>
+			<ul>
+                <li>
+                    Add a search functionality to my Explore Groups page which will be helpful for finding
+                    a specific class group chat.
+                </li>
+                <li>
+                    Allow users to see all members of a specific class group chat that they have joined.
+                </li>
+                <li>
+                    Allow users to reply to messages without creating a thread.
+                </li>
+                <li>
+                    Allow users to create a new thread without having to reply to a message.
+                </li>
+			</ul>
+		</main>
+	</body>
+</html>
