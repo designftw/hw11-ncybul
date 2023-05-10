@@ -363,6 +363,10 @@ label[for='channel'], #usernameInput .input {
     text-align: left;
 }
 
+.threadName.fullWidth {
+    width: 100%;
+}
+
 .thread .threadControls {
     width: 20%;
 }

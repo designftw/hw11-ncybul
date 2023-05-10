@@ -127,7 +127,7 @@
           <div v-if="viewingThreads && !currentThread" class="threads-container">
             <div v-for="thread of threads" :key="thread" class="threadsListItem">
               <div v-if="editingThread !== thread.uri" class="thread">
-                <button class="threadName" @click="goToThread(thread.base)">Thread: {{ thread.name }}</button>
+                <button class="threadName" :class="{'fullWidth': thread.actor !== $gf.me}" @click="goToThread(thread.base)">Thread: {{ thread.name }}</button>
                 <!-- add edit buttons if this thread was created by me -->
                 <span v-if="thread.actor === $gf.me" class="threadControls">
                   <button class="editButton" @click="startEditThread(thread)">✏️</button>
