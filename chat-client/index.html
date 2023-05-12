@@ -79,6 +79,7 @@
             <button id="threadsButton" v-if="viewingThreads && currentThread !== undefined" @click="returnToThreads">Return to Threads</button>
             <button id="returnButton" v-if="viewingThreads && currentThread === undefined" @click="openThreadDialog">New Thread</button>
             <button id="returnButton" v-if="viewingThreads" @click="viewThreads">Return To Chat</button>
+            <button id="membersButton" v-if="!viewingThreads" @click="openMembersDialog">Members</button>
           </span>
         </div>
         <div v-if="viewState === 'pm'" id="usernameInputContainer">
@@ -253,6 +254,17 @@
                 <input type="text" v-model="newThreadName">
               </label>
               <button @click="createNewThread">Create Thread</button>
+            </div>
+          </dialog>
+          <dialog id="members-dialog" aria-modal="true">
+            <div class="dialogHeader">
+              <p>Members of {{currentGroupName}}</p>
+              <button @click="closeMembersDialog">❌</button>
+            </div>
+            <div class="dialogContent">
+              <p v-for="member of members">
+                {{member}}
+              </p>
             </div>
           </dialog>
         </div>

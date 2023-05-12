@@ -235,10 +235,40 @@ const app = {
         }
       }
       return threads;
+    },
+
+    members() {
+      // inside a channel
+      if (this.viewState === 'channel') {
+        // find all people who have joined a class
+        let allJoins = this.messagesRaw.filter(m => 
+          m.type === 'Join' &&
+          m.context.includes(`class://mit:${this.currentGroupName}`)
+        );
+        let members = [...new Set(allJoins.map(j => j.actor))];
+        const memberUsernames = [];
+        for (const member of members) {
+          const username = this.actorsToUsernames[member] ?? 'unknown user';
+          memberUsernames.push(username);
+        }
+        return memberUsernames;
+      }
+      // private messaging (no members)
+      return [];
     }
   },
 
   methods: {
+
+    openMembersDialog() {
+      const dialog = document.getElementById("members-dialog");
+      dialog.showModal(); 
+    },
+
+    closeMembersDialog() {
+      const dialog = document.getElementById("members-dialog");
+      dialog.close();
+    },
 
     searchGroups() {
       this.filterClasses = true;

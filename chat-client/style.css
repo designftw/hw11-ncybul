@@ -198,7 +198,7 @@ label[for='channel'], #usernameInput .input {
     gap: 20px;
 }
 
-#threadsButton, #returnButton, #new-group-button, .group-listing-buttons button, #pm {
+#threadsButton, #returnButton, #new-group-button, .group-listing-buttons button, #pm, #membersButton {
     font-size: 0.7em;
     border: none;
     background-color: var(--darkBlue);
@@ -691,6 +691,11 @@ dialog {
     font-size: 1.3em;
     border: none;
     padding: 10px 20px;
+}
+
+#members-dialog {
+    height: 40%;
+    overflow-y: auto;
 }
 
 
