@@ -344,6 +344,7 @@ label[for='channel'], #usernameInput .input {
 
 #explore-groups {
     height: 80%;
+    overflow-y: auto;
 }
 
 .threadsListItem, .editingThreadName form {
@@ -438,7 +439,6 @@ label[for='channel'], #usernameInput .input {
     list-style: none;
     width: 100%;
     margin: auto;
-    height: 100%;
     box-sizing: border-box;
     padding: 0;
 }
