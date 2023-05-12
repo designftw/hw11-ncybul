@@ -56,6 +56,7 @@ const app = {
       recipientActorId: undefined,
       recipientUsername: undefined,
       newGroupName: "",
+      newThreadName: "",
       currentGroupName: undefined,
       showCreateGroupError: false,
       showSuccessMessage: false,
@@ -207,7 +208,6 @@ const app = {
     threads() {
       let threads = this.allMessages.filter((m) => 
         m.type === 'Thread' &&
-        m.base &&
         m.name !== undefined &&
         m.uri &&
         typeof m.uri=='string'
@@ -248,10 +248,39 @@ const app = {
       this.$gf.remove(thread);
     },
 
+    async createNewThread() {
+      // create a new URI
+      this.currentThread = `thread://:${crypto.randomUUID()}`;
+      this.currentThreadName = this.newThreadName;
+      this.currentThreadBase = undefined; // threads that get created from scratch do not have a base
+
+      const thread = {
+        type: 'Thread',
+        base: this.currentThreadBase,
+        name: this.currentThreadName,
+        uri: this.currentThread,
+        context: this.viewState === 'pm' ? [this.$gf.me, this.recipient] : [this.channel]
+      }
+      this.closeThreadDialog();
+      await this.$gf.post(thread);
+    },
+
     clearThreadInfo() {
       this.currentThread = undefined;
       this.currentThreadName = undefined;
       this.currentThreadBase = undefined;
+    },
+
+    openThreadDialog() {
+      const dialog = document.getElementById("create-new-thread-dialog");
+      dialog.showModal();
+    },
+
+    closeThreadDialog() {
+      // clear all input fields
+      this.newThreadName = "";
+      const dialog = document.getElementById("create-new-thread-dialog");
+      dialog.close();
     },
 
     joinedClassAlready(groupName) {
@@ -372,15 +401,15 @@ const app = {
       return thread ? thread.content : "";
     },
 
-    findThreadFromBase(baseId) {
-      return this.threads.find(t => t.base === baseId); 
+    findThreadFromUri(uri) {
+      return this.threads.find(t => t.uri === uri); 
     },
 
-    goToThread(threadBaseId) {
+    goToThread(threadUri) {
       this.viewingThreads = true;
-      this.currentThread = this.findThreadFromBase(threadBaseId).uri;
-      this.currentThreadName = this.findThreadFromBase(threadBaseId).name;
-      this.currentThreadBase = threadBaseId;
+      this.currentThread = threadUri;
+      this.currentThreadName = this.findThreadFromUri(threadUri).name;
+      this.currentThreadBase = this.findThreadFromUri(threadUri).base;
     },
 
     getMessages() {

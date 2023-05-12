@@ -77,6 +77,7 @@
           <span class="threads-and-return">
             <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">View All Threads</button>
             <button id="threadsButton" v-if="viewingThreads && currentThread !== undefined" @click="returnToThreads">Return to Threads</button>
+            <button id="returnButton" v-if="viewingThreads && currentThread === undefined" @click="openThreadDialog">New Thread</button>
             <button id="returnButton" v-if="viewingThreads" @click="viewThreads">Return To Chat</button>
           </span>
         </div>
@@ -108,6 +109,7 @@
               <span class="threads-and-return">
                 <button id="threadsButton" v-if="!viewingThreads" @click="viewThreads">View All Threads</button>
                 <button id="threadsButton" v-if="viewingThreads && currentThread !== undefined" @click="returnToThreads">Return to Threads</button>
+                <button id="returnButton" v-if="viewingThreads && currentThread === undefined" @click="openThreadDialog">New Thread</button>
                 <button id="returnButton" v-if="viewingThreads" @click="viewThreads">Return To Chat</button>
               </span>
             </div>
@@ -129,7 +131,7 @@
           <div v-if="viewingThreads && !currentThread" class="threads-container">
             <div v-for="thread of threads" :key="thread" class="threadsListItem">
               <div v-if="editingThread !== thread.uri" class="thread">
-                <button class="threadName" :class="{'fullWidth': thread.actor !== $gf.me}" @click="goToThread(thread.base)">Thread: {{ thread.name }}</button>
+                <button class="threadName" :class="{'fullWidth': thread.actor !== $gf.me}" @click="goToThread(thread.uri)">Thread: {{ thread.name }}</button>
                 <!-- add edit buttons if this thread was created by me -->
                 <span v-if="thread.actor === $gf.me" class="threadControls">
                   <button class="editButton" @click="startEditThread(thread)">✏️</button>
@@ -240,6 +242,19 @@
               </div>
             </div>
           </div>
+          <dialog id="create-new-thread-dialog" aria-modal="true">
+            <div class="dialogHeader">
+              <p>Create New Thread</p>
+              <button @click="closeThreadDialog">❌</button>
+            </div>
+            <div class="dialogContent">
+              <label>
+                Thread Name
+                <input type="text" v-model="newThreadName">
+              </label>
+              <button @click="createNewThread">Create Thread</button>
+            </div>
+          </dialog>
         </div>
         <!-- A form for sending messages -->
         <div v-if="(viewState !== 'explore') && ((!viewingThreads) || (viewingThreads && currentThread)) && (viewState !== 'pm' || recipient)" class="send-form-container">
