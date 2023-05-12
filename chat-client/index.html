@@ -266,8 +266,22 @@
         </div>
         <!-- explore groups page -->
         <div v-if="viewState === 'explore'" id="explore-groups">
-          <ul class="groups-list">
-            <li v-for="group of classes">
+          <form class="search-groups" @submit.prevent="searchGroups">
+            <input v-model="searchInput" placeholder="Search Classes..."/>
+            <input type="submit" value="Search"/>
+            <button type="button" @click="cancelSearch">Clear</button>
+          </form>
+          <ul v-if="!filterClasses" class="groups-list">
+            <li v-for="(group, index) of classes" :class="{ 'first-class-in-list': index === 0 }">
+              {{group.name}}
+              <div class="group-listing-buttons">
+                <button v-if="group.actor===$gf.me" @click="deleteGroup(group.id)">Delete</button>
+                <button v-if="!joinedClassAlready(group.name)" @click="joinGroup(group.id)">Join</button>
+              </div>
+            </li>
+          </ul>
+          <ul v-else class="groups-list">
+            <li v-for="(group, index) of filteredClasses" :class="{ 'first-class-in-list': index === 0 }">
               {{group.name}}
               <div class="group-listing-buttons">
                 <button v-if="group.actor===$gf.me" @click="deleteGroup(group.id)">Delete</button>

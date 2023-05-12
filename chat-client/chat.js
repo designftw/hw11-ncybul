@@ -62,7 +62,9 @@ const app = {
       showSuccessMessage: false,
       waitingForRequest: false,
       editingThread: undefined,
-      editingThreadText: undefined
+      editingThreadText: undefined,
+      filterClasses: false,
+      searchInput: ''
     }
   },
 
@@ -141,6 +143,16 @@ const app = {
         m.type === 'Class' &&
         m.name &&
         typeof m.name === 'string'
+      );
+      return classes;
+    },
+
+    filteredClasses() {
+      let classes = this.messagesRaw.filter(m => 
+        m.type === 'Class' &&
+        m.name &&
+        typeof m.name === 'string' &&
+        m.name.includes(this.searchInput)
       );
       return classes;
     },
@@ -228,6 +240,15 @@ const app = {
 
   methods: {
 
+    searchGroups() {
+      this.filterClasses = true;
+    },
+
+    cancelSearch() {
+      this.filterClasses = false;
+      this.searchInput = "";
+    },
+
     startEditThread(thread) {
       this.editingThread = thread.uri;
       this.editingThreadText = thread.name;
@@ -308,6 +329,7 @@ const app = {
       this.viewingThreads = false;
       this.clearThreadInfo();
       this.currentGroupName = undefined;
+      this.searchInput = '';
     },
 
     openUsernameDialog() {

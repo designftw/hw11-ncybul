@@ -330,6 +330,19 @@ label[for='channel'], #usernameInput .input {
 
 /* message, threads, groups list styling */
 
+.search-groups {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
+}
+
+.search-groups * {
+    font-size: 1em;
+    padding: 10px;
+}
+
 #explore-groups {
     height: 80%;
 }
@@ -440,6 +453,10 @@ label[for='channel'], #usernameInput .input {
     border-bottom: 2px solid var(--darkBlue);
     font-size: 2em;
     word-break: break-all;
+}
+
+.first-class-in-list {
+    border-top: 2px solid var(--darkBlue);
 }
 
 .group-listing-buttons {
