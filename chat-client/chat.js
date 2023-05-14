@@ -304,6 +304,8 @@ const app = {
     },
 
     deleteThread(thread) {
+      const confirmDelete = confirm(`Are you sure you would like to delete the thread '${thread.name}'? This cannot be undone.`);
+      if (!confirmDelete) return;
       this.$gf.remove(thread);
     },
 
@@ -417,13 +419,15 @@ const app = {
     },
 
     async deleteGroup(groupId) {
+      const classToRemove = this.classes.find(c => c.id === groupId);
+      const confirmDelete = confirm(`Are you sure you would like to delete the '${classToRemove.name}' group chat? This cannot be undone.`);
+      if (!confirmDelete) return;
       // remove class with this id
-      const classToRemove = this.classes.find(c => c.id === groupId)
       const removedUri = classToRemove.uri;
       await this.$gf.remove(classToRemove);
       // remove all objects posted in this context
       this.allMessages.filter(m => m.context.includes(removedUri)).forEach(async (it) => {
-        await this.$gf.remove(it);
+        this.$gf.remove(it);
       });
     },
 
@@ -438,7 +442,7 @@ const app = {
     },
 
     async leaveGroup(group) {
-      const confirmLeave = confirm(`Are you sure you would like to leave ${group.name}?`);
+      const confirmLeave = confirm(`Are you sure you would like to leave the '${group.name}' group chat?`);
       if (!confirmLeave) return;
       // remove any join posts to this group
       let myJoins = this.messagesRaw.filter(m => 
