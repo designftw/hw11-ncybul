@@ -186,7 +186,7 @@
                       </div>
                     </div>
                   </div>
-                  <button v-if="messageStartsThread(message.id)" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
+                  <button v-if="messageStartsThread(message.id) && !viewingThreads" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
                   <read-receipt :messageid="message.id" :side="'left'"></read-receipt>
                 </div>
               </div>
@@ -219,7 +219,7 @@
                       <p v-else>(Error fetching image)</p>
                     </div>
                     <div class="messageButtons">
-                      <div v-if="!this.viewingThreads">
+                      <div v-if="!viewingThreads">
                         <div v-if="!messageStartsThread(message.id)" class="replyButtonContainer">
                           <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
                           <p class="tooltip">Create Thread From Message</p>
@@ -240,7 +240,7 @@
                       </div>
                     </div>
                   </div>
-                  <button v-if="messageStartsThread(message.id)" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
+                  <button v-if="messageStartsThread(message.id) && !viewingThreads" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
                   <read-receipt :messageid="message.id" :side="'right'"></read-receipt>
                 </div>
               </div>
