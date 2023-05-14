@@ -236,6 +236,15 @@ label[for='channel'], #usernameInput .input {
     justify-content: flex-end;
 }
 
+.view-thread-button {
+    margin-top: 5px;
+    background-color: var(--darkGreen);
+    color: white;
+    border: 2px solid var(--darkGreen);
+    border-radius: 8px;
+    font-size: 1em;
+}
+
 .senderInfo {
     display: flex;
     align-items: center;

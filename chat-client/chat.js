@@ -465,11 +465,23 @@ const app = {
       return this.threads.find(t => t.uri === uri); 
     },
 
+    findThreadFromBase(base) {
+      return this.threads.find(t => t.base === base); 
+    },
+
     goToThread(threadUri) {
       this.viewingThreads = true;
       this.currentThread = threadUri;
       this.currentThreadName = this.findThreadFromUri(threadUri).name;
       this.currentThreadBase = this.findThreadFromUri(threadUri).base;
+    },
+
+    goToThreadFromBase(threadBase) {
+      this.viewingThreads = true;
+      const thread = this.findThreadFromBase(threadBase);
+      this.currentThread = thread.uri;
+      this.currentThreadName = thread.name;
+      this.currentThreadBase = thread.base;
     },
 
     getMessages() {

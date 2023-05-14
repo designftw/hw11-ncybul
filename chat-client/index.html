@@ -183,10 +183,10 @@
                           <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
                           <p class="tooltip">Create Thread From Message</p>
                         </div>
-                        <button v-else @click="goToThread(message.id)">View Thread</button>
                       </div>
                     </div>
                   </div>
+                  <button v-if="messageStartsThread(message.id)" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
                   <read-receipt :messageid="message.id" :side="'left'"></read-receipt>
                 </div>
               </div>
@@ -224,7 +224,6 @@
                           <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
                           <p class="tooltip">Create Thread From Message</p>
                         </div>
-                        <button v-else @click="goToThread(message.id)">View Thread</button>
                       </div>
                       <like :messageID="message.id"></like>
                       <div class="deleteButtonContainer">
@@ -241,6 +240,7 @@
                       </div>
                     </div>
                   </div>
+                  <button v-if="messageStartsThread(message.id)" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
                   <read-receipt :messageid="message.id" :side="'right'"></read-receipt>
                 </div>
               </div>
