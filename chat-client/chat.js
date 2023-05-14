@@ -438,6 +438,8 @@ const app = {
     },
 
     async leaveGroup(group) {
+      const confirmLeave = confirm(`Are you sure you would like to leave ${group.name}?`);
+      if (!confirmLeave) return;
       // remove any join posts to this group
       let myJoins = this.messagesRaw.filter(m => 
         m.type === 'Join' &&
