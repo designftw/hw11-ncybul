@@ -31,6 +31,10 @@ header {
     color: white;
 }
 
+.emphasize {
+    font-weight: bold;
+}
+
 /* main styling */
 
 main {

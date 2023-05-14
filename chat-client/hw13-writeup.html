@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Chat App Design Writeup</title>
+		<link rel="stylesheet" href="writeup.css" />
+	</head>
+	<body>
+		<header>
+			<h1>Chat App Halfway Point Writeup</h1>
+		</header>
+		<main>
+			<h2>Overview</h2>
+			<p class="callout">
+				Note about FireFox: My CSS uses the :has selector which is not supported by FireFox
+				by default. In order to enable this feature in FireFox visit about:config and set the 
+				layout.css.has-selector.enabled preference to true.
+			</p>
+            <h2>My Design</h2>
+            <p>
+                <span class="emphasize">The Problem:</span> During my time at MIT, I have taken many classes within the EECS (Course 6)
+                department in which students have created group chats to foster collaboration and
+                question-answering among students in the class. Traditionally, these group chats are 
+                created using a messaging app such as Messenger which is not designed for this
+                specific use case and thus poses several problems. First, there is no central place
+                to find existing group chats for a specific class since different apps may be used
+                for different classes.
+                second, class group chats are not
+                public which means that students in a class need to hear by word of mouth that a 
+                group chat for the class exists or have a friend add them to the group chat. And finally,
+                not all messaging platforms have useful tools for organizing messages within a group chat which
+                makes these chats less effective.
+            </p>
+            <p>
+                <span class="emphasize">My Solution:</span> My chat app solves all of the problems mentioned by providing a central place for students
+                to create group chats for their Course 6 classes and organize separate conversations 
+                within these group chats through the use of threads. The "Explore Groups" page is where
+                a list of all class group chats can be found. These group chats are public and therefore can be
+                searched through (using the search bar at the top) and joined by any other student using the app.
+                Furthermore, no two group chats can have the same name which reduces the risk that two 
+                group chats for the same class will be created. This system simplifies the process for
+                students to create, find, and join class group chats that are of interest to them. Additionally,
+                once a user has joined a class group chat, they can send messages in the main chat, or they
+                can respond to another student's message which automatically creates a thread. This
+                keeps messages organized and avoids spamming the main group chat with messages on a specific topic. 
+                Users can find all threads created in a group chat by clicking on the "View All Threads" button
+                at the top of the class group chat conversation. This brings up the threads page which lists all
+                threads as buttons which the user can click to navigate directly to that thread. Also on this
+                page is the option to create a new thread from scratch by clicking "New Thread" without
+                having to reply to a message in the main conversation. This gives users more flexibility 
+                with how they would like to organize messages and threads within a group. Overall, the problems
+                of creating, finding, and joining class group chats as well as keeping these group chats
+                organized are all addressed in my chat app.
+            </p>
+		</main>
+	</body>
+</html>
