@@ -57,7 +57,7 @@
               <button class="tab" type="button" @click="goToGroup(group)">{{group.name}}</button>
               <button @click="leaveGroup(group)" class="leaveGroupButton">❌</button>
             </div>
-            <button class="plus-button" @click="goToExploreGroups"><img src="img/plus.svg"></button>
+            <button class="plus-button" @click="goToExploreGroups">Explore Groups</button>
             <p class="tabHeader">Direct Messaging</p>
             <button class="tab" id="pm" type="button" @click="goToPm()">Chat</button>
           </div>
@@ -132,7 +132,10 @@
           <div v-if="viewingThreads && !currentThread" class="threads-container">
             <div v-for="thread of threads" :key="thread" class="threadsListItem">
               <div v-if="editingThread !== thread.uri" class="thread">
-                <button class="threadName" :class="{'fullWidth': thread.actor !== $gf.me}" @click="goToThread(thread.uri)">Thread: {{ thread.name }}</button>
+                <button class="threadName" :class="{'fullWidth': thread.actor !== $gf.me}" @click="goToThread(thread.uri)">
+                  Thread: {{ getTrimmedThread(thread.name) }}<br>
+                  <span class="creator-info">Created by {{ actorsToUsernames[thread.actor] ?? 'Unknown User' }}</span>
+                </button>
                 <!-- add edit buttons if this thread was created by me -->
                 <span v-if="thread.actor === $gf.me" class="threadControls">
                   <button class="editButton" @click="startEditThread(thread)">✏️</button>
@@ -382,7 +385,7 @@
       <form @submit.prevent="saveProfilePic">
         <img class="profilePic" v-bind:src="profilePic">
         <input type="file" accept="image/png, image/jpeg" @change="onProfileImageAttachment"/>
-        <button type="submit">Upload</button>
+        <button v-if="profilePicTemp !== undefined" type="submit">Upload</button>
       </form>
       <button @click="cancelEdit">Cancel</button>
     </div>

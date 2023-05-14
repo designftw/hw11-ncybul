@@ -131,19 +131,6 @@ h1 {
     margin: 10px auto;
 }
 
-.aside button.plus-button {
-    border-radius: 999px;
-    background-color: var(--darkBlue);
-    border: none;
-    padding: 10px;
-}
-
-.plus-button img {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .aside .errorMessage {
     width: fit-content;
     margin: auto;
@@ -198,7 +185,7 @@ label[for='channel'], #usernameInput .input {
     gap: 20px;
 }
 
-#threadsButton, #returnButton, #new-group-button, .group-listing-buttons button, #pm, #membersButton {
+#threadsButton, #returnButton, #new-group-button, .group-listing-buttons button, #pm, #membersButton, .plus-button {
     font-size: 0.7em;
     border: none;
     background-color: var(--darkBlue);
@@ -212,7 +199,7 @@ label[for='channel'], #usernameInput .input {
     gap: 10px;
 }
 
-#pm {
+#pm, .plus-button {
     font-size: 1.5em;
 }
 
@@ -347,6 +334,10 @@ label[for='channel'], #usernameInput .input {
     overflow-y: auto;
 }
 
+.threads-container {
+    overflow-y: auto;
+}
+
 .threadsListItem, .editingThreadName form {
     width: 100%;
 }
@@ -371,6 +362,10 @@ label[for='channel'], #usernameInput .input {
     border: none;
 }
 
+.threadName .creator-info {
+    font-size: 0.5em;
+}
+
 .thread .threadName {
     width: 80%;
     text-align: left;
@@ -390,6 +385,7 @@ label[for='channel'], #usernameInput .input {
 
 .threadControls button, .editingThreadControls * {
     width: 50%;
+    height: 100%;
 }
 
 .thread:has(button:hover) {

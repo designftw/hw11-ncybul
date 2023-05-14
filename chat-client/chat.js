@@ -260,6 +260,14 @@ const app = {
 
   methods: {
 
+    getTrimmedThread(threadName) {
+      const maxLength = 30;
+      if (threadName.length > maxLength) {
+        return `${threadName.substring(0, maxLength)}...`;
+      }
+      return threadName;
+    },
+
     openMembersDialog() {
       const dialog = document.getElementById("members-dialog");
       dialog.showModal(); 
