@@ -821,6 +821,7 @@ p.tooltip {
     /* shrink font sizes */
     .groups-list li, .threadNameInput, .thread button {
         font-size: 1em;
+        padding: 10px 5px;
     }
 
     .editingThreadName .threadNameInput {
