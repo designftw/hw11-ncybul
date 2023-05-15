@@ -157,9 +157,13 @@
             <!-- List all the messages -->
             <div v-for="message of getMessages()" :key="message.id" class="message-container">
               <div v-if="message.actor!=$gf.me" class="message-left">
-
+                <div v-if="message.deletedBase">
+                  <div class="message-content">
+                    {{message.content}}
+                  </div>
+                </div>
                 <!-- Otherwise, display a bunch of properties from the message -->
-                <div class="message">
+                <div v-else class="message">
                   <p>
                     <!-- Published at time -->
                     {{ formatTime(message.published) }}
@@ -186,14 +190,18 @@
                       </div>
                     </div>
                   </div>
-                  <button v-if="messageStartsThread(message.id) && !viewingThreads" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
-                  <read-receipt :messageid="message.id" :side="'left'"></read-receipt>
                 </div>
+                <button v-if="messageStartsThread(message.id) && !viewingThreads" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
+                <read-receipt v-if="!message.deletedBase" :messageid="message.id" :side="'left'"></read-receipt>
               </div>
               <div v-else class="message-right">
-  
+                <div v-if="message.deletedBase">
+                  <div class="message-content">
+                    {{message.content}}
+                  </div>
+                </div>
                 <!-- Display a bunch of properties from the message -->
-                <div class="message">
+                <div v-else class="message">
                   <p>
                     <!-- Published at time -->
                     {{ formatTime(message.published) }}
@@ -242,9 +250,9 @@
                       </div>
                     </div>
                   </div>
-                  <button v-if="messageStartsThread(message.id) && !viewingThreads" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
-                  <read-receipt :messageid="message.id" :side="'right'"></read-receipt>
                 </div>
+                <button v-if="messageStartsThread(message.id) && !viewingThreads" class="view-thread-button" @click="goToThreadFromBase(message.id)">View Thread</button>
+                <read-receipt v-if="!message.deletedBase" :messageid="message.id" :side="'right'"></read-receipt>
               </div>
             </div>
           </div>

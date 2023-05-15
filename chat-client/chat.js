@@ -308,6 +308,8 @@ const app = {
       if (!confirmDelete) return;
       // delete all messages belonging to that thread
       const messagesInThread = this.messages.filter(m => 
+        // base of message that has been deleted 
+        m.deletedBase ||
         // reply to thread base
         m.inReplyTo === thread.uri
       );
@@ -721,7 +723,13 @@ const app = {
     },
 
     async removeMessage(message) {
-      await this.$gf.remove(message);
+      // check if this message starts a thread --> if so, mark it as deleted
+      if (this.messageStartsThread(message.id)) {
+        message.content = "[message deleted]";
+        message.deletedBase = true;
+      } else {
+        await this.$gf.remove(message);
+      }
     },
 
     startEditMessage(message) {
