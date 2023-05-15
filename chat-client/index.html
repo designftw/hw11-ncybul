@@ -191,17 +191,9 @@
                 </div>
               </div>
               <div v-else class="message-right">
-                <!-- Display and edit form if we're editing a message -->
-                <div v-if="editID==message.id" class="editMessageForm">
-                  <form @submit.prevent="saveEditMessage(message)">
-                    <input v-model="editText">
-                    <input type="submit" value="Save"/>
-                    <button type="button" @click="cancelEditMessage()">Cancel</button>
-                  </form> 
-                </div>
   
-                <!-- Otherwise, display a bunch of properties from the message -->
-                <div v-else class="message">
+                <!-- Display a bunch of properties from the message -->
+                <div class="message">
                   <p>
                     <!-- Published at time -->
                     {{ formatTime(message.published) }}
@@ -211,32 +203,42 @@
                     <profile :actor="message.actor"></profile>
                   </p>
                   <div class="message-content">
-                    <p>{{ message.content }}</p>
-                    <div v-if="message.attachment">
-                      <div v-if="!imageError(message.attachment.magnet)">
-                        <img class="attachment" :src="downloadedImages[message.attachment.magnet]"/>
-                      </div>
-                      <p v-else>(Error fetching image)</p>
+                    <!-- Display and edit form if we're editing a message -->
+                    <div v-if="editID==message.id" class="editMessageForm">
+                      <form @submit.prevent="saveEditMessage(message)">
+                        <input v-model="editText">
+                        <input type="submit" value="Save"/>
+                        <button type="button" @click="cancelEditMessage()">Cancel</button>
+                      </form> 
                     </div>
-                    <div class="messageButtons">
-                      <div v-if="!viewingThreads">
-                        <div v-if="!messageStartsThread(message.id)" class="replyButtonContainer">
-                          <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
-                          <p class="tooltip">Create Thread From Message</p>
+                    <div v-else>
+                      <p>{{ message.content }}</p>
+                      <div v-if="message.attachment">
+                        <div v-if="!imageError(message.attachment.magnet)">
+                          <img class="attachment" :src="downloadedImages[message.attachment.magnet]"/>
                         </div>
+                        <p v-else>(Error fetching image)</p>
                       </div>
-                      <like :messageID="message.id"></like>
-                      <div class="deleteButtonContainer">
-                        <button class="deleteButton" @click="removeMessage(message)">
-                          ❌
-                        </button>
-                        <p class="tooltip">Delete Message</p>
-                      </div>
-                      <div class="editButtonContainer">
-                        <button class="editButton" @click="startEditMessage(message)">
-                          ✏️
-                        </button>
-                        <p class="tooltip">Edit Message</p>
+                      <div class="messageButtons">
+                        <div v-if="!viewingThreads">
+                          <div v-if="!messageStartsThread(message.id)" class="replyButtonContainer">
+                            <button @click="startThread(message.id)" class="replyButton"><img src="img/reply.png"></button>
+                            <p class="tooltip">Create Thread From Message</p>
+                          </div>
+                        </div>
+                        <like :messageID="message.id"></like>
+                        <div class="deleteButtonContainer">
+                          <button class="deleteButton" @click="removeMessage(message)">
+                            ❌
+                          </button>
+                          <p class="tooltip">Delete Message</p>
+                        </div>
+                        <div class="editButtonContainer">
+                          <button class="editButton" @click="startEditMessage(message)">
+                            ✏️
+                          </button>
+                          <p class="tooltip">Edit Message</p>
+                        </div>
                       </div>
                     </div>
                   </div>
