@@ -306,7 +306,15 @@ const app = {
     deleteThread(thread) {
       const confirmDelete = confirm(`Are you sure you would like to delete the thread '${thread.name}'? This cannot be undone.`);
       if (!confirmDelete) return;
+      // delete all messages belonging to that thread
+      const messagesInThread = this.messages.filter(m => 
+        // reply to thread base
+        m.inReplyTo === thread.uri
+      );
       this.$gf.remove(thread);
+      messagesInThread.forEach(m =>
+        this.$gf.remove(m)
+      );
     },
 
     async createNewThread() {
